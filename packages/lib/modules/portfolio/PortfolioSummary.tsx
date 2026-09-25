@@ -31,7 +31,6 @@ export function PortfolioSummary() {
   const {
     portfolioData,
     totalFiatClaimableBalance,
-    protocolRewardsBalance,
     isLoadingPortfolio,
     isLoadingClaimableRewards,
   } = usePortfolio()
@@ -39,7 +38,7 @@ export function PortfolioSummary() {
   const { toCurrency } = useCurrency()
 
   const totalBalance = portfolioData?.userTotalBalance?.toNumber()
-  const totalClaimableBalance = totalFiatClaimableBalance.plus(protocolRewardsBalance)
+  const totalClaimableBalance = totalFiatClaimableBalance
 
   return (
     <FadeInOnView>

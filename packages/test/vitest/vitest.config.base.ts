@@ -10,7 +10,6 @@ export function createVitestConfig(monorepoRoot: string): ViteUserConfig {
     resolve: {
       alias: {
         '@repo': resolveFromRoot('./packages'),
-        '@bal': resolveFromRoot('./apps/frontend-v3'),
       },
     },
     envPrefix: ['VITE', 'NEXT'],

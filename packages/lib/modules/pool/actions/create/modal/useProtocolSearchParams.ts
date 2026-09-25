@@ -1,7 +1,7 @@
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { usePoolCreationForm } from '../PoolCreationFormProvider'
-import { isCowProtocol, isBalancerProtocol } from '../helpers'
+import { isCowProtocol } from '../helpers'
 import type { GqlPoolType } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { PoolType } from '@balancer/sdk'
@@ -11,22 +11,17 @@ interface UseProtocolSearchParams {
 }
 
 export function useProtocolSearchParams({ poolType }: UseProtocolSearchParams) {
-  const { poolCreationForm, resetPoolCreationForm, isFirstStep } = usePoolCreationForm()
+  const { poolCreationForm, isFirstStep } = usePoolCreationForm()
   const searchParams = useSearchParams()
 
   const protocolSearchParam = searchParams.get('protocol')
 
   const isProtocolParamCow = !!protocolSearchParam && isCowProtocol(protocolSearchParam)
-  const isProtocolParamBalancer = !!protocolSearchParam && isBalancerProtocol(protocolSearchParam)
   const isCowAmm = poolType === GqlPoolTypeValues.CowAmm
 
   const showCowAmmWarning = isProtocolParamCow && !isCowAmm && !isFirstStep
-  const showBalancerWarning = isProtocolParamBalancer && isCowAmm && !isFirstStep
 
   const shouldSwitchToCowProtocol = isProtocolParamCow && !showCowAmmWarning && isFirstStep
-
-  const shouldSwitchToBalancerProtocol =
-    isProtocolParamBalancer && !showBalancerWarning && isFirstStep
 
   const setupCowCreation = () => {
     poolCreationForm.setValue('protocol', 'CoW')
@@ -40,10 +35,8 @@ export function useProtocolSearchParams({ poolType }: UseProtocolSearchParams) {
       // setTimeout defers to next tick to ensure form is fully hydrated from localStorage,
       // otherwise form state fails to update when user navigating from another page that is not "/create"
       setTimeout(() => setupCowCreation(), 0)
-    } else if (shouldSwitchToBalancerProtocol) {
-      setTimeout(() => resetPoolCreationForm(), 0)
     }
-  }, [shouldSwitchToCowProtocol, shouldSwitchToBalancerProtocol])
+  }, [shouldSwitchToCowProtocol])
 
-  return { setupCowCreation, showCowAmmWarning, showBalancerWarning }
+  return { setupCowCreation, showCowAmmWarning }
 }

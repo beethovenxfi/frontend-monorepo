@@ -12,7 +12,7 @@ import { PoolType } from '@balancer/sdk'
 import { isPoolCreatorEnabled } from '@repo/lib/modules/pool/actions/create/helpers'
 import { SupportedPoolTypes } from '@repo/lib/modules/pool/actions/create/types'
 
-const BASE_URL = 'http://localhost:3000/create'
+const BASE_URL = 'http://localhost:3001/create'
 
 export type PoolCreationConfig = {
   type: SupportedPoolTypes

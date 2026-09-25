@@ -112,15 +112,6 @@
       "dependsOn": ["^graphql:gen"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
-    "test:e2e:build:bal": {
-      "dependsOn": ["frontend-v3#build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"]
-    },
-    "test:e2e:build:ui:bal": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["^transit"]
-    },
     "test:e2e:build:beets": {
       "dependsOn": ["beets-frontend-v3#build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
@@ -135,16 +126,6 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "test:e2e:build:ui:analytics": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["^transit"]
-    },
-    "test:e2e:dev:bal": {
-      "dependsOn": ["frontend-v3#build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "NEXT_E2E_DEV"],
-      "env": ["E2E_SHARD"]
-    },
-    "test:e2e:dev:ui:bal": {
       "cache": false,
       "persistent": true,
       "dependsOn": ["^transit"]

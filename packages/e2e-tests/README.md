@@ -1,4 +1,4 @@
-# Balancer End to End tests
+# Beets End to End tests
 
 We use [playwright](https://playwright.dev/) for our end to end (e2e) tests.
 
@@ -20,9 +20,8 @@ In every PR we:
 
 - Use `turbo` to run the `build` with the code of that PR
 - Run `pnpm start` to serve the generated build
-- Wait for the 2 frontend builds being served (`balancer` in `localhost:3000` and `beets` in
-  `localhost:3001`)
-- Run `playwright` tests for both apps
+- Wait for the frontend build being served (`beets` in `localhost:3001`)
+- Run `playwright` tests for the app
 
 Check this video for a detailed explanation: https://www.youtube.com/watch?v=bsE1VJn1HeU
 
@@ -30,24 +29,24 @@ Check this video for a detailed explanation: https://www.youtube.com/watch?v=bsE
 
 ```bash
 # This is run by GHA when running this tests in CI
-anvil --fork-url https://lb.drpc.live/ethereum/<YOUR_LOCAL_NEXT_PRIVATE_DRPC_KEY> --port 8545
+anvil --fork-url https://lb.drpc.live/sonic/<YOUR_LOCAL_NEXT_PRIVATE_DRPC_KEY> --port 8545
 ```
 
 ```bash
-pnpm run test:e2e:dev
+pnpm run test:e2e:dev:beets
 ```
 
 This tests use an anvil fork so that we can impersonate accounts and run complete transaction flows
 (using wagmi connector mock to avoid playwright interacting with a real wallet).
 
-In CI the Balancer dev suite is split across three jobs by `scripts/shard-specs.mjs`, which assigns
+In CI the Beets dev suite is split across three jobs by `scripts/shard-specs.mjs`, which assigns
 whole spec files to each job. Keep that granularity: the specs share fork state within a file
 (`liquidity-operations` removes the LP tokens its own earlier tests minted), so Playwright's
 test-level `--shard` cuts those groups apart and the later half fails. Add a spec and it is picked
 up automatically — no list to rebalance.
 
-CI forks mainnet and sonic at a pinned block (the anvil steps in `.github/workflows/checks.yml`) so
-runs are reproducible. Bump it to a recent block if specs start failing on stale pool state.
+CI forks sonic at a pinned block (the anvil steps in `.github/workflows/checks.yml`) so runs are
+reproducible. Bump it to a recent block if specs start failing on stale pool state.
 
 ## Local E2E tests
 
@@ -59,14 +58,14 @@ runs are reproducible. Bump it to a recent block if specs start failing on stale
   pnpm playwright:install # if you want to test with non-chromium browsers locally
 ```
 
-You can also run `pnpm test:e2e:build` or `pnpm test:e2e:dev` but, when implementing new tests, we
-recommend the ui option:
+You can also run `pnpm test:e2e:build:beets` or `pnpm test:e2e:dev:beets` but, when implementing new
+tests, we recommend the ui option:
 
 ```bash
-pnpm run test:e2e:build:ui
+pnpm run test:e2e:build:ui:beets
 # or
-# Remember to run the mainnet anvil fork locally before running dev E2E tests for Balancer.
-pnpm run test:e2e:dev:ui:bal
+# Remember to run the sonic anvil fork locally before running dev E2E tests for Beets.
+pnpm run test:e2e:dev:ui:beets
 ```
 
 For more info about playwright tests check the [official documentation](https://playwright.dev/) and

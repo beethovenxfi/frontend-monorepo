@@ -8,7 +8,6 @@ import {
   COW_AMM_RAW_WEIGHT_50,
   COW_AMM_RAW_WEIGHT_80,
   COW_AMM_RAW_WEIGHT_20,
-  BALANCER_PROTOCOL_ID,
   COW_PROTOCOL_ID,
 } from './constants'
 
@@ -116,10 +115,6 @@ export function isCowPool(poolType: PoolType | undefined): boolean {
 
 export function isCowProtocol(protocol: string): boolean {
   return protocol.toLowerCase() === COW_PROTOCOL_ID.toLowerCase()
-}
-
-export function isBalancerProtocol(protocol: string): boolean {
-  return protocol.toLowerCase() === BALANCER_PROTOCOL_ID.toLowerCase()
 }
 
 export function isPoolCreatorEnabled(poolType: PoolType): boolean {

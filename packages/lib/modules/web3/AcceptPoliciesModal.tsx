@@ -20,7 +20,7 @@ import { useUserSettings } from '../user/settings/UserSettingsProvider'
 import { useUserAccount } from './UserAccountProvider'
 import { useDisconnect } from 'wagmi'
 import NextLink from 'next/link'
-import { isBalancer, PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
+import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { shouldUseAnvilFork } from '@repo/lib/config/app.config'
 
 export function AcceptPoliciesModal() {
@@ -31,7 +31,7 @@ export function AcceptPoliciesModal() {
   const disconnect = useDisconnect()
 
   const { projectName } = PROJECT_CONFIG
-  const entityName = isBalancer ? 'Balancer Foundation' : 'BeethovenX DAO'
+  const entityName = 'BeethovenX DAO'
 
   const isAddressInAcceptedPolicies =
     acceptedPolicies.includes(userAddress.toLowerCase()) ||

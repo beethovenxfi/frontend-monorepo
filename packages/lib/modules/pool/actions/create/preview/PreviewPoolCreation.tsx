@@ -50,7 +50,7 @@ function PreviewPoolHeader() {
 
   const gqlPoolType = getGqlPoolType(poolType)
 
-  const { setupCowCreation, showCowAmmWarning, showBalancerWarning } = useProtocolSearchParams({
+  const { setupCowCreation, showCowAmmWarning } = useProtocolSearchParams({
     poolType: gqlPoolType,
   })
 
@@ -69,7 +69,6 @@ function PreviewPoolHeader() {
           handleRestart={handleRestart}
           network={network}
           poolType={gqlPoolType}
-          showBalancerWarning={showBalancerWarning}
           showCowAmmWarning={showCowAmmWarning}
         />
         <LearnMoreModal
