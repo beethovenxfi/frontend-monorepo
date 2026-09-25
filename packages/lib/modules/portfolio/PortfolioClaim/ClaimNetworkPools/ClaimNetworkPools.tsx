@@ -10,7 +10,6 @@ import {
   Flex,
   HStack,
   Button,
-  useDisclosure,
   Link,
   Box,
 } from '@chakra-ui/react'
@@ -20,25 +19,20 @@ import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { chainToSlugMap } from '../../../pool/pool.utils'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
-import { useMemo, useState, type ReactNode } from 'react'
-import ClaimProtocolRevenueModal from '../ClaimProtocolRevenueModal'
+import { useMemo, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 import { useHasMerklRewards } from '../../merkl/useHasMerklRewards'
 import { MerklAlert } from '../../merkl/MerklAlert'
 import { motion } from 'motion/react'
 import { easeOut } from 'motion'
-import { isBalancer, isBeets, PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
+import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { getChainId, getChainName } from '@repo/lib/config/app.config'
 import { useBreakpoints } from '@repo/lib/shared/hooks/useBreakpoints'
 import { NetworkIcon } from '@repo/lib/shared/components/icons/NetworkIcon'
 import { WalletIcon } from '@repo/lib/shared/components/icons/WalletIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
-import { sumRecoveredFundsTotal, useRecoveredFunds } from '../recovered-funds/useRecoveredFunds'
-import { ClaimRecoveredFundsModal } from '../recovered-funds/ClaimRecoveredFundsModal'
-import { BalAlertLink } from '@repo/lib/shared/components/alerts/BalAlertLink'
-import { RecoveredFundsLearnMoreModal } from '../recovered-funds/RecoveredFundsLearnMoreModal'
 import { isChainDeprecated } from '@repo/lib/modules/chains/chain.utils'
 
 interface NetworkConfig {
@@ -46,20 +40,6 @@ interface NetworkConfig {
   name: string
   displayProps?: Record<string, any>
 }
-
-const balancerNetworksConfig: NetworkConfig[] = [
-  { chain: GqlChainValues.Mainnet, name: 'Ethereum', displayProps: {} },
-  {
-    chain: GqlChainValues.Arbitrum,
-    name: 'Arbitrum',
-    displayProps: { display: { base: 'none', md: 'block' } },
-  },
-  {
-    chain: GqlChainValues.Base,
-    name: 'Base',
-    displayProps: { display: { base: 'none', md: 'none', lg: 'block' } },
-  },
-]
 
 const beetsNetworksConfig: NetworkConfig[] = [
   { chain: GqlChainValues.Sonic, name: 'Sonic', displayProps: {} },
@@ -71,33 +51,14 @@ const GRID_COLUMNS = { base: 1, md: 2, lg: 3 }
 export function ClaimNetworkPools() {
   const {
     poolsByChainMap,
-    protocolRewardsBalance,
     totalFiatClaimableBalanceByChain,
     poolsWithOnchainUserBalances,
     isLoadingRewards,
     isLoadingPortfolio,
   } = usePortfolio()
 
-  const { hasRecoveredFunds, claims: recoveredFundsClaims } = useRecoveredFunds()
-
-  const [isOpenedProtocolRevenueModal, setIsOpenedProtocolRevenueModal] = useState(false)
-
-  const {
-    isOpen: isClaimRecoveredFundModalOpen,
-    onOpen: openClaimRecoveredFundModal,
-    onClose: onClaimRecoveredFundModalClose,
-  } = useDisclosure()
-
-  const {
-    isOpen: isRecoveredFundsLearnMoreModalOpen,
-    onOpen: openRecoveredFundsLearnMoreModal,
-    onClose: onRecoveredFundsLearnMoreModalClose,
-  } = useDisclosure()
-
   const { isConnected } = useUserAccount()
   const router = useRouter()
-
-  const hasProtocolRewards = protocolRewardsBalance && protocolRewardsBalance.isGreaterThan(0)
 
   const chainIds = PROJECT_CONFIG.merklRewardsChains.map(chain => getChainId(chain))
   const { hasMerklRewards } = useHasMerklRewards(poolsWithOnchainUserBalances, chainIds)
@@ -105,7 +66,7 @@ export function ClaimNetworkPools() {
   const { isDesktop } = useBreakpoints()
   const iconSize = isDesktop ? 12 : 8
 
-  const currentNetworks = isBeets ? beetsNetworksConfig : balancerNetworksConfig
+  const currentNetworks = beetsNetworksConfig
 
   const poolsWithChain = Object.entries(poolsByChainMap).sort(
     ([a], [b]) =>
@@ -117,7 +78,7 @@ export function ClaimNetworkPools() {
     balance => balance.toNumber() > 0
   )
 
-  const noRewards = !hasProtocolRewards && !hasChainRewards
+  const noRewards = !hasChainRewards
 
   const deprecatedChains = poolsWithChain
     .map(item => item[0])
@@ -125,7 +86,7 @@ export function ClaimNetworkPools() {
 
   // Build claimable items
   const claimableItems = useMemo(() => {
-    const items = []
+    const items: { type: string; chain: GqlChain; amount: number; icon?: string }[] = []
 
     poolsWithChain.forEach(([, pools]) => {
       const firstPool = pools[0]
@@ -140,33 +101,9 @@ export function ClaimNetworkPools() {
       }
     })
 
-    if (hasProtocolRewards) {
-      items.push({
-        type: 'protocol',
-        chain: GqlChainValues.Mainnet,
-        amount: protocolRewardsBalance.toNumber(),
-      })
-    }
-
-    if (isBalancer && hasRecoveredFunds) {
-      items.push({
-        type: 'recovered-funds',
-        chain: PROJECT_CONFIG.defaultNetwork,
-        amount: sumRecoveredFundsTotal(recoveredFundsClaims),
-        icon: '/images/icons/heart.svg',
-      })
-    }
-
     // Sort by amount (highest first)
     return items.sort((a, b) => b.amount - a.amount)
-  }, [
-    poolsWithChain,
-    totalFiatClaimableBalanceByChain,
-    hasProtocolRewards,
-    protocolRewardsBalance,
-    hasRecoveredFunds,
-    recoveredFundsClaims,
-  ])
+  }, [poolsWithChain, totalFiatClaimableBalanceByChain])
 
   return (
     <FadeInOnView>
@@ -174,20 +111,6 @@ export function ClaimNetworkPools() {
         <Heading size="h4" variant="special">
           Claimable incentives
         </Heading>
-        {isBalancer && hasRecoveredFunds && (
-          <AnimatedAlert>
-            <BalAlert
-              content={
-                <Text color="font.dark" fontWeight="medium">
-                  Claim your share of recovered funds from the November 2025 security incident
-                  affecting some v2 Composable Stable pools.{' '}
-                  <BalAlertLink onClick={openRecoveredFundsLearnMoreModal}>Learn more</BalAlertLink>
-                </Text>
-              }
-              status="warning"
-            />
-          </AnimatedAlert>
-        )}
         {deprecatedChains.length > 0 && (
           <AnimatedAlert>
             <DeprecatedChainsAlert chains={deprecatedChains} />
@@ -275,16 +198,7 @@ export function ClaimNetworkPools() {
               <SimpleGrid columns={GRID_COLUMNS} spacing="md">
                 {claimableItems.map((item, index) => {
                   const handleClick = () => {
-                    switch (item.type) {
-                      case 'protocol':
-                        setIsOpenedProtocolRevenueModal(true)
-                        break
-                      case 'recovered-funds':
-                        openClaimRecoveredFundModal()
-                        break
-                      default:
-                        router.push(`/portfolio/${chainToSlugMap[item.chain]}`)
-                    }
+                    router.push(`/portfolio/${chainToSlugMap[item.chain]}`)
                   }
 
                   return (
@@ -300,7 +214,6 @@ export function ClaimNetworkPools() {
                         icon={item.icon}
                         networkTotalClaimableFiatBalance={item.amount}
                         onClick={handleClick}
-                        title={getCardTitle(item.type)}
                       />
                     </motion.div>
                   )
@@ -321,19 +234,6 @@ export function ClaimNetworkPools() {
           </>
         )}
       </Stack>
-      <ClaimProtocolRevenueModal
-        isOpen={isOpenedProtocolRevenueModal}
-        onClose={() => setIsOpenedProtocolRevenueModal(false)}
-      />
-
-      <ClaimRecoveredFundsModal
-        isOpen={isClaimRecoveredFundModalOpen}
-        onClose={onClaimRecoveredFundModalClose}
-      />
-      <RecoveredFundsLearnMoreModal
-        isOpen={isRecoveredFundsLearnMoreModalOpen}
-        onClose={onRecoveredFundsLearnMoreModalClose}
-      />
     </FadeInOnView>
   )
 }
@@ -344,17 +244,6 @@ function AnimatedAlert({ children }: { children: ReactNode }) {
       {children}
     </motion.div>
   )
-}
-
-function getCardTitle(itemType: string) {
-  switch (itemType) {
-    case 'protocol':
-      return 'Balancer protocol revenue'
-    case 'recovered-funds':
-      return 'v2 incident recovered funds'
-    default:
-      return undefined
-  }
 }
 
 function DeprecatedChainsAlert({ chains }: { chains: GqlChain[] }) {

@@ -30,7 +30,6 @@ interface RestartPoolCreationModalProps {
   network: GqlChain
   handleRestart: () => void
   isAbsolutePosition?: boolean
-  showBalancerWarning?: boolean
   showCowAmmWarning?: boolean
   onOpenForSearchParams?: () => void
 }
@@ -43,7 +42,6 @@ export function RestartPoolCreationModal({
   handleRestart,
   poolAddress,
   isAbsolutePosition,
-  showBalancerWarning,
   showCowAmmWarning,
 }: RestartPoolCreationModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -60,8 +58,8 @@ export function RestartPoolCreationModal({
   }
 
   useEffect(() => {
-    if (showBalancerWarning || showCowAmmWarning) onOpen()
-  }, [showBalancerWarning, showCowAmmWarning])
+    if (showCowAmmWarning) onOpen()
+  }, [showCowAmmWarning])
 
   return (
     <>
@@ -95,7 +93,6 @@ export function RestartPoolCreationModal({
                 <BeforePoolDeployedWarning
                   network={network}
                   poolType={poolType}
-                  showBalancerWarning={showBalancerWarning}
                   showCowAmmWarning={showCowAmmWarning}
                 />
               ) : (
@@ -141,14 +138,12 @@ interface BeforePoolDeployedWarningProps {
   network: GqlChain
   poolType: GqlPoolType
   showCowAmmWarning?: boolean
-  showBalancerWarning?: boolean
 }
 
 function BeforePoolDeployedWarning({
   network,
   poolType,
   showCowAmmWarning,
-  showBalancerWarning,
 }: BeforePoolDeployedWarningProps) {
   const poolTypeName = getPoolTypeLabel(poolType)
   const chainName = getChainName(network)
@@ -157,8 +152,6 @@ function BeforePoolDeployedWarning({
 
   if (showCowAmmWarning) {
     deleteProgressReason = 'to begin creation of a new CoW AMM?'
-  } else if (showBalancerWarning) {
-    deleteProgressReason = 'to begin creation of a new Balancer v3 pool?'
   } else {
     deleteProgressReason = 'and start again from scratch?'
   }

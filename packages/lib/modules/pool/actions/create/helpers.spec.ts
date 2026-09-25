@@ -15,7 +15,6 @@ import {
   getPercentFromPrice,
   getSwapFeePercentageOptions,
   isAutoRangePool,
-  isBalancerProtocol,
   isCowPool,
   isCowProtocol,
   isCustomWeightedPool,
@@ -176,12 +175,6 @@ describe('protocol predicates', () => {
     expect(isCowProtocol('CoW')).toBe(true)
     expect(isCowProtocol('cow')).toBe(true)
     expect(isCowProtocol('Balancer v3')).toBe(false)
-  })
-
-  it('detects Balancer protocol case-insensitively', () => {
-    expect(isBalancerProtocol('Balancer v3')).toBe(true)
-    expect(isBalancerProtocol('balancer v3')).toBe(true)
-    expect(isBalancerProtocol('CoW')).toBe(false)
   })
 })
 

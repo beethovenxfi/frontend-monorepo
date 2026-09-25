@@ -17,8 +17,6 @@ import { ArrowUpRight } from 'lucide-react'
 import { DevToolsDrawerButton } from '@repo/lib/modules/dev-tools/DevToolsDrawer'
 import { ApiOutageAlert } from '../alerts/ApiOutageAlert'
 import { useApiHealth } from '../../hooks/useApiHealth'
-import { useLegacyV1Positions } from '@repo/lib/modules/pool/legacy/useLegacyV1Positions'
-import { LegacyV1PositionsAlert } from '../alerts/LegacyV1PositionsAlert'
 
 type Props = {
   mobileNav?: ReactNode
@@ -216,7 +214,6 @@ export function NavBar({
   ...rest
 }: Props & BoxProps) {
   const { apiOK } = useApiHealth()
-  const { hasLegacyV1Positions } = useLegacyV1Positions()
   const [showShadow, setShowShadow] = useState(false)
 
   useEffect(() => {
@@ -243,7 +240,7 @@ export function NavBar({
   const opacity = useTransform(scrollYBoundedProgressDelayed, [0, 1], [1, 0])
 
   // Determine navbar height based on alerts
-  const hasAlerts = !apiOK || hasLegacyV1Positions
+  const hasAlerts = !apiOK
   const navbarHeight = hasAlerts ? '120px' : '72px'
 
   // Set CSS variable on document root
@@ -280,7 +277,6 @@ export function NavBar({
       zIndex={100}
       {...rest}
     >
-      {hasLegacyV1Positions && <LegacyV1PositionsAlert />}
       {!apiOK && <ApiOutageAlert />}
 
       <HStack as="nav" justify="space-between" padding={{ base: 'sm', md: 'md' }}>

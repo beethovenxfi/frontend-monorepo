@@ -8,7 +8,6 @@ import {
   INITIAL_AUTORANGE_CONFIG,
   INITIAL_ECLP_CONFIG,
   NUM_FORMAT,
-  BALANCER_PROTOCOL_ID,
   POOL_CREATION_FORM_STEPS,
 } from './constants'
 import { PoolCreationForm, PoolCreationToken, AutoRangeConfig, EclpConfigForm } from './types'
@@ -21,7 +20,6 @@ import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { fNumCustom } from '@repo/lib/shared/utils/numbers'
 import { useWatch } from 'react-hook-form'
-import { isBalancer } from '@repo/lib/config/getProjectConfig'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { useSearchParams } from 'next/navigation'
 import { useFormSteps } from '@repo/lib/shared/hooks/useFormSteps'
@@ -48,7 +46,7 @@ export function usePoolFormLogic() {
     { mode: 'all' }
   )
 
-  const protocol = isBalancer ? BALANCER_PROTOCOL_ID : PROJECT_CONFIG.projectName
+  const protocol = PROJECT_CONFIG.projectName
 
   const poolCreationForm = usePersistentForm<PoolCreationForm>(
     LS_KEYS.PoolCreation.Form,

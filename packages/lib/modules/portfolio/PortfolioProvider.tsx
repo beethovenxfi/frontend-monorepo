@@ -3,7 +3,6 @@
 import { GetPoolsDocument } from '@repo/lib/shared/services/api/generated/graphql'
 import { useQuery } from '@apollo/client/react'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
-import { useProtocolRewards } from './PortfolioClaim/useProtocolRewards'
 import { ClaimableReward, useClaimableBalances } from './PortfolioClaim/useClaimableBalances'
 import { BalTokenReward, useBalTokenRewards } from './PortfolioClaim/useBalRewards'
 import { bn } from '@repo/lib/shared/utils/numbers'
@@ -136,10 +135,6 @@ export function usePortfolioLogic() {
     portfolioData.stakedPools || []
   )
 
-  // Protocol rewards
-  const { protocolRewardsData, isLoadingProtocolRewards, refetchProtocolRewards } =
-    useProtocolRewards()
-
   // Other tokens rewards
   const {
     claimableRewards,
@@ -218,13 +213,6 @@ export function usePortfolioLogic() {
     )
   }, [poolsByChainMap, poolRewardsMap])
 
-  const protocolRewardsBalance = useMemo(() => {
-    return protocolRewardsData.reduce((acc, reward) => {
-      acc = acc.plus(reward.fiatBalance)
-      return acc
-    }, bn(0))
-  }, [protocolRewardsData])
-
   const refetchClaimPoolData = useCallback(() => {
     refetchBalRewards()
     refetchClaimableRewards()
@@ -233,23 +221,19 @@ export function usePortfolioLogic() {
   return {
     portfolioData,
     balRewardsData,
-    protocolRewardsData,
     claimableRewards,
     poolRewardsMap,
     poolsByChainMap,
     poolsWithOnchainUserBalances,
     totalFiatClaimableBalance,
     totalFiatClaimableBalanceByChain,
-    protocolRewardsBalance,
     rewardsByChainMap,
     refetchClaimPoolData,
-    refetchProtocolRewards,
     isLoadingBalRewards,
-    isLoadingProtocolRewards,
     isLoadingClaimableRewards,
     isLoadingPortfolio:
       isLoadingPoolsUserAddress || isLoadingOnchainUserBalances || isLoadingPoolsId,
-    isLoadingRewards: isLoadingBalRewards || isLoadingClaimableRewards || isLoadingProtocolRewards,
+    isLoadingRewards: isLoadingBalRewards || isLoadingClaimableRewards,
   }
 }
 

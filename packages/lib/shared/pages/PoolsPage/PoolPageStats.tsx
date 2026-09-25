@@ -13,7 +13,6 @@ import Stat from '../../components/other/Stat'
 import { bn, safeToNumber } from '../../utils/numbers'
 import { useProtocolStats } from '@repo/lib/modules/protocol/ProtocolStatsProvider'
 import { AnimatedNumber } from '../../components/other/AnimatedNumber'
-import { isBalancer } from '@repo/lib/config/getProjectConfig'
 import { TooltipWithTouch } from '../../components/tooltips/TooltipWithTouch'
 
 type Fee = {
@@ -29,7 +28,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
   const { protocolData } = useProtocolStats()
 
   const surplus24h = protocolData?.protocolMetricsAggregated.surplus24h
-  const feeLabel = isBalancer ? 'Yield (24h)' : 'Fees (24h)'
+  const feeLabel = 'Fees (24h)'
 
   const fees: Fee[] = [
     {
@@ -75,7 +74,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
         <TooltipWithTouch
           bg="background.level0"
           fontSize="13px"
-          label={`Total Value Locked on ${isBalancer ? 'Balancer v2, v3, and CoW AMM across Ethereum and all supported networks.' : 'Beets.'}`}
+          label="Total Value Locked on Beets."
           placement="top"
         >
           <Stat
@@ -93,7 +92,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
         <TooltipWithTouch
           bg="background.level0"
           fontSize="13px"
-          label={`Total 24h trading volume on ${isBalancer ? 'Balancer v2, v3, and CoW AMM across Ethereum and all supported networks.' : 'Beets.'}`}
+          label="Total 24h trading volume on Beets."
           placement="top"
         >
           <Stat

@@ -7,12 +7,8 @@
     "playwright:install": "playwright install --with-deps",
     "typecheck": "tsc --project tsconfig.json --noEmit --incremental",
     "playwright:install:chromium": "playwright install --with-deps chromium",
-    "test:e2e:build:bal": "NEXT_PUBLIC_PROJECT_ID=balancer start-server-and-test 'cd ../../ && pnpm start --filter frontend-v3' 'http://localhost:3000' 'pnpm exec playwright test tests/build/balancer'",
-    "test:e2e:build:ui:bal": "NEXT_PUBLIC_PROJECT_ID=balancer pnpm exec playwright test tests/build/balancer --ui",
     "test:e2e:build:beets": "NEXT_PUBLIC_PROJECT_ID=beets start-server-and-test 'cd ../../ && pnpm start --filter beets-frontend-v3' 'http://localhost:3001' 'pnpm exec playwright test tests/build/beets'",
     "test:e2e:build:ui:beets": "NEXT_PUBLIC_PROJECT_ID=beets pnpm exec playwright test tests/build/beets --ui",
-    "test:e2e:dev:bal": "NEXT_PUBLIC_E2E_DEV=1 start-server-and-test 'cd ../../ &&  pnpm start --filter frontend-v3' 'http://localhost:3000' 'pnpm exec playwright test $(node scripts/shard-specs.mjs)'",
-    "test:e2e:dev:ui:bal": "NEXT_PUBLIC_E2E_DEV=1 pnpm exec playwright test tests/dev/balancer --ui",
     "test:e2e:dev:beets": "NEXT_PUBLIC_E2E_DEV=1 start-server-and-test 'cd ../../ &&  pnpm start --filter beets-frontend-v3' 'http://localhost:3001' 'pnpm exec playwright test $(node scripts/shard-specs.mjs tests/dev/beets)'",
     "test:e2e:dev:ui:beets": "NEXT_PUBLIC_E2E_DEV=1 pnpm exec playwright test tests/dev/beets --ui",
     "test:e2e:local": "pnpm exec playwright test tests"
@@ -28,7 +24,6 @@
     "@types/node": "24.13.6",
     "beets-frontend-v3": "workspace:*",
     "dotenv": "17.4.2",
-    "frontend-v3": "workspace:*",
     "start-server-and-test": "3.0.12"
   }
 }

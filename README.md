@@ -15,15 +15,13 @@ This monorepo includes the following apps & packages:
 
 ### Apps
 
-- [apps/frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/frontend-v3): The
-  official web app for the Balancer protocol, hosted at [https://balancer.fi](https://balancer.fi).
 - [apps/beets-frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/beets-frontend-v3):
-  The (still in development) web app for the Beets protocol.
+  The web app for the Beets protocol.
 
 ### Packages
 
 - [packages/lib](https://github.com/balancer/frontend-monorepo/tree/main/packages/lib): Shared logic
-  for all frontend-v3 apps.
+  for the Beets app.
 - [packages/eslint-config](https://github.com/balancer/frontend-monorepo/tree/main/packages/eslint-config):
   eslint configurations.
 - [packages/typescript-config](https://github.com/balancer/frontend-monorepo/tree/main/packages/typescript-config):
@@ -31,9 +29,8 @@ This monorepo includes the following apps & packages:
 
 ## Getting started
 
-Click on the links below to see the README for each app:
+Click on the link below to see the README for the app:
 
-- [frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/frontend-v3/README.md)
 - [beets-frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/beets-frontend-v3/README.md)
 
 ### Build
@@ -69,28 +66,28 @@ cp .env.template .env.local
 2. Start a local anvil fork:
 
 ```
-make fork-ethereum
+make fork-sonic
 ```
 
 3. Start the local development server in fork mode:
 
 ```
-pnpm dev:bal:fork
+pnpm dev:beets:fork
 ```
 
-4. Start the playwright UI for Balancer:
+4. Start the playwright UI for Beets:
 
 ```
-pnpm test:e2e:dev:ui:bal
+pnpm test:e2e:dev:ui:beets
 ```
 
 ### Install a package
 
-If you want to install a new npm package in a sub application like `frontend-v3` add the --filter
-option to your install command, e.g.:
+If you want to install a new npm package in a sub application like `beets-frontend-v3` add the
+--filter option to your install command, e.g.:
 
 ```
-pnpm add some-pkg --filter=frontend-v3
+pnpm add some-pkg --filter=beets-frontend-v3
 ```
 
 This filter should match the `name` attribute in the app or package package.json.
