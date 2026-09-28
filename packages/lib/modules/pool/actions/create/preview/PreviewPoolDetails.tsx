@@ -5,7 +5,7 @@ import { BlockExplorerLink } from '@repo/lib/shared/components/BlockExplorerLink
 import { usePoolHooksWhitelist } from '../steps/details/usePoolHooksWhitelist'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { PreviewPoolCreationCard } from './PreviewPoolCreationCard'
-import { isStablePool, isCowPool, isPoolCreatorEnabled } from '../helpers'
+import { isStablePool, isPoolCreatorEnabled } from '../helpers'
 import { useWatch } from 'react-hook-form'
 
 export function PreviewPoolDetails() {
@@ -76,22 +76,19 @@ export function PoolDetailsContent() {
     )
   }
 
-  const showPoolSettings = !isCowPool(poolType)
   const showAmplificationParameter = isStablePool(poolType)
 
   const poolDetailsMap = {
     'Pool name': name,
     'Pool symbol': symbol,
-    ...(showPoolSettings && {
-      ...(isPoolCreatorEnabled(poolType) && { 'Pool creator': formatPoolManager(poolCreator) }),
-      'Swap fee manager': formatPoolManager(swapFeeManager),
-      'Pool pause manager': formatPoolManager(pauseManager),
-      'Swap fee percentage': `${swapFeePercentage}%`,
-      ...(showAmplificationParameter && { 'Amplification parameter': amplificationParameter }),
-      'Pool hook': formatPoolHook(poolHooksContract),
-      'Allow flexible adds/removes': disableUnbalancedLiquidity ? 'No' : 'Yes',
-      'Allow donations': enableDonation ? 'Yes' : 'No',
-    }),
+    ...(isPoolCreatorEnabled(poolType) && { 'Pool creator': formatPoolManager(poolCreator) }),
+    'Swap fee manager': formatPoolManager(swapFeeManager),
+    'Pool pause manager': formatPoolManager(pauseManager),
+    'Swap fee percentage': `${swapFeePercentage}%`,
+    ...(showAmplificationParameter && { 'Amplification parameter': amplificationParameter }),
+    'Pool hook': formatPoolHook(poolHooksContract),
+    'Allow flexible adds/removes': disableUnbalancedLiquidity ? 'No' : 'Yes',
+    'Allow donations': enableDonation ? 'Yes' : 'No',
   }
 
   const isDetailsActive = isStep('Details')

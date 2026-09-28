@@ -5,7 +5,7 @@ import { getChainName } from '@repo/lib/config/app.config'
 import { NetworkPreviewSVG } from '@repo/lib/shared/components/imgs/AutoRangeConfigSvgs'
 import { PreviewPoolCreationCard } from './PreviewPoolCreationCard'
 import { POOL_TYPES } from '../constants'
-import { isWeightedPool, isCustomWeightedPool, isCowPool } from '../helpers'
+import { isWeightedPool, isCustomWeightedPool } from '../helpers'
 import { useWatch } from 'react-hook-form'
 
 export function PreviewPoolType() {
@@ -24,7 +24,7 @@ export function PreviewPoolType() {
     ? selectedPoolTokens.map(token => Number(token.weight))
     : undefined
 
-  const showWeightStructure = isWeightedPool(poolType) || isCowPool(poolType)
+  const showWeightStructure = isWeightedPool(poolType)
 
   const cardInformationRows = [
     {
@@ -40,7 +40,7 @@ export function PreviewPoolType() {
       value:
         POOL_TYPES[poolType].label +
         (showWeightStructure
-          ? `: ${isCustomWeightedPool(poolType, weightedPoolStructure) ? 'Custom' : `${!isCowPool(poolType) ? '2-token ' : ''}${weightedPoolStructure}`}`
+          ? `: ${isCustomWeightedPool(poolType, weightedPoolStructure) ? 'Custom' : `2-token ${weightedPoolStructure}`}`
           : ''),
     },
   ]

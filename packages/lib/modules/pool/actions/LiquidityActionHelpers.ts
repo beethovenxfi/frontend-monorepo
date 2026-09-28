@@ -34,7 +34,6 @@ import { HumanTokenAmountWithSymbol } from '../../tokens/token.types'
 import { Pool } from '../pool.types'
 import {
   isComposableStableV1,
-  isCowAmmPool,
   isGyro,
   isUnbalancedLiquidityDisabled,
   isV2Pool,
@@ -279,7 +278,6 @@ export function requiresProportionalInputReason(pool: Pool): string | undefined 
   }
 
   if (isGyro(pool.type) && !isV3Pool(pool)) return requiresProportionalTemplate('Gyro (CLP)')
-  if (isCowAmmPool(pool.type)) return requiresProportionalTemplate('Cow AMM')
 
   return undefined
 }
@@ -411,12 +409,7 @@ export function injectNativeAsset(
     isWrappedNativeAsset(token.address as Address, pool.chain)
   )
 
-  if (
-    isWrappedNativeAssetInPool &&
-    nativeAsset &&
-    // Cow AMM pools don't support wethIsEth
-    !isCowAmmPool(pool.type)
-  ) {
+  if (isWrappedNativeAssetInPool && nativeAsset) {
     return [nativeAsset, ...validTokens]
   }
 

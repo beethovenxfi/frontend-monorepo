@@ -101,13 +101,4 @@ export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
     ),
     learnMoreLink: emergencyMultisigLink,
   },
-  [PoolIssue.FxPoolVulnWarning]: {
-    jsxTitle: (
-      <>
-        Xave's FXPools are potentially affected by a bug. Xave recommends that LPs temporarily
-        remove remove liquidity from this pool.
-      </>
-    ),
-    learnMoreLink: 'https://x.com/XaveFinance/status/1725089131330756628',
-  },
 }

@@ -27,7 +27,6 @@ type PoolPageStatsProps = {
 export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
   const { protocolData } = useProtocolStats()
 
-  const surplus24h = protocolData?.protocolMetricsAggregated.surplus24h
   const feeLabel = 'Fees (24h)'
 
   const fees: Fee[] = [
@@ -45,13 +44,6 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
     fees.push({
       label: 'stS rewards',
       value: rewardsClaimed24h,
-    })
-  }
-
-  if (surplus24h && surplus24h !== '0') {
-    fees.push({
-      label: 'CoW AMM LVR surplus',
-      value: surplus24h,
     })
   }
 

@@ -13,20 +13,17 @@ import {
   type RadioCardOption,
 } from '@repo/lib/shared/components/inputs/RadioCardGroup'
 import { INITIAL_POOL_CREATION_FORM } from '../../constants'
-import { isCowProtocol } from '../../helpers'
 import { useWatch } from 'react-hook-form'
 
 export function ChooseNetwork({ control }: { control: Control<PoolCreationForm> }) {
   const { poolCreationForm } = usePoolCreationForm()
 
   const [protocol, poolType] = useWatch({ control, name: ['protocol', 'poolType'] })
-  const { supportedNetworks, cowSupportedNetworks } = PROJECT_CONFIG
-
-  const protocolNetworks = isCowProtocol(protocol) ? cowSupportedNetworks : supportedNetworks
+  const { supportedNetworks } = PROJECT_CONFIG
 
   const networkOptions: RadioCardOption<GqlChain>[] = [
-    protocolNetworks[0],
-    ...protocolNetworks.slice(1).sort(),
+    supportedNetworks[0],
+    ...supportedNetworks.slice(1).sort(),
   ]
     .filter(
       (network): network is GqlChain =>

@@ -13,7 +13,6 @@ import {
   Text,
   VStack,
   Tooltip,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { useMemo, useState, useLayoutEffect } from 'react'
 import { usePool } from '../PoolProvider'
@@ -21,7 +20,7 @@ import { Address } from 'viem'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
 import { keyBy } from 'lodash'
-import { getProportionalExitAmountsFromScaledBptIn, getXavePoolLink } from '../pool.utils'
+import { getProportionalExitAmountsFromScaledBptIn } from '../pool.utils'
 import { useUserAccount } from '../../web3/UserAccountProvider'
 import {
   getUserTotalBalanceInt,
@@ -38,17 +37,12 @@ import {
   shouldBlockAddLiquidity,
   getPoolAddBlockedReason,
   calcUserShareOfPool,
-  isFx,
   getPoolRemoveBlockedReason,
   shouldBlockRemoveLiquidity,
 } from '../pool.helpers'
 import { getCanStake, migrateStakeTooltipLabel } from '../actions/stake.helpers'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
-import {
-  PartnerRedirectModal,
-  RedirectPartner,
-} from '@repo/lib/shared/components/modals/PartnerRedirectModal'
 import { getCompositionTokens, getNestedPoolTokens } from '../pool-tokens.utils'
 import { usePoolMetadata } from '../metadata/usePoolMetadata'
 import { formatTextListAsItems } from '@repo/lib/shared/utils/text-format'
@@ -77,9 +71,6 @@ export default function PoolMyLiquidity() {
   const { toCurrency } = useCurrency()
   const { isConnected, isConnecting } = useUserAccount()
   const router = useRouter()
-  const partnerRedirectDisclosure = useDisclosure()
-  const [redirectPartner, setRedirectPartner] = useState<RedirectPartner>(RedirectPartner.Xave)
-  const [redirectPartnerUrl, setRedirectPartnerUrl] = useState<string>()
 
   const isVeBal = isVebalPool(pool.id)
   const tabs = useMemo(() => getTabs(isVeBal), [isVeBal])
@@ -204,32 +195,12 @@ export default function PoolMyLiquidity() {
     }))
   }, [tabs, pool, canStake])
 
-  function openRedirectModal(partner: RedirectPartner) {
-    setRedirectPartner(partner)
-    let url
-
-    if (partner === RedirectPartner.Xave && pool?.address && pool.chain) {
-      url = getXavePoolLink(pool.chain, pool.address)
-    }
-
-    setRedirectPartnerUrl(url)
-    partnerRedirectDisclosure.onOpen()
-  }
-
   function handleAddLiquidity() {
-    if (isFx(pool.type)) {
-      openRedirectModal(RedirectPartner.Xave)
-    } else {
-      router.push(`${pathname}/add-liquidity`)
-    }
+    router.push(`${pathname}/add-liquidity`)
   }
 
   function handleRemoveLiquidity() {
-    if (isFx(pool.type)) {
-      openRedirectModal(RedirectPartner.Xave)
-    } else {
-      router.push(`${pathname}/remove-liquidity`)
-    }
+    router.push(`${pathname}/remove-liquidity`)
   }
 
   const compositionTokens = getCompositionTokens(pool)
@@ -319,12 +290,6 @@ export default function PoolMyLiquidity() {
                 </VStack>
               )
             })}
-            <PartnerRedirectModal
-              isOpen={partnerRedirectDisclosure.isOpen}
-              onClose={partnerRedirectDisclosure.onClose}
-              partner={redirectPartner}
-              redirectUrl={redirectPartnerUrl}
-            />
           </VStack>
           <Divider />
           <HStack justifyContent="flex-start" mt="md" width="full">

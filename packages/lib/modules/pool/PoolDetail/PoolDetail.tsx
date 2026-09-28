@@ -11,11 +11,8 @@ import { PoolStatsLayout } from './PoolStats/PoolStatsLayout'
 import { PoolHeader } from './PoolHeader/PoolHeader'
 import { PoolAlerts } from '../alerts/PoolAlerts'
 import { ClaimProvider } from '../actions/claim/ClaimProvider'
-import { usePoolVariant } from '../pool.hooks'
 import PoolUserEvents from './PoolUserEvents/PoolUserEvents'
 import { DefaultPageContainer } from '@repo/lib/shared/components/containers/DefaultPageContainer'
-import { CowFooter } from '@repo/lib/shared/components/navs/CowFooter'
-import { CowPoolBanner } from '@repo/lib/shared/components/navs/CowPoolBanner'
 import { PoolActivity } from './PoolActivity/PoolActivity'
 import { useUserPoolEvents } from '../useUserPoolEvents'
 import { hasTotalBalance } from '@repo/lib/modules/pool/user-balance.helpers'
@@ -26,7 +23,6 @@ export function PoolDetail() {
   const { pool } = usePool()
   const router = useRouter()
   const pathname = usePathname()
-  const { banners } = usePoolVariant()
 
   const { userPoolEvents, hasPoolEvents } = useUserPoolEvents()
 
@@ -53,7 +49,6 @@ export function PoolDetail() {
               <VStack spacing="md" w="full">
                 <PoolAlerts />
                 <PoolHeader />
-                {banners?.headerSrc && <CowPoolBanner />}
 
                 <PoolStatsLayout />
               </VStack>
@@ -76,8 +71,6 @@ export function PoolDetail() {
           </ClaimProvider>
         </RelayerSignatureProvider>
       </DefaultPageContainer>
-
-      {banners?.footerSrc && <CowFooter />}
     </>
   )
 }

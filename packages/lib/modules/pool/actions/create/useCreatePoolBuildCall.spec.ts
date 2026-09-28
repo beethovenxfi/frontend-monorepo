@@ -3,7 +3,6 @@ import { testHook } from '@repo/lib/test/utils/custom-renderers'
 import { useCreatePoolBuildCall } from './useCreatePoolBuildCall'
 import { defaultTestUserAccount } from '@repo/test/anvil/anvil-setup'
 import { waitFor } from '@testing-library/react'
-import { encodeFunctionData, parseAbi } from 'viem'
 
 vi.mock('@balancer/sdk', async () => {
   const actual = await vi.importActual<typeof import('@balancer/sdk')>('@balancer/sdk')
@@ -52,8 +51,6 @@ describe('useCreatePoolBuildCall', () => {
   })
 
   const v3Input = { protocolVersion: 3 as const, chainId: 1 }
-  const v1Input = { protocolVersion: 1 as const, chainId: 1, name: 'CoW Pool', symbol: 'COW' }
-  const bCowFactory = '0x1234567890123456789012345678901234567890'
 
   async function setupV3Mocks() {
     const { CreatePool } = await import('@balancer/sdk')
@@ -100,49 +97,6 @@ describe('useCreatePoolBuildCall', () => {
       account: defaultTestUserAccount,
       data: mockBuildCall.callData,
       to: mockBuildCall.to,
-    })
-  })
-
-  it('builds v1 CoW AMM pool call with real bCoW calldata encoding', async () => {
-    const { useUserAccount } = await import('@repo/lib/modules/web3/UserAccountProvider')
-
-    ;(useUserAccount as ReturnType<typeof vi.fn>).mockReturnValue({
-      userAddress: defaultTestUserAccount,
-      isConnected: true,
-    })
-
-    const { useBlockNumber } = await import('wagmi')
-
-    ;(useBlockNumber as ReturnType<typeof vi.fn>).mockReturnValue({ data: 100n })
-
-    const { getGqlChain } = await import('@repo/lib/config/app.config')
-
-    ;(getGqlChain as ReturnType<typeof vi.fn>).mockReturnValue('mainnet' as any)
-
-    const { getNetworkConfig } = await import('@repo/lib/config/app.config')
-
-    ;(getNetworkConfig as ReturnType<typeof vi.fn>).mockReturnValue({
-      contracts: { balancer: { bCoWFactory: bCowFactory } },
-    })
-
-    const { result } = testHook(() =>
-      useCreatePoolBuildCall({
-        createPoolInput: v1Input as any,
-        enabled: true,
-      })
-    )
-
-    await waitFor(() => expect(result.current.isLoading).toBeFalsy())
-
-    expect(result.current.data).toEqual({
-      chainId: 1,
-      account: defaultTestUserAccount,
-      data: encodeFunctionData({
-        abi: parseAbi(['function newBPool(string name, string symbol)']),
-        functionName: 'newBPool',
-        args: ['CoW Pool', 'COW'],
-      }),
-      to: bCowFactory,
     })
   })
 
@@ -200,38 +154,5 @@ describe('useCreatePoolBuildCall', () => {
     expect(result.current.error?.message).toBe(
       'Unsupported protocol version for create pool build call'
     )
-  })
-
-  it('returns error when bCoW factory address is missing', async () => {
-    const { useUserAccount } = await import('@repo/lib/modules/web3/UserAccountProvider')
-
-    ;(useUserAccount as ReturnType<typeof vi.fn>).mockReturnValue({
-      userAddress: defaultTestUserAccount,
-      isConnected: true,
-    })
-
-    const { useBlockNumber } = await import('wagmi')
-
-    ;(useBlockNumber as ReturnType<typeof vi.fn>).mockReturnValue({ data: 100n })
-
-    const { getGqlChain } = await import('@repo/lib/config/app.config')
-
-    ;(getGqlChain as ReturnType<typeof vi.fn>).mockReturnValue('mainnet' as any)
-
-    const { getNetworkConfig } = await import('@repo/lib/config/app.config')
-
-    ;(getNetworkConfig as ReturnType<typeof vi.fn>).mockReturnValue({
-      contracts: { balancer: { bCoWFactory: undefined } },
-    })
-
-    const { result } = testHook(() =>
-      useCreatePoolBuildCall({
-        createPoolInput: v1Input as any,
-        enabled: true,
-      })
-    )
-
-    await waitFor(() => expect(result.current.isError).toBeTruthy())
-    expect(result.current.error?.message).toContain('Missing bCoW factory')
   })
 })

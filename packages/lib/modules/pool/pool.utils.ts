@@ -19,7 +19,6 @@ import { ClaimablePool } from './actions/claim/ClaimProvider'
 import {
   BaseVariant,
   FetchPoolProps,
-  PartnerVariant,
   PoolAction,
   PoolListItem,
   PoolVariant,
@@ -72,9 +71,33 @@ export function getChainSlug(chainSlug: ChainSlug): GqlChain {
   return chain
 }
 
-function getVariant(type: GqlPoolType, protocolVersion: number | undefined): PoolVariant {
-  // if a pool has certain properties return a custom variant
-  if (type === GqlPoolTypeValues.CowAmm) return PartnerVariant.cow
+const unsupportedPoolTypes = [
+  GqlPoolTypeValues.CowAmm,
+  GqlPoolTypeValues.Element,
+  GqlPoolTypeValues.Fx,
+] as GqlPoolType[]
+
+export function assertSupportedPoolDetailRoute({
+  type,
+  variant,
+}: Pick<PoolCore, 'type'> & { variant?: string }) {
+  if (unsupportedPoolTypes.includes(type)) {
+    throw new Error(`Unsupported pool type: ${type}`)
+  }
+
+  if (variant && variant !== BaseVariant.v2 && variant !== BaseVariant.v3) {
+    throw new Error(`Unsupported pool variant: ${variant}`)
+  }
+}
+
+function getVariant(
+  type: GqlPoolType,
+  protocolVersion: number | undefined,
+  explicitVariant?: string
+): PoolVariant {
+  assertSupportedPoolDetailRoute({ type, variant: explicitVariant })
+
+  if (explicitVariant) return explicitVariant as PoolVariant
   if (protocolVersion === 3) return BaseVariant.v3
 
   // default variant
@@ -86,8 +109,10 @@ function getVariant(type: GqlPoolType, protocolVersion: number | undefined): Poo
  * @returns {String} Path to pool detail page.
  */
 
-export function getPoolPath(params: Pick<PoolCore, 'id' | 'chain' | 'type' | 'protocolVersion'>) {
-  const variant = getVariant(params.type, params.protocolVersion)
+export function getPoolPath(
+  params: Pick<PoolCore, 'id' | 'chain' | 'type' | 'protocolVersion'> & { variant?: string }
+) {
+  const variant = getVariant(params.type, params.protocolVersion, params.variant)
   return `/pools/${chainToSlugMap[params.chain]}/${variant}/${params.id}`
 }
 
@@ -194,9 +219,7 @@ const poolTypeLabelMap: Partial<Record<GqlPoolType, string>> = {
   [GqlPoolTypeValues.PhantomStable]: 'Stable',
   [GqlPoolTypeValues.Stable]: 'Stable',
   [GqlPoolTypeValues.Unknown]: 'Unknown',
-  [GqlPoolTypeValues.Fx]: 'FX',
   [GqlPoolTypeValues.ComposableStable]: 'Stable',
-  [GqlPoolTypeValues.CowAmm]: 'CoW AMM',
   [GqlPoolTypeValues.QuantAmmWeighted]: 'BTF',
   [GqlPoolTypeValues.Reclamm]: 'AutoRange',
   [GqlPoolTypeValues.FixedLbp]: 'Fixed LBP',
@@ -292,14 +315,6 @@ export function calcPotentialYieldFor(pool: Pool, amountUsd: Numberish): string 
   const [, maxTotalApr] = getTotalApr(pool.dynamicData.aprItems)
 
   return bn(amountUsd).times(maxTotalApr).div(52).toString()
-}
-
-export function getXavePoolLink(chain: string, poolAddress: string) {
-  return `https://app.xave.co/pool/${chain.toLowerCase()}/${poolAddress}`
-}
-
-export function shouldHideSwapFee(poolType: GqlPoolType) {
-  return poolType === GqlPoolTypeValues.CowAmm
 }
 
 export function shouldCallComputeDynamicSwapFee(pool: Pool) {

@@ -10,7 +10,7 @@ import { Address } from 'viem'
 import { HumanTokenAmountWithSymbol, TokenBase } from './token.types'
 import { InputAmount } from '@balancer/sdk'
 import { Pool } from '../pool/pool.types'
-import { getVaultConfig, isCowAmmPool, isV3Pool } from '../pool/pool.helpers'
+import { getVaultConfig, isV3Pool } from '../pool/pool.helpers'
 import { PoolToken } from '../pool/pool.types'
 import { ApiToken, ApiOrCustomToken } from './token.types'
 import mainnetNetworkConfig from '@repo/lib/config/networks/mainnet'
@@ -150,8 +150,6 @@ function getTokenOrUnderlying(token: PoolToken): ApiToken {
 }
 
 export function getSpenderForAddLiquidity(pool: Pool): Address {
-  if (isCowAmmPool(pool.type)) return pool.address as Address
-
   if (isV3Pool(pool)) {
     const permit2Address = getNetworkConfig(pool.chain).contracts.permit2
 

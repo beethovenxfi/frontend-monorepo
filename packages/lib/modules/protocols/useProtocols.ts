@@ -14,8 +14,6 @@ export enum Protocol {
   Granary = 'granary',
   Zerovix = '0vix',
   Gyro = 'gyro',
-  CowAmm = 'cow-amm',
-  Xave = 'xave',
   Fjord = 'fjord',
   QuantAmm = 'quant-amm',
 }
@@ -23,8 +21,6 @@ export enum Protocol {
 export const protocolIconPaths: Record<Protocol, string> = {
   [Protocol.Gyro]: '/images/protocols/gyro.png',
   [Protocol.Fjord]: '/images/protocols/fjord.png',
-  [Protocol.CowAmm]: '/images/protocols/cowamm.png',
-  [Protocol.Xave]: '/images/protocols/xave.png',
   [Protocol.Aave]: '/images/protocols/aave.svg',
   [Protocol.QuantAmm]: '/images/protocols/quantamm.png',
   /* Icons below are yet unused */

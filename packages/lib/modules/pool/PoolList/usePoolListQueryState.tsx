@@ -49,10 +49,6 @@ export const PROTOCOL_VERSION_TABS: ButtonGroupOption[] = [
     value: 'v3',
     label: 'v3',
   },
-  {
-    value: 'cow',
-    label: 'CoW',
-  },
 ] as const
 
 const JOINABLE_POOLS_FIRST = 100

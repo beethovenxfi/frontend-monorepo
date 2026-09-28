@@ -101,10 +101,6 @@ export type GqlPoolSwapEventV3 = Extract<
   GetPoolEventsQuery['poolEvents'][number],
   { __typename: 'GqlPoolSwapEventV3' }
 >
-export type GqlPoolSwapEventCowAmm = Extract<
-  GetPoolEventsQuery['poolEvents'][number],
-  { __typename: 'GqlPoolSwapEventCowAmm' }
->
 
 // ── APR item types ──
 

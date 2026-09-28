@@ -12,7 +12,7 @@ import {
 import { useCurrency } from '../../hooks/useCurrency'
 import { bn, fNum } from '../../utils/numbers'
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
-import { calcUserShareOfPool, isCowAmmPool } from '@repo/lib/modules/pool/pool.helpers'
+import { calcUserShareOfPool } from '@repo/lib/modules/pool/pool.helpers'
 
 export function TransactionDetailsAccordion() {
   const { totalUSDValue, priceImpactQuery } = useAddLiquidity()
@@ -49,12 +49,10 @@ export function TransactionDetailsAccordion() {
               <div>Final slippage</div>
               <div>TODO</div>
             </HStack> */}
-            {!isCowAmmPool(pool.type) && (
-              <HStack justifyContent="space-between" w="full">
-                <div>Share of pool</div>
-                <div>{fNum('sharePercent', calcUserShareOfPool(pool))}</div>
-              </HStack>
-            )}
+            <HStack justifyContent="space-between" w="full">
+              <div>Share of pool</div>
+              <div>{fNum('sharePercent', calcUserShareOfPool(pool))}</div>
+            </HStack>
           </VStack>
         </AccordionPanel>
       </AccordionItem>

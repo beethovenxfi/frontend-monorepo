@@ -85,7 +85,6 @@ const networkConfig: NetworkConfig = {
       WeightedPool2TokensFactory: '0xa5bf2ddf098bb0ef6d120c98217dd6b141c74ee0',
       vaultAdminV3: AddressProvider.VaultAdmin(mainnet.id),
       unbalancedAddViaSwapRouter: AddressProvider.UnbalancedAddViaSwapRouter(mainnet.id),
-      bCoWFactory: '0xf76c421bAb7df8548604E60deCCcE50477C10462',
     },
     feeDistributor: '0xD3cf852898b21fc233251427c2DC93d3d604F3BB',
     veDelegationProxy: '0x6f5a2eE11E7a772AeB5114A20d0D7c0ff61EB8A0',
@@ -133,11 +132,6 @@ const networkConfig: NetworkConfig = {
         '0x4fd4687ec38220f805b6363c3c1e52d0df3b5023000200000000000000000473',
       ],
       [PoolIssue.CspPoolVulnWarning]: CSP_ISSUE_POOL_IDS[GqlChainValues.Mainnet],
-      [PoolIssue.FxPoolVulnWarning]: [
-        '0x55bec22f8f6c69137ceaf284d9b441db1b9bfedc0002000000000000000003cd',
-        '0x66bb9d104c55861feb3ec3559433f01f6373c9660002000000000000000003cf',
-        '0xad0e5e0778cac28f1ff459602b31351871b5754a0002000000000000000003cD',
-      ],
     },
     disallowNestedActions: [
       '0x3dd0843a028c86e0b760b1a76929d1c5ef93a2dd000200000000000000000249', // 80BAL20WETH + AuraBal

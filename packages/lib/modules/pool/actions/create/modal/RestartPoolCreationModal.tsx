@@ -20,8 +20,7 @@ import type { GqlChain, GqlPoolType } from '@repo/lib/shared/services/api/genera
 import { getPoolTypeLabel } from '@repo/lib/modules/pool/pool.utils'
 import { Address } from 'viem'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
 interface RestartPoolCreationModalProps {
   modalTitle?: string
   triggerTitle?: string
@@ -30,8 +29,6 @@ interface RestartPoolCreationModalProps {
   network: GqlChain
   handleRestart: () => void
   isAbsolutePosition?: boolean
-  showCowAmmWarning?: boolean
-  onOpenForSearchParams?: () => void
 }
 
 export function RestartPoolCreationModal({
@@ -42,10 +39,8 @@ export function RestartPoolCreationModal({
   handleRestart,
   poolAddress,
   isAbsolutePosition,
-  showCowAmmWarning,
 }: RestartPoolCreationModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const router = useRouter()
 
   const handleFormReset = () => {
     handleRestart()
@@ -53,13 +48,8 @@ export function RestartPoolCreationModal({
   }
 
   const handleContinueSetup = () => {
-    if (showCowAmmWarning) router.replace('/create')
     onClose()
   }
-
-  useEffect(() => {
-    if (showCowAmmWarning) onOpen()
-  }, [showCowAmmWarning])
 
   return (
     <>
@@ -90,11 +80,7 @@ export function RestartPoolCreationModal({
           <ModalBody pb="lg">
             <VStack>
               {!poolAddress ? (
-                <BeforePoolDeployedWarning
-                  network={network}
-                  poolType={poolType}
-                  showCowAmmWarning={showCowAmmWarning}
-                />
+                <BeforePoolDeployedWarning network={network} poolType={poolType} />
               ) : (
                 <AfterPoolDeployedWarning
                   network={network}
@@ -137,29 +123,16 @@ export function RestartPoolCreationModal({
 interface BeforePoolDeployedWarningProps {
   network: GqlChain
   poolType: GqlPoolType
-  showCowAmmWarning?: boolean
 }
 
-function BeforePoolDeployedWarning({
-  network,
-  poolType,
-  showCowAmmWarning,
-}: BeforePoolDeployedWarningProps) {
+function BeforePoolDeployedWarning({ network, poolType }: BeforePoolDeployedWarningProps) {
   const poolTypeName = getPoolTypeLabel(poolType)
   const chainName = getChainName(network)
-
-  let deleteProgressReason: string
-
-  if (showCowAmmWarning) {
-    deleteProgressReason = 'to begin creation of a new CoW AMM?'
-  } else {
-    deleteProgressReason = 'and start again from scratch?'
-  }
 
   return (
     <Text color="font.primary">
       You have begun the process of creating a new {poolTypeName} pool on the {chainName} network.
-      Are you sure you want to delete all progress {deleteProgressReason}
+      Are you sure you want to delete all progress and start again from scratch?
     </Text>
   )
 }

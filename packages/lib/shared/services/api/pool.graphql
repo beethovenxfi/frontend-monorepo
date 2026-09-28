@@ -105,18 +105,6 @@ query GetPool($id: String!, $chain: GqlChain!, $userAddress: String) {
       amp
       bptPriceRate
     }
-    ... on GqlPoolElement {
-      baseToken
-      principalToken
-      unitSeconds
-    }
-    ... on GqlPoolFx {
-      alpha
-      beta
-      delta
-      epsilon
-      lambda
-    }
     ... on GqlPoolLiquidityBootstrappingV3 {
       ...LbpV3CommonMetadataFields
     }
@@ -230,24 +218,6 @@ query GetPoolEvents(
       tokenOut {
         address
         amount
-      }
-    }
-    ... on GqlPoolSwapEventCowAmm {
-      sender
-      tokenIn {
-        address
-        amount
-        valueUSD
-      }
-      tokenOut {
-        address
-        amount
-        valueUSD
-      }
-      surplus {
-        address
-        amount
-        valueUSD
       }
     }
     ... on GqlPoolAddRemoveEventV3 {

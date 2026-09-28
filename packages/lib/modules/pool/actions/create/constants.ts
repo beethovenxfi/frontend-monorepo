@@ -12,7 +12,6 @@ import { getSwapFeePercentageOptions } from './helpers'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { parseUnits } from 'viem'
 import { FormStep } from '@repo/lib/shared/hooks/useFormSteps'
 import { PoolTokensStep } from './steps/tokens/PoolTokensStep'
 import { PoolDetailsStep } from './steps/details/PoolDetailsStep'
@@ -46,9 +45,6 @@ export const REQUIRED_TOTAL_WEIGHT = 100
 export const MIN_AMPLIFICATION_PARAMETER = Number(STABLE_POOL_CONSTRAINTS.MIN_AMP)
 export const MAX_AMPLIFICATION_PARAMETER = Number(STABLE_POOL_CONSTRAINTS.MAX_AMP)
 export const MAX_LAMBDA = 100000000
-export const COW_AMM_RAW_WEIGHT_50 = parseUnits('1', DEFAULT_DECIMALS) // quirk for 50/50 pool, weight must be 1e18 for both tokens
-export const COW_AMM_RAW_WEIGHT_80 = parseUnits('8', DEFAULT_DECIMALS)
-export const COW_AMM_RAW_WEIGHT_20 = parseUnits('2', DEFAULT_DECIMALS)
 
 export const POOL_TYPES: Record<SupportedPoolTypes, PoolTypeDetails> = {
   [PoolType.Stable]: {
@@ -81,15 +77,7 @@ export const POOL_TYPES: Record<SupportedPoolTypes, PoolTypeDetails> = {
     description:
       'A concentrated liquidity pool with self-adjusting parameters. A "fire-and-forget" solution to maintenance-free concentrated liquidity provision.',
   },
-  [PoolType.CowAmm]: {
-    label: 'CoW AMM',
-    maxTokens: 2,
-    description:
-      'CoW AMM protects LPs from LVR so they can provide liquidity with less risk and more return',
-  },
 }
-
-export const COW_PROTOCOL_ID = 'CoW'
 
 export enum WeightedPoolStructure {
   FiftyFifty = '50/50',

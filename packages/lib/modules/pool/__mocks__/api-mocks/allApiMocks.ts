@@ -4,7 +4,6 @@ import { aaveWstETH8020Mock } from './aaveWstETH8020Mock'
 import { osETH_wETH_BPTMock } from './osETH_wETH_BPTMock'
 import { b_50sDAI_50wstETHMock } from './b_50sDAI_50wstETHMock'
 import { v2SepoliaStableWithERC4626Mock } from './v2SepoliaStableWithERC4626Mock'
-import { bCoW_50WETH_50GNOMock } from './bCoW_50WETH_50GNOMock'
 import { rsETH_hgETHMock } from './rsETH_hgETHMock'
 import { eCLP_GYD_sDAIMock } from './eCLP_GYD_sDAIMock'
 import { bpt_25USDC_50FLY_25stSMock } from './bpt_25USDC_50FLY_25stSMock'
@@ -27,7 +26,6 @@ export const allApiMocks: Pool[] = [
   osETH_wETH_BPTMock,
   b_50sDAI_50wstETHMock,
   v2SepoliaStableWithERC4626Mock,
-  bCoW_50WETH_50GNOMock,
   rsETH_hgETHMock,
   eCLP_GYD_sDAIMock,
   bpt_25USDC_50FLY_25stSMock,

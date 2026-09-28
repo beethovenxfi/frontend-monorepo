@@ -47,7 +47,6 @@ export function useInitializePoolStep({
   const { isPoolInitialized, refetchIsPoolInitialized } = useIsPoolInitialized({
     chainId,
     poolAddress,
-    poolType,
   })
 
   const buildCallDataQuery = useInitializePoolBuildCall({

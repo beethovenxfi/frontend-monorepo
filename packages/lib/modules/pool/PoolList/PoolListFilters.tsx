@@ -43,12 +43,10 @@ import { getChainShortName } from '@repo/lib/config/app.config'
 import { usePoolList } from './PoolListProvider'
 import { MultiSelect } from '@repo/lib/shared/components/inputs/MultiSelect'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 import Image from 'next/image'
 import ButtonGroup, {
   ButtonGroupOption,
 } from '@repo/lib/shared/components/btns/button-group/ButtonGroup'
-import { useCow } from '../../cow/useCow'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { poolTypeLabel } from '../pool.helpers'
 import { hasMultipleNetworks } from '../pool.utils'
@@ -437,15 +435,11 @@ export const FilterButton = forwardRef<ButtonProps & { totalFilterCount: number 
 export interface ProtocolVersionFilterProps {
   setProtocolVersion: (version: number | null) => any
   protocolVersion: number | null
-  poolTypes: PoolFilterType[]
-  hideProtocolVersion?: string[]
 }
 
 export function ProtocolVersionFilter({
   setProtocolVersion,
   protocolVersion,
-  poolTypes,
-  hideProtocolVersion,
 }: ProtocolVersionFilterProps) {
   const tabs = PROTOCOL_VERSION_TABS
 
@@ -454,17 +448,13 @@ export function ProtocolVersionFilter({
       ? PROTOCOL_VERSION_TABS[2]
       : protocolVersion === 2
         ? PROTOCOL_VERSION_TABS[1]
-        : poolTypes.includes(GqlPoolTypeValues.CowAmm) || protocolVersion === 1
-          ? PROTOCOL_VERSION_TABS[3]
-          : PROTOCOL_VERSION_TABS[0]
+        : PROTOCOL_VERSION_TABS[0]
 
   function toggleTab(option: ButtonGroupOption) {
     if (option.value === 'v3') {
       setProtocolVersion(3)
     } else if (option.value === 'v2') {
       setProtocolVersion(2)
-    } else if (option.value === 'cow') {
-      setProtocolVersion(1)
     } else {
       setProtocolVersion(null)
     }
@@ -475,7 +465,7 @@ export function ProtocolVersionFilter({
       currentOption={activeProtocolVersionTab}
       groupId="protocol-version"
       onChange={toggleTab}
-      options={tabs.filter(tab => !(hideProtocolVersion ?? []).includes(tab.value))}
+      options={tabs}
       size="xxs"
     />
   )
@@ -500,7 +490,6 @@ export function PoolListFilters() {
     },
   } = usePoolList()
 
-  const { isCowPath } = useCow()
   const { isMobile } = useBreakpoints()
 
   function _resetFilters() {
@@ -572,7 +561,6 @@ export function PoolListFilters() {
                           <UserLiquidityFilters />
                         </Box>
                       ) : null}
-                      {/* TODO: filter for cow networks when 'isCowPath' is true */}
                       {showNetworkFilters && (
                         <Box as={motion.div} variants={staggeredFadeInUp} w="full">
                           <Heading as="h3" mb="sm" size="sm">
@@ -585,19 +573,15 @@ export function PoolListFilters() {
                           />
                         </Box>
                       )}
-                      {!isCowPath && (
-                        <Box as={motion.div} variants={staggeredFadeInUp}>
-                          <Heading as="h3" mb="sm" size="sm">
-                            Protocol version
-                          </Heading>
-                          <ProtocolVersionFilter
-                            hideProtocolVersion={PROJECT_CONFIG.options.hideProtocolVersion}
-                            poolTypes={poolTypes}
-                            protocolVersion={protocolVersion}
-                            setProtocolVersion={setProtocolVersion}
-                          />
-                        </Box>
-                      )}
+                      <Box as={motion.div} variants={staggeredFadeInUp}>
+                        <Heading as="h3" mb="sm" size="sm">
+                          Protocol version
+                        </Heading>
+                        <ProtocolVersionFilter
+                          protocolVersion={protocolVersion}
+                          setProtocolVersion={setProtocolVersion}
+                        />
+                      </Box>
                       {!isFixedPoolType && (
                         <Box as={motion.div} variants={staggeredFadeInUp}>
                           <Heading as="h3" mb="sm" size="sm">
@@ -611,23 +595,21 @@ export function PoolListFilters() {
                           />
                         </Box>
                       )}
-                      {!isCowPath && (
-                        <>
-                          <Box as={motion.div} variants={staggeredFadeInUp}>
-                            <Heading as="h3" mb="sm" size="sm">
-                              Pool categories
-                            </Heading>
-                            <PoolCategoryFilters hidePoolTags={options.hidePoolTags} />
-                          </Box>
+                      <>
+                        <Box as={motion.div} variants={staggeredFadeInUp}>
+                          <Heading as="h3" mb="sm" size="sm">
+                            Pool categories
+                          </Heading>
+                          <PoolCategoryFilters hidePoolTags={options.hidePoolTags} />
+                        </Box>
 
-                          <Box as={motion.div} variants={staggeredFadeInUp}>
-                            <Heading as="h3" mb="sm" size="sm">
-                              Hooks
-                            </Heading>
-                            <PoolHookFilters />
-                          </Box>
-                        </>
-                      )}
+                        <Box as={motion.div} variants={staggeredFadeInUp}>
+                          <Heading as="h3" mb="sm" size="sm">
+                            Hooks
+                          </Heading>
+                          <PoolHookFilters />
+                        </Box>
+                      </>
                       <Box as={motion.div} mb="xs" variants={staggeredFadeInUp} w="full">
                         <PoolMinTvlFilter />
                       </Box>

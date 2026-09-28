@@ -53,7 +53,6 @@ const networkConfig: NetworkConfig = {
   pools: convertHexToLowerCase({
     issues: {
       [PoolIssue.CspPoolVulnWarning]: CSP_ISSUE_POOL_IDS[GqlChainValues.Hyperevm],
-      [PoolIssue.FxPoolVulnWarning]: [],
     },
   }),
   layerZeroChainId: 367,

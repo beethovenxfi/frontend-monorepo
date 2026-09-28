@@ -33,7 +33,6 @@ import type {
   GqlUserStakedBalance,
   GqlPoolAddRemoveEventV3,
   GqlPoolSwapEventV3,
-  GqlPoolSwapEventCowAmm,
   GqlPoolAprItem,
   GqlPriceRateProviderData,
   GqlPriceRateProviderUpgradeableComponent,
@@ -101,8 +100,6 @@ describe('graphql-derived-types', () => {
     type _CheckPoolSwapEventV3 = GqlPoolSwapEventV3 extends GetPoolEventsQuery['poolEvents'][number]
       ? true
       : never
-    type _CheckPoolSwapEventCowAmm =
-      GqlPoolSwapEventCowAmm extends GetPoolEventsQuery['poolEvents'][number] ? true : never
     type _CheckHook = GqlHook extends HookFragment ? true : never
     type _CheckHookReviewData =
       GqlHookReviewData extends NonNullable<HookFragment['reviewData']> ? true : never

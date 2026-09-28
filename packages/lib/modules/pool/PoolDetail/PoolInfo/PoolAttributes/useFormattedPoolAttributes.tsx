@@ -8,7 +8,6 @@ import { abbreviateAddress } from '@repo/lib/shared/utils/addresses'
 import { fNum } from '@repo/lib/shared/utils/numbers'
 import {
   isBoosted,
-  isCowAmmPool,
   isDynamicLBP,
   isQuantAmmPool,
   isStable,
@@ -16,7 +15,7 @@ import {
   isV3Pool,
 } from '../../../pool.helpers'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
-import { getPoolTypeLabel, shouldHideSwapFee } from '../../../pool.utils'
+import { getPoolTypeLabel } from '../../../pool.utils'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import { compact } from 'lodash'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
@@ -56,7 +55,7 @@ export function useFormattedPoolAttributes() {
     const { owner, swapFeeManager, chain } = pool
     if (!owner) return
 
-    if ((owner === zeroAddress && isV2) || isCowAmmPool(pool.type)) {
+    if (owner === zeroAddress && isV2) {
       return {
         title: 'No owner',
         link: '',
@@ -114,7 +113,7 @@ export function useFormattedPoolAttributes() {
       },
       {
         title: 'Protocol version',
-        value: isCowAmmPool(pool.type) ? 'Balancer CoW AMM' : `Balancer v${pool.protocolVersion}`,
+        value: `Balancer v${pool.protocolVersion}`,
       },
       {
         title: 'Network',
@@ -152,10 +151,6 @@ export function useFormattedPoolAttributes() {
         value: toCurrency(usdValueForTokenAddress(pool.address, pool.chain, '1')),
       },
     ])
-
-    if (shouldHideSwapFee(pool?.type)) {
-      return attributes.filter(a => a?.title !== 'Swap fees')
-    }
 
     return attributes
   }, [pool, poolOwnerData, isV2, toCurrency, usdValueForTokenAddress])

@@ -21,13 +21,12 @@ import {
   lockingIncentivesTooltipText,
   votingIncentivesTooltipText,
   merklIncentivesTooltipText,
-  surplusIncentivesTooltipText,
   SupportedHookType,
 } from '@repo/lib/shared/hooks/useAprTooltip'
 import { TooltipAprItem } from './TooltipAprItem'
 import type BigNumber from 'bignumber.js'
 import { bn, fNum } from '@repo/lib/shared/utils/numbers'
-import { isCowAmmPool, isVebalPool } from '@repo/lib/modules/pool/pool.helpers'
+import { isVebalPool } from '@repo/lib/modules/pool/pool.helpers'
 import { ReactNode } from 'react'
 
 interface Props {
@@ -84,7 +83,6 @@ function BaseAprTooltip({
   totalBaseText,
   shouldDisplayBaseTooltip,
   children,
-  poolType,
   chain,
   usePortal = true,
   hookType,
@@ -103,7 +101,6 @@ function BaseAprTooltip({
     merklIncentivesAprDisplayed,
     merklTokensDisplayed,
     hasMerklIncentives,
-    surplusIncentivesAprDisplayed,
     swapFeesDisplayed,
     isSwapFeePresent,
     isYieldPresent,
@@ -246,15 +243,6 @@ function BaseAprTooltip({
           displayValueFormatter={usedDisplayValueFormatter}
           title="Hypurr Fuul APR"
           tooltipText={fuulTooltipText}
-        />
-      )}
-      {isCowAmmPool(poolType) && (
-        <TooltipAprItem
-          {...basePopoverAprItemProps}
-          apr={surplusIncentivesAprDisplayed}
-          displayValueFormatter={usedDisplayValueFormatter}
-          title="Prevented LVR"
-          tooltipText={surplusIncentivesTooltipText}
         />
       )}
       <Divider />

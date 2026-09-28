@@ -52,14 +52,6 @@ function getPoolTypeLabel(pool: Pool | PoolListItem) {
   }
 
   switch (type) {
-    case GqlPoolTypeValues.CowAmm:
-      return (
-        <TagWrapper pl="6px">
-          <ProtocolIcon protocol={Protocol.CowAmm} />
-          <Text {...TEXT_PROPS}>Weighted</Text>
-        </TagWrapper>
-      )
-
     case GqlPoolTypeValues.Weighted:
       return (
         <TagWrapper pl="6px">
@@ -74,14 +66,6 @@ function getPoolTypeLabel(pool: Pool | PoolListItem) {
       return (
         <TagWrapper pl="8px">
           <Text {...TEXT_PROPS}>Stable</Text>
-        </TagWrapper>
-      )
-
-    case GqlPoolTypeValues.Fx:
-      return (
-        <TagWrapper>
-          <ProtocolIcon protocol={Protocol.Xave} />
-          <Text {...TEXT_PROPS}>FX</Text>
         </TagWrapper>
       )
 

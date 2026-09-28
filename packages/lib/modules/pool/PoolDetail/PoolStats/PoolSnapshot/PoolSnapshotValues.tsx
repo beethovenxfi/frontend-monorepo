@@ -5,7 +5,6 @@ import { TokenStackPopover } from '../../../../tokens/TokenStackPopover'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
 import { usePool } from '../../../PoolProvider'
 import MainAprTooltip from '@repo/lib/shared/components/tooltips/apr-tooltip/MainAprTooltip'
-import { isCowAmmPool } from '../../../pool.helpers'
 import { useGetPoolRewards } from '../../../useGetPoolRewards'
 import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 import { LabelWithTooltip } from '@repo/lib/shared/components/tooltips/LabelWithTooltip'
@@ -35,14 +34,12 @@ export function PoolSnapshotValues() {
     ? {
         totalLiquidity: toCurrency(tvl, { abbreviated: false }),
         volume24h: toCurrency(pool.dynamicData.volume24h, { abbreviated: false }),
-        income24h: isCowAmmPool(pool.type)
-          ? toCurrency(pool.dynamicData.surplus24h, { abbreviated: false, noDecimals: true })
-          : toCurrency(pool.dynamicData.fees24h, { abbreviated: false, noDecimals: true }),
+        income24h: toCurrency(pool.dynamicData.fees24h, { abbreviated: false, noDecimals: true }),
         weeklyRewards: weeklyRewards ? toCurrency(weeklyRewards.toString()) : 'N/A',
       }
     : undefined
 
-  const incomeLabel = isCowAmmPool(pool.type) ? 'Surplus (24h)' : 'Swap fees (24h)'
+  const incomeLabel = 'Swap fees (24h)'
 
   return (
     <>

@@ -59,7 +59,7 @@ export function PoolCreationModal({
     initPoolInput,
   })
 
-  const { isPoolInitialized } = useIsPoolInitialized({ chainId, poolAddress, poolType })
+  const { isPoolInitialized } = useIsPoolInitialized({ chainId, poolAddress })
 
   const handleReset = () => {
     transactionSteps.resetTransactionSteps()

@@ -76,10 +76,6 @@ export function isComposableStableV1(pool: Pool): boolean {
   return isComposableStable(pool.type) && pool.version === 1
 }
 
-export function isFx(poolType: GqlPoolType | string): boolean {
-  return poolType === GqlPoolTypeValues.Fx
-}
-
 export function isBoosted(pool: Pick<PoolCore, 'protocolVersion' | 'tags'>) {
   return isV3Pool(pool) && pool.tags?.includes('BOOSTED')
 }
@@ -153,7 +149,6 @@ export function isStableLike(poolType: GqlPoolType): boolean {
     isStable(poolType) ||
     isMetaStable(poolType) ||
     isComposableStable(poolType) ||
-    isFx(poolType) ||
     isGyro(poolType) ||
     isAutoRange(poolType)
   )
@@ -173,10 +168,6 @@ export function isMaBeetsPool(poolId: string): boolean {
   return (
     poolId.toLowerCase() === '0x10ac2f9dae6539e77e372adb14b1bf8fbd16b3e8000200000000000000000005'
   )
-}
-
-export function isCowAmmPool(poolType: GqlPoolType): boolean {
-  return poolType === GqlPoolTypeValues.CowAmm
 }
 
 export function isQuantAmmPool(poolType: GqlPoolType): boolean {
@@ -527,11 +518,7 @@ export function isV3WithNestedActionsPool(pool: Pool): boolean {
 }
 
 export function supportsWethIsEth(pool: Pool): boolean {
-  /*
-    Currently all SDK handlers support wethIsEth
-    and Cow AMM pools is the only scenario that doesn't support wethIsEth
-  */
-  return !isCowAmmPool(pool.type) && !pool.hasErc4626 && !pool.hasNestedErc4626
+  return !pool.hasErc4626 && !pool.hasNestedErc4626
 }
 
 export function requiresPermit2Approval(pool: Pool): boolean {
@@ -575,10 +562,6 @@ export function poolTypeLabel(poolType: PoolFilterType) {
       return 'Liquidity Bootstrapping (LBP)'
     case GqlPoolTypeValues.Gyro:
       return 'Gyro CLP'
-    case GqlPoolTypeValues.CowAmm:
-      return 'CoW AMM'
-    case GqlPoolTypeValues.Fx:
-      return 'FX'
     case GqlPoolTypeValues.QuantAmmWeighted:
       return 'QuantAMM BTF'
     case 'AUTORANGE':

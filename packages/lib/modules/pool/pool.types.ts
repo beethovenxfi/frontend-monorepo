@@ -51,12 +51,7 @@ export enum BaseVariant {
 
 export type ProtocolVersion = 1 | 2 | 3
 
-// these variants support extra features in project config
-export enum PartnerVariant {
-  cow = 'cow',
-}
-
-export type PoolVariant = BaseVariant | PartnerVariant
+export type PoolVariant = BaseVariant
 
 export type PoolAction = 'add-liquidity' | 'remove-liquidity' | 'stake' | 'unstake'
 
@@ -93,8 +88,6 @@ export const poolTypeFilters = [
   GqlPoolTypeValues.Stable,
   GqlPoolTypeValues.LiquidityBootstrapping,
   GqlPoolTypeValues.Gyro,
-  GqlPoolTypeValues.CowAmm,
-  GqlPoolTypeValues.Fx,
   GqlPoolTypeValues.QuantAmmWeighted,
   'AUTORANGE', // will be mapped to GqlPoolTypeValues.Reclamm
 ] as const
@@ -115,8 +108,6 @@ export const POOL_TYPE_MAP: { [key in PoolFilterType]: GqlPoolType[] } = {
     GqlPoolTypeValues.Gyro3,
     GqlPoolTypeValues.GyroE,
   ],
-  [GqlPoolTypeValues.CowAmm]: [GqlPoolTypeValues.CowAmm],
-  [GqlPoolTypeValues.Fx]: [GqlPoolTypeValues.Fx],
   [GqlPoolTypeValues.QuantAmmWeighted]: [GqlPoolTypeValues.QuantAmmWeighted],
   AUTORANGE: [GqlPoolTypeValues.Reclamm],
 }

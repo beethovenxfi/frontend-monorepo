@@ -1,5 +1,10 @@
 import { Pool, PoolVariant } from '@repo/lib/modules/pool/pool.types'
-import { ChainSlug, getChainSlug, getPoolTypeLabel } from '@repo/lib/modules/pool/pool.utils'
+import {
+  assertSupportedPoolDetailRoute,
+  ChainSlug,
+  getChainSlug,
+  getPoolTypeLabel,
+} from '@repo/lib/modules/pool/pool.utils'
 import { PropsWithChildren, Suspense } from 'react'
 import { PoolDetailSkeleton } from '@repo/lib/modules/pool/PoolDetail/PoolDetailSkeleton'
 import { getApolloServerClient } from '@repo/lib/shared/services/api/apollo-server.client'
@@ -32,6 +37,12 @@ export async function generatePoolMetadata({
   const pool = data?.pool
   if (!pool) return { metadata: {} }
 
+  try {
+    assertSupportedPoolDetailRoute({ type: pool.type, variant })
+  } catch {
+    return { metadata: {} }
+  }
+
   const displayTokens = getUserReferenceTokens(pool)
   const poolTokenString = arrayToSentence(displayTokens.map(token => token.symbol))
   const poolSymbol = PROJECT_CONFIG.options.showPoolName ? 'This' : pool.symbol // pool name is already shown in the title so we don't need to show it twice
@@ -60,6 +71,12 @@ export async function PoolLayout({ id, chain, variant, children }: PoolLayoutPro
     throw new Error('Failed to fetch pool')
   } else if (!data) {
     throw new Error('Failed to fetch pool')
+  }
+
+  try {
+    assertSupportedPoolDetailRoute({ type: data.pool.type, variant })
+  } catch {
+    notFound()
   }
 
   return (
