@@ -17,11 +17,10 @@ import { DefaultPageContainer } from '@repo/lib/shared/components/containers/Def
 import { CowFooter } from '@repo/lib/shared/components/navs/CowFooter'
 import { CowPoolBanner } from '@repo/lib/shared/components/navs/CowPoolBanner'
 import { PoolActivity } from './PoolActivity/PoolActivity'
-import { PoolBanners } from './PoolBanners/PoolBanners'
 import { useUserPoolEvents } from '../useUserPoolEvents'
 import { hasTotalBalance } from '@repo/lib/modules/pool/user-balance.helpers'
-import { PoolQuantAMMBanner } from './PoolBanners/PoolQuantAMMBanner'
 import { RelayerSignatureProvider } from '@repo/lib/modules/relayer/RelayerSignatureProvider'
+import { PoolHookBanner } from './PoolBanners/PoolHookBanner'
 
 export function PoolDetail() {
   const { pool } = usePool()
@@ -69,10 +68,9 @@ export function PoolDetail() {
                   <PoolUserEvents userPoolEvents={userPoolEvents} />
                 </Stack>
               )}
-              <PoolQuantAMMBanner />
               <PoolActivity />
               <PoolComposition />
-              <PoolBanners />
+              <PoolHookBanner />
               <PoolInfoLayout />
             </VStack>
           </ClaimProvider>
