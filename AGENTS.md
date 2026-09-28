@@ -10,10 +10,9 @@ Before any Next.js work, find and read the relevant doc in `apps/beets-frontend-
 
 ### Never hardcode project-specific values in `packages/lib`
 
-The app shares `packages/lib`; the active project is resolved from `NEXT_PUBLIC_PROJECT_ID` in `config/getProjectConfig.ts`, which exposes `PROJECT_CONFIG` and `isBeets`.
+The app shares `packages/lib`; the active project is resolved from `NEXT_PUBLIC_PROJECT_ID` in `config/getProjectConfig.ts`, which exposes `PROJECT_CONFIG`.
 
 - Use `PROJECT_CONFIG.projectName`, `projectUrl`, `projectLogo` instead of literal `"Beets"` / domain strings.
-- Gate project-only features (maBEETS, relics, etc.) with `isBeets`.
 - New config fields go in `config.types.ts` and must be populated in `projects/beets.ts`.
 
 ## Architecture

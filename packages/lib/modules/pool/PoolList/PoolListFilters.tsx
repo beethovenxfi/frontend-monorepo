@@ -49,7 +49,7 @@ import ButtonGroup, {
   ButtonGroupOption,
 } from '@repo/lib/shared/components/btns/button-group/ButtonGroup'
 import { useCow } from '../../cow/useCow'
-import { isBeets, PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
+import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { poolTypeLabel } from '../pool.helpers'
 import { hasMultipleNetworks } from '../pool.utils'
 import { AnimatedTag } from '@repo/lib/shared/components/other/AnimatedTag'
@@ -638,12 +638,10 @@ export function PoolListFilters() {
             </PopoverContent>
           </Box>
         </Popover>
-        {isBeets && (
-          <Button as={NextLink} display="flex" gap="2" href="/create" ml="ms" variant="tertiary">
-            <Icon as={Plus} boxSize={4} />
-            {!isMobile && 'Create a pool'}
-          </Button>
-        )}
+        <Button as={NextLink} display="flex" gap="2" href="/create" ml="ms" variant="tertiary">
+          <Icon as={Plus} boxSize={4} />
+          {!isMobile && 'Create a pool'}
+        </Button>
       </HStack>
     </VStack>
   )
