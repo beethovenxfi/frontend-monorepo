@@ -5,7 +5,7 @@ import networkConfig from '@repo/lib/config/networks/sonic'
 import { BaseSingleTokenRemoveLiquidityHandler } from '@repo/lib/modules/pool/actions/remove-liquidity/handlers/BaseSingleTokenRemoveLiquidity.handler'
 import { SdkBuildRemoveLiquidityInput } from '@repo/lib/modules/pool/actions/remove-liquidity/remove-liquidity.types'
 import { Pool } from '@repo/lib/modules/pool/pool.types'
-import { balancerV2BalancerRelayerV6Abi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsBatchRelayerAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { TransactionConfig } from '@repo/lib/modules/web3/contracts/contract.types'
 import { Address, encodeAbiParameters, encodeFunctionData, Hex } from 'viem'
 
@@ -69,7 +69,7 @@ export class ReliquarySingleTokenRemoveLiquidityHandler extends BaseSingleTokenR
       account,
       chainId: this.helpers.chainId,
       data: encodeFunctionData({
-        abi: balancerV2BalancerRelayerV6Abi,
+        abi: beetsBatchRelayerAbi,
         functionName: 'multicall',
         args: [[removeLiquidityCallData, exitCallData]],
       }),

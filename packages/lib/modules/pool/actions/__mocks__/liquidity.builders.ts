@@ -1,4 +1,4 @@
-import { balAddress } from '@repo/lib/debug-helpers'
+const BEETS_ADDRESS = '0x2d0e0814e62d80056181f5cd932274405966e4f0'
 import { TokenAmount, Token, HumanAmount } from '@balancer/sdk'
 import { Address, parseUnits } from 'viem'
 import { mock } from 'vitest-mock-extended'
@@ -14,8 +14,8 @@ export function aTokenAmountMock(tokenAddress: Address, amount: HumanAmount): To
 
 export function aToken(options?: Partial<Token>): Token {
   const defaultToken = mock<Token>({
-    address: balAddress,
-    chainId: 1,
+    address: BEETS_ADDRESS,
+    chainId: 146,
     decimals: 18,
     symbol: 'Test token',
   })

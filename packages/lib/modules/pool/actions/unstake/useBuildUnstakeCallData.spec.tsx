@@ -6,7 +6,7 @@ import sonicNetworkConfig from '@repo/lib/config/networks/sonic'
 import { defaultTestUserAccount } from '@repo/test/anvil/anvil-setup'
 import { Address, decodeFunctionData } from 'viem'
 import { act } from '@testing-library/react'
-import { balancerV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 
 function testBuildUnstakeCallData(
   amount: bigint,
@@ -53,12 +53,12 @@ describe('useBuildUnstakeCallData', () => {
     ])
   })
 
-  test('claims Sonic gauge rewards before unstaking without a BAL mint', () => {
+  test('claims Sonic gauge rewards before unstaking', () => {
     const result = testBuildUnstakeCallData(10n, defaultTestUserAccount, true)
 
     expect(
       result.current.map(
-        data => decodeFunctionData({ abi: balancerV2BatchRelayerLibraryAbi, data }).functionName
+        data => decodeFunctionData({ abi: beetsV2BatchRelayerLibraryAbi, data }).functionName
       )
     ).toEqual(['gaugeClaimRewards', 'gaugeWithdraw'])
   })

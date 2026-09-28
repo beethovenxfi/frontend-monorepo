@@ -1,6 +1,6 @@
 import { decodeFunctionData } from 'viem'
 import { ReliquaryActionsService } from './reliquary-actions.service'
-import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import type {
   EncodeReliquaryCreateRelicAndAddLiquidityInput,
   EncodeReliquaryAddLiquidityInput,

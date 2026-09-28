@@ -30,7 +30,7 @@ import {
   trim,
 } from 'viem'
 import { erc20Abi } from 'viem'
-import { aWjAuraWethPoolElementMock } from '../msw/builders/gqlPoolElement.builders'
+import { aTwoTokenPoolMock } from '../msw/builders/gqlPoolElement.builders'
 import { sonic } from 'viem/chains'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { sonicTestPublicClient } from '@repo/test/utils/wagmi/wagmi-test-clients'
@@ -46,7 +46,7 @@ export async function getSdkTestUtils({
   client = sonicTestPublicClient,
   chainId = sonic.id as ChainId,
   account = defaultTestUserAccount,
-  pool = aWjAuraWethPoolElementMock(),
+  pool = aTwoTokenPoolMock(),
 }: {
   client?: Client & PublicActions & WalletActions & TestActions
   account?: Address

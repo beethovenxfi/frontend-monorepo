@@ -13,7 +13,7 @@ import { BeetsBatchRelayerService } from '@/lib/services/batch-relayer/beets-bat
 import { Address, encodeFunctionData, Hex } from 'viem'
 import networkConfig from '@repo/lib/config/networks/sonic'
 import { Pool } from '@repo/lib/modules/pool/pool.types'
-import { balancerV2BalancerRelayerV6Abi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsBatchRelayerAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 
 export class ReliquaryProportionalAddLiquidityHandler extends BaseProportionalAddLiquidityHandler {
@@ -64,7 +64,7 @@ export class ReliquaryProportionalAddLiquidityHandler extends BaseProportionalAd
       account,
       chainId: this.helpers.chainId,
       data: encodeFunctionData({
-        abi: balancerV2BalancerRelayerV6Abi,
+        abi: beetsBatchRelayerAbi,
         functionName: 'multicall',
         args: [[joinCallData, relicAddLiquidityData]],
       }),

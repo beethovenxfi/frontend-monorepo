@@ -145,8 +145,8 @@ describe('BaseDefaultSwapHandler', () => {
   describe('build', () => {
     it('builds a standard v2 swap transaction', () => {
       const inputs = createSdkBuildSwapInputs({
-        tokenInAddress: TEST_ADDRESSES.weth,
-        tokenOutAddress: TEST_ADDRESSES.dai,
+        tokenInAddress: TEST_ADDRESSES.ws,
+        tokenOutAddress: TEST_ADDRESSES.usdc,
       })
 
       const tx = handler.build(inputs)
@@ -192,7 +192,7 @@ describe('BaseDefaultSwapHandler', () => {
         batch: {
           details: [
             {
-              token: TEST_ADDRESSES.weth,
+              token: TEST_ADDRESSES.ws,
               amount: BigInt(1e18),
               expiration: Math.floor(Date.now() / 1000) + 3600,
               nonce: 0,

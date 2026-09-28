@@ -1,5 +1,5 @@
 import { getChainId, getNetworkConfig } from '@repo/lib/config/app.config'
-import { loopedSonicVaultAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { loopedSonicVaultAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { useReadContract } from '@repo/lib/shared/utils/wagmi'
 

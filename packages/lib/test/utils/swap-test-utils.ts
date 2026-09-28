@@ -10,12 +10,10 @@ import type {
 import type { Address } from 'viem'
 
 export const TEST_ADDRESSES = {
-  eth: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-  weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
-  bal: '0xba100000625a3754423978a60c9317c58a424e3d',
-  steth: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
-  wsteth: '0x7f39c581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+  s: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  ws: '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38',
+  usdc: '0x29219dd400f2bf60e5a23d13be72b486d4038894',
+  beets: '0x2d0e0814e62d80056181f5cd932274405966e4f0',
   vaultV2: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
 } as const
 
@@ -91,12 +89,12 @@ export function createSdkBuildSwapInputs(overrides?: {
 
   return {
     tokenIn: {
-      address: overrides?.tokenInAddress ?? TEST_ADDRESSES.weth,
+      address: overrides?.tokenInAddress ?? TEST_ADDRESSES.ws,
       amount: overrides?.tokenInAmount ?? '1.0',
       scaledAmount: BigInt(1e18),
     },
     tokenOut: {
-      address: overrides?.tokenOutAddress ?? TEST_ADDRESSES.dai,
+      address: overrides?.tokenOutAddress ?? TEST_ADDRESSES.usdc,
       amount: overrides?.tokenOutAmount ?? '100.0',
       scaledAmount: BigInt(1e20),
     },
@@ -119,8 +117,8 @@ export function createMockSimulateSwapInputs(overrides?: {
 }): SimulateSwapInputs {
   return {
     chain: overrides?.chain ?? GqlChainValues.Sonic,
-    tokenIn: overrides?.tokenIn ?? TEST_ADDRESSES.eth,
-    tokenOut: overrides?.tokenOut ?? TEST_ADDRESSES.weth,
+    tokenIn: overrides?.tokenIn ?? TEST_ADDRESSES.s,
+    tokenOut: overrides?.tokenOut ?? TEST_ADDRESSES.ws,
     swapType: overrides?.swapType ?? GqlSorSwapTypeValues.ExactIn,
     swapAmount: overrides?.swapAmount ?? '1.0',
   }

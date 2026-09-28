@@ -1,5 +1,5 @@
 /** Derived type aliases for broad schema object types that Codegen 6 no longer emits.
- *  Codegen 5 generated standalone types like GqlToken, GqlPoolElement, etc.
+ *  Codegen 5 generated standalone types like GqlToken, GqlPool, etc.
  *  Codegen 6 only emits operation-specific result types and fragment types.
  *  These aliases restore the old names so consumers don't need refactoring. */
 

@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react'
 import { decodeFunctionData } from 'viem'
-import { balancerV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { BatchRelayerService } from '@repo/lib/shared/services/batch-relayer/batch-relayer.service'
 import { GaugeService } from '@repo/lib/shared/services/staking/gauge.service'
 import { testHook } from '@repo/lib/test/utils/custom-renderers'
@@ -21,7 +21,7 @@ describe('useClaimCallDataQuery', () => {
     await waitFor(() => expect(result.current.data).toHaveLength(1))
 
     expect(
-      decodeFunctionData({ abi: balancerV2BatchRelayerLibraryAbi, data: result.current.data[0]! })
+      decodeFunctionData({ abi: beetsV2BatchRelayerLibraryAbi, data: result.current.data[0]! })
         .functionName
     ).toBe('gaugeClaimRewards')
   })

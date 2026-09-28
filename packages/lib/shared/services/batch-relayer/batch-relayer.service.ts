@@ -6,7 +6,7 @@ import {
   EncodeJoinPoolInput,
 } from './relayer-types'
 import { gaugeActionsService, GaugeActionsService } from './extensions/gauge-actions.service'
-import { balancerV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { encodeFunctionData, Hex } from 'viem'
 import { vaultActionsService, VaultActionsService } from './extensions/vault-actions.service'
 
@@ -23,7 +23,7 @@ export class BatchRelayerService {
 
   public encodePeekChainedReferenceValue(reference: bigint): Hex {
     return encodeFunctionData({
-      abi: balancerV2BatchRelayerLibraryAbi,
+      abi: beetsV2BatchRelayerLibraryAbi,
       functionName: 'peekChainedReferenceValue',
       args: [reference],
     })

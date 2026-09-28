@@ -1,5 +1,6 @@
 import { SupportedChainId } from '@repo/lib/config/config.types'
-import { wETHAddress, wjAuraAddress } from '@repo/lib/debug-helpers'
+const WS_ADDRESS = '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38'
+const STS_ADDRESS = '0xe5da20f15420ad15de0fa650600afc998bbe3955'
 import { MAX_BIGINT } from '@repo/lib/shared/utils/numbers'
 import { testRawAmount } from '@repo/lib/test/utils/numbers'
 import { RawAmount, getRequiredTokenApprovals, isTheApprovedAmountEnough } from './approval-rules'
@@ -8,11 +9,11 @@ const chainId: SupportedChainId = 146
 
 const rawAmounts: RawAmount[] = [
   {
-    address: wETHAddress,
+    address: WS_ADDRESS,
     rawAmount: testRawAmount('10'),
   },
   {
-    address: wjAuraAddress,
+    address: STS_ADDRESS,
     rawAmount: testRawAmount('20'),
   },
 ]
@@ -46,14 +47,14 @@ describe('getRequiredTokenApprovals', () => {
     ).toEqual([
       {
         isPermit2: false,
-        tokenAddress: wETHAddress,
+        tokenAddress: WS_ADDRESS,
         requiredRawAmount: 10000000000000000000n,
         requestedRawAmount: MAX_BIGINT,
         symbol: 'Unknown',
       },
       {
         isPermit2: false,
-        tokenAddress: wjAuraAddress,
+        tokenAddress: STS_ADDRESS,
         requiredRawAmount: 20000000000000000000n,
         requestedRawAmount: MAX_BIGINT,
         symbol: 'Unknown',

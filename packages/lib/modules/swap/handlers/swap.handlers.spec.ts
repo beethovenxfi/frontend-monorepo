@@ -13,15 +13,15 @@ vi.mock('@repo/lib/config/app.config', async importOriginal => {
       chain: GqlChainValues.Sonic,
       tokens: {
         addresses: {
-          wNativeAsset: TEST_ADDRESSES.weth,
+          wNativeAsset: TEST_ADDRESSES.ws,
         },
-        nativeAsset: { address: TEST_ADDRESSES.eth },
+        nativeAsset: { address: TEST_ADDRESSES.s },
       },
       contracts: { balancer: { vaultV2: TEST_ADDRESSES.vaultV2 } },
     })),
     getChainId: vi.fn(() => 146),
-    getNativeAssetAddress: vi.fn(() => TEST_ADDRESSES.eth),
-    getWrappedNativeAssetAddress: vi.fn(() => TEST_ADDRESSES.weth),
+    getNativeAssetAddress: vi.fn(() => TEST_ADDRESSES.s),
+    getWrappedNativeAssetAddress: vi.fn(() => TEST_ADDRESSES.ws),
   }
 })
 
@@ -30,7 +30,7 @@ vi.mock('@repo/lib/shared/utils/addresses', async importOriginal => {
   return {
     ...actual,
     isNativeAsset: vi.fn(
-      (_chain: string, token: string) => token.toLowerCase() === TEST_ADDRESSES.eth
+      (_chain: string, token: string) => token.toLowerCase() === TEST_ADDRESSES.s
     ),
     isSameAddress: vi.fn(
       (a?: string, b?: string) => !!(a && b && a.toLowerCase() === b.toLowerCase())
@@ -80,25 +80,25 @@ describe('NativeWrapHandler.build', () => {
   it('builds wrap transaction with correct value', () => {
     const tx = handler.build(
       createSdkBuildSwapInputs({
-        tokenInAddress: TEST_ADDRESSES.eth,
-        tokenOutAddress: TEST_ADDRESSES.weth,
+        tokenInAddress: TEST_ADDRESSES.s,
+        tokenOutAddress: TEST_ADDRESSES.ws,
         wethIsEth: true,
       })
     )
 
-    expect(tx.to).toBe(TEST_ADDRESSES.weth)
+    expect(tx.to).toBe(TEST_ADDRESSES.ws)
     expect(tx.value).toBe(BigInt(1e18))
   })
 
   it('builds unwrap transaction with zero value', () => {
     const tx = handler.build(
       createSdkBuildSwapInputs({
-        tokenInAddress: TEST_ADDRESSES.weth,
-        tokenOutAddress: TEST_ADDRESSES.eth,
+        tokenInAddress: TEST_ADDRESSES.ws,
+        tokenOutAddress: TEST_ADDRESSES.s,
       })
     )
 
-    expect(tx.to).toBe(TEST_ADDRESSES.weth)
+    expect(tx.to).toBe(TEST_ADDRESSES.ws)
     expect(tx.value).toBe(BigInt(0))
   })
 
@@ -106,8 +106,8 @@ describe('NativeWrapHandler.build', () => {
     expect(() =>
       handler.build(
         createSdkBuildSwapInputs({
-          tokenInAddress: TEST_ADDRESSES.bal,
-          tokenOutAddress: TEST_ADDRESSES.weth,
+          tokenInAddress: TEST_ADDRESSES.beets,
+          tokenOutAddress: TEST_ADDRESSES.ws,
         })
       )
     ).toThrow('Non valid wrap tokens')

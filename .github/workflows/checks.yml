@@ -10,7 +10,7 @@ permissions:
 
 env:
   NEXT_PUBLIC_PROJECT_ID: beets
-  NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+  NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
   NEXT_PUBLIC_WALLET_CONNECT_ID: ${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_ID }}
   NEXT_PRIVATE_ALCHEMY_KEY: ${{ secrets.PRIVATE_ALCHEMY_KEY }}
   NEXT_PRIVATE_DRPC_KEY: ${{ secrets.PRIVATE_DRPC_KEY }}
@@ -85,7 +85,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
     env:
       NEXT_PUBLIC_PROJECT_ID: beets
-      NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+      NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -127,7 +127,7 @@ jobs:
             shard: 3/3
     env:
       NEXT_PUBLIC_PROJECT_ID: beets
-      NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+      NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       E2E_SHARD: ${{ matrix.shard }}
       E2E_FORK_BLOCK_NUMBER: 78800000

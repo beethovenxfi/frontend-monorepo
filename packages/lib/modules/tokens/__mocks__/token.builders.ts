@@ -1,4 +1,5 @@
-import { wETHAddress, wjAuraAddress } from '@repo/lib/debug-helpers'
+const WS_ADDRESS = '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38'
+const STS_ADDRESS = '0xe5da20f15420ad15de0fa650600afc998bbe3955'
 import type {
   GqlPoolTokenDetail,
   GqlTokenPrice,
@@ -68,7 +69,7 @@ export function aTokenMock(...options: Partial<TokenBase>[]): TokenBase {
 export function someMinimalTokensMock(addresses?: Address[]): MinimalToken[] {
   const defaultTokens: MinimalToken[] = [
     {
-      address: wETHAddress,
+      address: WS_ADDRESS,
       decimals: 18,
       index: 0,
     },
@@ -114,6 +115,6 @@ export function aTokenPriceMock(...options: Partial<GqlTokenPrice>[]): GqlTokenP
 }
 
 export const someTokenAllowancesMock: TokenAllowances = {
-  [wETHAddress]: MAX_BIGINT,
-  [wjAuraAddress]: MAX_BIGINT,
+  [WS_ADDRESS]: MAX_BIGINT,
+  [STS_ADDRESS]: MAX_BIGINT,
 }

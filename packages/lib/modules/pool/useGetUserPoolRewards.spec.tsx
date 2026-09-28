@@ -7,7 +7,6 @@ import { ClaimableReward } from '../portfolio/PortfolioClaim/useClaimableBalance
 import { formatUnits } from 'viem'
 import { bn } from '@repo/lib/shared/utils/numbers'
 import { BPT_DECIMALS } from './pool.constants'
-import {} from '@repo/lib/debug-helpers'
 import { sonicTokens } from '@repo/lib/test/integration/sonic-fixtures'
 
 function getPoolWithStakingGaugeRewards() {

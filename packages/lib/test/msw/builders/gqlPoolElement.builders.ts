@@ -1,4 +1,3 @@
-import { poolId, wETHAddress, wjAuraAddress } from '@repo/lib/debug-helpers'
 import {
   aTokenExpandedMock,
   someGqlTokenMocks,
@@ -11,13 +10,15 @@ import { mock } from 'vitest-mock-extended'
 import { aGqlStakingMock } from './gqlStaking.builders'
 import { getPoolAddress } from '@balancer/sdk'
 
+// BPT-scUSD-stS on Sonic (v2)
+const scUsdStSPoolId = '0x25ca5451cd5a50ab1d324b5e64f32c0799661891000200000000000000000018'
+
 export function aWeightedPoolMock(...options: Partial<Pool>[]): Pool {
-  const poolId = '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014'
   const tokens = someGqlTokenMocks(['wS', 'USDC'])
 
   const options2: Partial<Pool> = {
-    id: poolId,
-    address: getPoolAddress(poolId),
+    id: scUsdStSPoolId,
+    address: getPoolAddress(scUsdStSPoolId),
     poolTokens: tokens as unknown as Pool['poolTokens'],
     protocolVersion: 2,
     ...options,
@@ -26,15 +27,12 @@ export function aWeightedPoolMock(...options: Partial<Pool>[]): Pool {
   return aPoolMock(options2)
 }
 
-export function aWjAuraWethPoolElementMock(...options: Partial<Pool>[]): Pool {
-  const tokens = [
-    aTokenExpandedMock({ address: wjAuraAddress }),
-    aTokenExpandedMock({ address: wETHAddress }),
-  ]
+export function aTwoTokenPoolMock(...options: Partial<Pool>[]): Pool {
+  const tokens = [aTokenExpandedMock({ symbol: 'stS' }), aTokenExpandedMock({ symbol: 'wS' })]
 
   const options2 = {
-    id: poolId,
-    address: getPoolAddress(poolId),
+    id: scUsdStSPoolId,
+    address: getPoolAddress(scUsdStSPoolId),
     poolTokens: tokens as unknown as Pool['poolTokens'],
     protocolVersion: 2,
     ...options,
@@ -56,10 +54,10 @@ export function aPoolMock(...options: Partial<Pool>[]): Pool {
   const defaultPool1: DeepPartial<Pool> = {
     __typename: 'GqlPoolWeighted',
     protocolVersion: 2,
-    address: '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56',
+    address: '0x25ca5451cd5a50ab1d324b5e64f32c0799661891',
     poolTokens: someGqlTokenMocks(['wS', 'USDC']),
     chain: GqlChainValues.Sonic,
-    createTime: 1620153071,
+    createTime: 1734623034,
     decimals: 18,
     dynamicData: {
       totalLiquidity: '176725796.079429',
@@ -70,9 +68,9 @@ export function aPoolMock(...options: Partial<Pool>[]): Pool {
       swapFee: '0.01',
     },
     factory: '0xa5bf2ddf098bb0ef6d120c98217dd6b141c74ee0',
-    id: '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014',
-    name: 'Weighted wS USDC',
-    symbol: 'BPT-wS-USDC',
+    id: scUsdStSPoolId,
+    name: 'BPT-scUSD-stS',
+    symbol: 'BPT-scUSD-stS',
     staking: aGqlStakingMock(),
     type: GqlPoolTypeValues.Weighted,
   }

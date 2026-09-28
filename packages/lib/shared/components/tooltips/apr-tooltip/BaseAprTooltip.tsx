@@ -41,7 +41,7 @@ interface Props {
   hookType?: GqlHookType
 }
 
-const balRewardGradient =
+const maxAprGradient =
   'linear-gradient(90deg, rgba(179, 174, 245, 0.5) 0%, rgba(215, 203, 231, 0.5) 25%, rgba(229, 200, 200, 0.5) 50%, rgba(234, 168, 121, 0.5) 100%)'
 
 const basePopoverAprItemProps = {
@@ -271,7 +271,7 @@ function BaseAprTooltip({
               {...basePopoverAprItemProps}
               apr={maBeetsTotalAprDisplayed}
               backgroundColor="background.level3"
-              boxBackground={balRewardGradient}
+              boxBackground={maxAprGradient}
               displayValueFormatter={usedDisplayValueFormatter}
               fontColor="font.special"
               pl={2}
