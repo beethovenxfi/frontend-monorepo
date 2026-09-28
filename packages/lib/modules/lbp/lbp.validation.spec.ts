@@ -11,7 +11,7 @@ function futureDateTime(daysFromNow: number) {
 
 function validSaleStructure(overrides = {}) {
   return {
-    selectedChain: GqlChainValues.Mainnet,
+    selectedChain: GqlChainValues.Sonic,
     launchTokenAddress: VALID_ADDRESS,
     saleType: GqlPoolTypeValues.LiquidityBootstrapping,
     startDateTime: futureDateTime(2),

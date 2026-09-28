@@ -13,7 +13,6 @@ import {
   Link,
 } from '@chakra-ui/react'
 import { usePool } from '../../../PoolProvider'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
 import { getPoolRisks, risksTitle } from './usePoolRisks'
 import NextLink from 'next/link'
 
@@ -23,7 +22,7 @@ interface RisksListProps {
 
 export function RisksList({ textVariant = 'secondary' }: RisksListProps) {
   const { pool } = usePool()
-  const riskGroups = getPoolRisks(pool as GqlPoolElement)
+  const riskGroups = getPoolRisks(pool)
 
   return (
     <VStack alignItems="flex-start" gap="xs">

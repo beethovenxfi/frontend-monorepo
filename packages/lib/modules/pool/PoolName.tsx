@@ -52,7 +52,6 @@ export function PoolName({
             id={`featured-${isCarousel ? 'mobile' : 'desktop'}`}
             onlySparkles
             pool={pool}
-            poolId={pool.id}
           />
         </Box>
       )}
@@ -61,7 +60,6 @@ export function PoolName({
 }
 
 function formatToken(token: PoolToken, showUnderlying: boolean | undefined) {
-  if (token.nestedPool) return token.name
   if (showUnderlying && token.underlyingToken) return token.underlyingToken?.symbol
 
   return token.symbol

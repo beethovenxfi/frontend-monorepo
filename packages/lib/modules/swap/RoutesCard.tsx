@@ -416,7 +416,7 @@ function fixTokenColors(chain: GqlChain, paths: Path[]) {
 
   return tokens.reduce(
     (colors, token) => {
-      colors[token.address] = getTokenColor(chain, token.address as Address).from
+      colors[token.address] = getTokenColor(token.address as Address).from
       return colors
     },
     {} as Record<string, string>

@@ -2,7 +2,6 @@ import fetch from 'cross-fetch'
 
 import { visit } from 'graphql/language/visitor'
 import { print } from 'graphql'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
 import {
   GetPoolDocument,
   GetPoolQueryVariables,
@@ -10,7 +9,7 @@ import {
 } from '@repo/lib/shared/services/api/generated/graphql'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { nested50WETH_50_3poolId } from '@repo/lib/debug-helpers'
+import { Pool } from '../pool.types'
 import { Address } from 'viem'
 
 const FETCH_POOL_MOCK_MAX_ATTEMPTS = 3
@@ -60,18 +59,6 @@ export const poolEnrichQuery = `
         address
         decimals
         balance
-        hasNestedPool
-        nestedPool {
-          totalShares
-          totalLiquidity
-          nestedPercentage
-          nestedShares
-          tokens {
-            address
-            decimals
-            balance
-          }
-        }
       }
     }
   }
@@ -107,39 +94,11 @@ export const minimalPoolQuery = `
         name
         isErc4626
         useUnderlyingForAddRemove
-        hasNestedPool
         underlyingToken {
           address
           decimals
           name
           symbol
-        }
-        nestedPool {
-          id
-          address
-          type
-          bptPriceRate
-          totalShares
-          totalLiquidity
-          nestedPercentage
-          nestedShares
-          tokens {
-            address
-            decimals
-            balance
-            weight
-            index
-            symbol
-            name
-            isErc4626
-            useUnderlyingForAddRemove
-            underlyingToken {
-              address
-              decimals
-              name
-              symbol
-            }
-          }
         }
       }
     }
@@ -147,7 +106,7 @@ export const minimalPoolQuery = `
 `
 
 type FetchPoolMockParams = {
-  poolId?: Address
+  poolId: Address
   chain?: GqlChain
   apiUrl?: string
   userAddress?: Address
@@ -155,12 +114,12 @@ type FetchPoolMockParams = {
 }
 
 export async function fetchPoolMock({
-  poolId = nested50WETH_50_3poolId,
-  chain = GqlChainValues.Mainnet,
+  poolId,
+  chain = GqlChainValues.Sonic,
   apiUrl = process.env.NEXT_PUBLIC_BALANCER_API_URL as string,
   userAddress,
   query,
-}: FetchPoolMockParams): Promise<GqlPoolElement> {
+}: FetchPoolMockParams): Promise<Pool> {
   const queryString = query ?? astToQueryString(visit(GetPoolDocument, {}))
 
   const variables: GetPoolQueryVariables = {
@@ -210,5 +169,5 @@ export async function fetchPoolMock({
     throw new Error(errorMessage)
   }
 
-  return getPoolQuery.pool as GqlPoolElement
+  return getPoolQuery.pool as Pool
 }

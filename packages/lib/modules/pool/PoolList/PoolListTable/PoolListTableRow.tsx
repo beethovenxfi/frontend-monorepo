@@ -74,11 +74,7 @@ export function PoolListTableRow({ pool, keyValue, needsMarginForPoints, ...rest
             </GridItem>
             <GridItem>
               <PoolListPoolDisplay
-                isTokenInWallet={
-                  joinablePools
-                    ? tokenAddress => hasWalletTokenBalance(pool.chain, tokenAddress)
-                    : undefined
-                }
+                isTokenInWallet={joinablePools ? hasWalletTokenBalance : undefined}
                 name={name}
                 pool={pool}
                 poolDisplayType={poolDisplayType}
@@ -131,7 +127,6 @@ export function PoolListTableRow({ pool, keyValue, needsMarginForPoints, ...rest
                   chain={pool.chain}
                   height="auto"
                   pool={pool}
-                  poolId={pool.id}
                   textProps={{ fontWeight: 'medium', textAlign: 'right' }}
                 />
                 {hasPoints && (

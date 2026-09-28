@@ -1,18 +1,7 @@
 import { HumanAmount } from '@balancer/sdk'
 import { Address } from 'viem'
-import { avalanche, base, gnosis, mainnet, polygon, sonic, plasma, monad } from 'viem/chains'
-import {
-  avalancheTokenBalances,
-  baseTokenBalances,
-  gnosisTokenBalances,
-  hyperEVMTokenBalances,
-  mainnetTokenBalances,
-  polygonTokenBalances,
-  sonicTokenBalances,
-  plasmaTokenBalances,
-  monadTokenBalances,
-} from './fork-default-balances'
-import { hyperEVM } from '@balancer/sdk'
+import { sonic } from 'viem/chains'
+import { sonicTokenBalances } from './fork-default-balances'
 
 export type TokenBalance = {
   tokenAddress: Address
@@ -38,18 +27,10 @@ declare global {
 }
 
 const defaultForkBalances: TokenBalancesByChain = {
-  [mainnet.id]: mainnetTokenBalances,
-  [base.id]: baseTokenBalances,
-  [gnosis.id]: gnosisTokenBalances,
   [sonic.id]: sonicTokenBalances,
-  [polygon.id]: polygonTokenBalances,
-  [avalanche.id]: avalancheTokenBalances,
-  [hyperEVM.id]: hyperEVMTokenBalances,
-  [plasma.id]: plasmaTokenBalances,
-  [monad.id]: monadTokenBalances,
 }
 
 export const defaultManualForkOptions = {
-  chainId: sonic.id, // Change this id for manual tests on different chains
+  chainId: sonic.id,
   forkBalances: defaultForkBalances,
 }

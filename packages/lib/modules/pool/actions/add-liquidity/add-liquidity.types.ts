@@ -1,7 +1,5 @@
 import {
   AddLiquidityBoostedQueryOutput,
-  AddLiquidityNestedQueryOutputV2,
-  AddLiquidityNestedQueryOutputV3,
   AddLiquidityQueryOutput,
   Permit2,
   TokenAmount,
@@ -25,7 +23,7 @@ export interface BuildAddLiquidityInput {
   account: Address
   slippagePercent: string
   queryOutput: QueryAddLiquidityOutput
-  relayerApprovalSignature?: Address //only used by Nested Add Liquidity in signRelayer mode
+  relayerApprovalSignature?: Address //only used in signRelayer mode
   permit2?: Permit2 //only used by v3 add liquidity
   relicId?: string //only used by Reliquary add liquidity
 }
@@ -33,28 +31,13 @@ export interface BuildAddLiquidityInput {
 /*
   SDK interfaces:
   They extend the base QueryAddLiquidityOutput interface above.
-  Implemented by the default handlers (i.e. UnbalancedAddLiquidity or NestedAddLiquidityHandler)
+  Implemented by the default handlers (i.e. UnbalancedAddLiquidity or BoostedAddLiquidityHandler)
   which interact with the SDK to query and build the tx callData.
 */
 export interface SdkQueryAddLiquidityOutput extends QueryAddLiquidityOutput {
   sdkQueryOutput: AddLiquidityQueryOutput | AddLiquidityBoostedQueryOutput
 }
 
-export interface NestedQueryAddLiquidityOutputV2 extends QueryAddLiquidityOutput {
-  sdkQueryOutput: AddLiquidityNestedQueryOutputV2
-}
-
-export interface NestedQueryAddLiquidityOutputV3 extends QueryAddLiquidityOutput {
-  sdkQueryOutput: AddLiquidityNestedQueryOutputV3
-}
-
 export interface SdkBuildAddLiquidityInput extends BuildAddLiquidityInput {
   queryOutput: SdkQueryAddLiquidityOutput
-}
-export interface NestedBuildAddLiquidityInput extends BuildAddLiquidityInput {
-  queryOutput: NestedQueryAddLiquidityOutputV2
-}
-
-export interface NestedBuildAddLiquidityInputV3 extends BuildAddLiquidityInput {
-  queryOutput: NestedQueryAddLiquidityOutputV3
 }

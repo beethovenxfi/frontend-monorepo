@@ -10,7 +10,7 @@ describe('parseSwapReceipt', () => {
     const result = parseSwapReceipt({
       receiptLogs: [],
       userAddress: undefined,
-      chain: GqlChainValues.Mainnet,
+      chain: GqlChainValues.Sonic,
       getToken: () => undefined,
       txValue: 0n,
       protocolVersion: 2,

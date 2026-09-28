@@ -20,13 +20,9 @@ import {
   forwardRef,
   Checkbox,
 } from '@chakra-ui/react'
-import { getChainShortName } from '@repo/lib/config/app.config'
-import { MultiSelect } from '@repo/lib/shared/components/inputs/MultiSelect'
 import { useBreakpoints } from '@repo/lib/shared/hooks/useBreakpoints'
-import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { staggeredFadeInUp } from '@repo/lib/shared/utils/animations'
 import { AnimatePresence, motion } from 'motion/react'
-import Image from 'next/image'
 import { useState } from 'react'
 import { Filter } from 'lucide-react'
 import { usePortfolioFilters } from './PortfolioFiltersProvider'
@@ -34,42 +30,6 @@ import { PoolFilterType } from '../../pool/pool.types'
 import { poolTypeLabel } from '../../pool/pool.helpers'
 import { AnimatedTag } from '@repo/lib/shared/components/other/AnimatedTag'
 import { StakingFilterKeyType, STAKING_LABEL_MAP } from './useExpandedPools'
-
-export interface PortfolioNetworkFiltersArgs {
-  toggledNetworks: GqlChain[]
-  toggleNetwork: (checked: boolean, value: GqlChain) => void
-  setNetworks: (networks: GqlChain[]) => void
-  networks: GqlChain[]
-}
-
-export function PortfolioNetworkFilters({
-  toggledNetworks,
-  toggleNetwork,
-  setNetworks,
-  networks,
-}: PortfolioNetworkFiltersArgs) {
-  const networkOptions = networks.map(network => ({
-    label: getChainShortName(network),
-    value: network,
-    selectedLabel: (
-      <Image alt={network} height="20" src={`/images/chains/${network}.svg`} width="20" />
-    ),
-  }))
-
-  function isCheckedNetwork(network: GqlChain): boolean {
-    return !!toggledNetworks.includes(network)
-  }
-
-  return (
-    <MultiSelect<GqlChain>
-      isChecked={isCheckedNetwork}
-      label="All networks"
-      options={networkOptions}
-      toggleAll={() => setNetworks([])}
-      toggleOption={toggleNetwork}
-    />
-  )
-}
 
 interface CheckboxFilterListProps<T> {
   availableItems: T[]
@@ -146,16 +106,12 @@ export function StakingTypeFilters({
 }
 
 export function usePortfolioFilterTagsVisible() {
-  const { selectedNetworks, selectedPoolTypes, selectedStakingTypes } = usePortfolioFilters()
+  const { selectedPoolTypes, selectedStakingTypes } = usePortfolioFilters()
 
-  return (
-    selectedNetworks.length > 0 || selectedPoolTypes.length > 0 || selectedStakingTypes.length > 0
-  )
+  return selectedPoolTypes.length > 0 || selectedStakingTypes.length > 0
 }
 
 export interface PortfolioFilterTagsPops {
-  networks: GqlChain[]
-  toggleNetwork: (checked: boolean, value: GqlChain) => void
   poolTypes: PoolFilterType[]
   togglePoolType: (checked: boolean, value: PoolFilterType) => void
   stakingTypes: StakingFilterKeyType[]
@@ -163,15 +119,13 @@ export interface PortfolioFilterTagsPops {
 }
 
 export function PortfolioFilterTags({
-  networks,
-  toggleNetwork,
   poolTypes,
   togglePoolType,
   stakingTypes,
   toggleStakingType,
 }: PortfolioFilterTagsPops) {
   // prevents layout shift in mobile view
-  if (networks.length === 0 && poolTypes.length === 0 && stakingTypes.length === 0) {
+  if (poolTypes.length === 0 && stakingTypes.length === 0) {
     return <Box display={{ base: 'flex', md: 'none' }} minHeight="32px" />
   }
 
@@ -183,13 +137,6 @@ export function PortfolioFilterTags({
             key={poolType}
             label={poolTypeLabel(poolType)}
             onClose={() => togglePoolType(false, poolType)}
-          />
-        ))}
-        {networks.map(network => (
-          <AnimatedTag
-            key={network}
-            label={getChainShortName(network)}
-            onClose={() => toggleNetwork(false, network)}
           />
         ))}
         {stakingTypes.map((stakingTypeKey: StakingFilterKeyType) => (
@@ -234,22 +181,12 @@ export const FilterButton = forwardRef<ButtonProps & { totalFilterCount: number 
   }
 )
 
-export function PortfolioFilters({
-  selectedNetworks,
-  selectedPoolTypes,
-}: {
-  selectedNetworks?: GqlChain[]
-  selectedPoolTypes?: PoolFilterType[]
-}) {
+export function PortfolioFilters({ selectedPoolTypes }: { selectedPoolTypes?: PoolFilterType[] }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const {
-    selectedNetworks: hookSelectedNetworks,
-    setSelectedNetworks,
-    toggleNetwork,
     totalFilterCount,
     resetFilters,
-    availableNetworks,
     selectedPoolTypes: hookSelectedPoolTypes,
     setSelectedPoolTypes,
     togglePoolType,
@@ -259,13 +196,9 @@ export function PortfolioFilters({
     availableStakingTypes,
   } = usePortfolioFilters()
 
-  const effectiveSelectedNetworks = selectedNetworks || hookSelectedNetworks
   const effectiveSelectedPoolTypes = selectedPoolTypes || hookSelectedPoolTypes
 
-  const isDisabled =
-    availableNetworks.length === 0 &&
-    availablePoolTypes.length === 0 &&
-    availableStakingTypes.length === 0
+  const isDisabled = availablePoolTypes.length === 0 && availableStakingTypes.length === 0
 
   return (
     <VStack w="full">
@@ -314,19 +247,6 @@ export function PortfolioFilters({
                           )}
                         </Flex>
                       </Box>
-                      {availableNetworks.length > 1 && (
-                        <Box as={motion.div} variants={staggeredFadeInUp} w="full">
-                          <Heading as="h3" mb="sm" size="sm">
-                            Networks
-                          </Heading>
-                          <PortfolioNetworkFilters
-                            networks={availableNetworks}
-                            setNetworks={setSelectedNetworks}
-                            toggledNetworks={effectiveSelectedNetworks}
-                            toggleNetwork={toggleNetwork}
-                          />
-                        </Box>
-                      )}
                       <Box as={motion.div} variants={staggeredFadeInUp}>
                         <Heading as="h3" mb="sm" size="sm">
                           Pool types

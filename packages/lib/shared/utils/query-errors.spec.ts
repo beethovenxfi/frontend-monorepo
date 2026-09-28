@@ -1,6 +1,5 @@
 import {
   sentryMetaForAddLiquidityHandler,
-  sentryMetaForRemoveLiquidityHandler,
   captureSentryError,
   sentryMetaForWagmiSimulation,
 } from '@repo/lib/shared/utils/query-errors'
@@ -8,14 +7,11 @@ import { defaultTestUserAccount } from '@repo/test/anvil/anvil-setup'
 import * as Sentry from '@sentry/nextjs'
 import { waitFor } from '@testing-library/react'
 import sentryTestkit from 'sentry-testkit'
-import { recoveryPoolMock } from '../../modules/pool/__mocks__/recoveryPoolMock'
 import { Extras } from '@sentry/types'
-import { RecoveryRemoveLiquidityHandler } from '../../modules/pool/actions/remove-liquidity/handlers/RecoveryRemoveLiquidity.handler'
 import { UnbalancedAddLiquidityV2Handler } from '@repo/lib/modules/pool/actions/add-liquidity/handlers/UnbalancedAddLiquidityV2.handler'
 import {} from '@repo/lib/test/msw/builders/gqlPoolElement.builders'
 import { AddLiquidityParams } from '@repo/lib/modules/pool/actions/add-liquidity/queries/add-liquidity-keys'
 import {} from '@repo/lib/debug-helpers'
-import { RemoveLiquidityParams } from '@repo/lib/modules/pool/actions/remove-liquidity/queries/remove-liquidity-keys'
 import { getApiPoolMock } from '@repo/lib/modules/pool/__mocks__/api-mocks/api-mocks'
 import { scUsdStS } from '@repo/lib/modules/pool/__mocks__/pool-examples/flat'
 import { sonicTokens } from '@repo/lib/test/integration/sonic-fixtures'
@@ -46,47 +42,9 @@ describe('Captures sentry error', () => {
     expect(report.extra).toEqual({ foo: 'bar' })
   })
 
-  // TODO: Add a Beets/Sonic pool in recovery mode for remove-liquidity error metadata.
-  test.skip('for remove liquidity handler query error', async function () {
-    const params: RemoveLiquidityParams = {
-      handler: new RecoveryRemoveLiquidityHandler(recoveryPoolMock),
-      userAddress: defaultTestUserAccount,
-      slippage: '0.1',
-      poolId: recoveryPoolMock.id,
-      humanBptIn: '1',
-    }
-
-    const error = new Error('test cause error')
-
-    const meta = sentryMetaForRemoveLiquidityHandler('Test error message', {
-      ...params,
-      chainId: 1,
-    })
-
-    captureSentryError(error, meta)
-
-    const report = await getSentryReport()
-
-    expect(report.level).toBe('fatal')
-    expect(report.error?.name).toBe('Error')
-    expect(report.error?.message).toBe('test cause error')
-
-    expect(report.extra).toMatchInlineSnapshot(`
-      {
-        "handler": "RecoveryRemoveLiquidityHandler",
-        "params": {
-          "chainId": 1,
-          "handler": {
-            "helpers": "[LiquidityActionHelpers]",
-          },
-          "humanBptIn": "1",
-          "poolId": "0x4fd4687ec38220f805b6363c3c1e52d0df3b5023000200000000000000000473",
-          "slippage": "0.1",
-          "userAddress": "0x3B7D260597A3e3f90274563a9e481618C6B951Eb",
-        },
-      }
-    `)
-  })
+  // TODO: Add a Beets/Sonic pool in recovery mode and cover
+  // sentryMetaForRemoveLiquidityHandler with a RecoveryRemoveLiquidityHandler
+  // remove-liquidity query error.
 
   test('for add liquidity handler query error', async function () {
     const pool = getApiPoolMock(scUsdStS)

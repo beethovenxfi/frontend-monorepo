@@ -16,8 +16,6 @@ export function PoolListLayout() {
     loading,
     count,
     queryState: {
-      networks,
-      toggleNetwork,
       poolTypes,
       togglePoolType,
       minTvl,
@@ -83,7 +81,6 @@ export function PoolListLayout() {
           <FilterTags
             joinablePools={joinablePools}
             minTvl={minTvl}
-            networks={networks}
             poolHookTagLabel={poolHookTagLabel}
             poolHookTags={poolHookTags}
             poolTagLabel={poolTagLabel}
@@ -94,7 +91,6 @@ export function PoolListLayout() {
             setMinTvl={setMinTvl}
             setProtocolVersion={setProtocolVersion}
             toggleJoinablePools={toggleJoinablePools}
-            toggleNetwork={toggleNetwork}
             togglePoolHookTag={togglePoolHookTag}
             togglePoolTag={togglePoolTag}
             togglePoolType={togglePoolType}

@@ -21,7 +21,6 @@ import {
   getRequiredTokenApprovals,
   isTheApprovedAmountEnough,
 } from './approval-rules'
-import { isVeBalBtpAddress, requiresDoubleApproval } from '../token.helpers'
 import { ErrorWithCauses } from '@repo/lib/shared/utils/errors'
 import { useStepsTransactionState } from '@repo/lib/modules/transactions/transaction-steps/useStepsTransactionState'
 
@@ -98,12 +97,11 @@ export function useTokenApprovalSteps({
   const tokenAmountsToApprove = getRequiredTokenApprovals({
     chainId: chain,
     rawAmounts: _approvalAmounts,
-    allowanceFor: tokenAllowances.allowanceFor,
     isPermit2,
     skipAllowanceCheck: isUnwrappingNative,
   })
 
-  const steps: TransactionStep[] = tokenAmountsToApprove.map((tokenAmountToApprove, index) => {
+  const steps: TransactionStep[] = tokenAmountsToApprove.map(tokenAmountToApprove => {
     const {
       tokenAddress,
       requiredRawAmount,
@@ -111,11 +109,7 @@ export function useTokenApprovalSteps({
       symbol: approvalSymbol,
     } = tokenAmountToApprove
 
-    // USDT edge-case: requires setting approval to 0n before adjusting the value up again
-    const isApprovingZeroForDoubleApproval =
-      requiresDoubleApproval(chain, tokenAddress) && requiredRawAmount === 0n
-
-    const id = isApprovingZeroForDoubleApproval ? `${tokenAddress}-0` : tokenAddress
+    const id = tokenAddress
 
     const token = getToken(tokenAddress, chain)
 
@@ -135,33 +129,13 @@ export function useTokenApprovalSteps({
     const isComplete = () => {
       const tokenAllowance = tokenAllowances.allowanceFor(tokenAddress)
 
-      const nextToken = isApprovingZeroForDoubleApproval
-        ? tokenAmountsToApprove[index + 1]
-        : undefined
-
-      return isTheApprovedAmountEnough(
-        tokenAllowance,
-        requiredRawAmount,
-        isApprovingZeroForDoubleApproval,
-        nextToken
-      )
+      return isTheApprovedAmountEnough(tokenAllowance, requiredRawAmount)
     }
 
     const checkEdgeCaseErrors = (tokenAllowance: bigint) => {
       const errors = []
 
-      const nextToken = isApprovingZeroForDoubleApproval
-        ? tokenAmountsToApprove[index + 1]
-        : undefined
-
-      if (
-        !isTheApprovedAmountEnough(
-          tokenAllowance,
-          requiredRawAmount,
-          isApprovingZeroForDoubleApproval,
-          nextToken
-        )
-      ) {
+      if (!isTheApprovedAmountEnough(tokenAllowance, requiredRawAmount)) {
         errors.push({
           id: 'not-enough-allowance',
           title: 'Error on approval step',
@@ -176,7 +150,7 @@ export function useTokenApprovalSteps({
 
     const props: ManagedErc20TransactionInput = {
       tokenAddress,
-      functionName: isVeBalBtpAddress(tokenAddress) ? 'increaseApproval' : 'approve',
+      functionName: 'approve',
       labels,
       isComplete,
       chainId: getChainId(chain),

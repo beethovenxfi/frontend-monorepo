@@ -105,7 +105,6 @@ export function usePermit2ApprovalSteps({
   const tokenAmountsToApprove = getRequiredTokenApprovals({
     chainId: chain,
     rawAmounts: filteredApprovalAmounts,
-    allowanceFor,
     skipAllowanceCheck: isUnwrappingNative,
   }).filter(amount => {
     // For permit2 approvals we should never need to reset the amounts before approval

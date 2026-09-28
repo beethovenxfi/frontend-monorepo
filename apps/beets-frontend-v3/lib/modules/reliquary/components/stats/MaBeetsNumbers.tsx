@@ -55,12 +55,10 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
   const tvl = reliquaryPoolRatio.times(data.totalLiquidity)
   const avgValuePerRelic = totalRelics.isZero() ? bn(0) : tvl.div(totalRelics)
 
-  const baseApr = pool.dynamicData.aprItems.find(
-    item => item.title === 'BEETS reward APR' && item.type === 'MABEETS_EMISSIONS'
-  )
+  const baseApr = pool.dynamicData.aprItems.find(item => item.type === 'MABEETS_EMISSIONS')
 
   const dynamicDataAprItems = pool.dynamicData.aprItems.map(item => {
-    if (item.title === 'BEETS reward APR' && item.type === 'STAKING_BOOST') {
+    if (item.type === 'STAKING_BOOST' && item.rewardTokenSymbol === 'BEETS') {
       return {
         ...item,
         apr: item.apr - (baseApr?.apr || 0),
@@ -88,7 +86,6 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
               aprItems={dynamicDataAprItems}
               chain={networkConfig.chain}
               pool={pool}
-              poolId={pool.id}
               textProps={{ fontWeight: '700' }}
             />
           </Skeleton>

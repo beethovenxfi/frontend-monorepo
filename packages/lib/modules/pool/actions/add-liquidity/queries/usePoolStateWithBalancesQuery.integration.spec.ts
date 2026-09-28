@@ -1,14 +1,14 @@
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { buildDefaultPoolTestProvider, testHook } from '@repo/lib/test/utils/custom-renderers'
 import { waitFor } from '@testing-library/react'
 import { getApiPoolMock } from '../../../__mocks__/api-mocks/api-mocks'
 import { anSSiloWSBoosted } from '../../../__mocks__/pool-examples/boosted'
-import { Pool } from '../../../pool.types'
+
 import { usePoolStateWithBalancesQuery } from './usePoolStateWithBalancesQuery'
 
 async function testQuery(pool: Pool) {
   const { result } = testHook(() => usePoolStateWithBalancesQuery(pool), {
-    wrapper: buildDefaultPoolTestProvider(pool as GqlPoolElement),
+    wrapper: buildDefaultPoolTestProvider(pool as Pool),
   })
 
   return result

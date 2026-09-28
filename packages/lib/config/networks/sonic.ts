@@ -1,8 +1,6 @@
 import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { NetworkConfig } from '../config.types'
-import { zeroAddress } from 'viem'
 import { convertHexToLowerCase } from '@repo/lib/shared/utils/objects'
-import { emptyAddress } from '@repo/lib/modules/web3/contracts/wagmi-helpers'
 import { AddressProvider, PERMIT2 } from '@balancer/sdk'
 import { sonic } from 'viem/chains'
 
@@ -22,7 +20,6 @@ const networkConfig: NetworkConfig = {
   },
   tokens: {
     addresses: {
-      bal: emptyAddress,
       beets: '0x2d0e0814e62d80056181f5cd932274405966e4f0',
       wNativeAsset: '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38',
     },
@@ -68,7 +65,6 @@ const networkConfig: NetworkConfig = {
       vaultAdminV3: AddressProvider.VaultAdmin(sonic.id),
       unbalancedAddViaSwapRouter: AddressProvider.UnbalancedAddViaSwapRouter(sonic.id),
     },
-    veDelegationProxy: zeroAddress, // TODO: fix this dependency for Beets
     beets: {
       lstStaking: '0xd5f7fc8ba92756a34693baa386edcc8dd5b3f141',
       lstStakingProxy: '0xe5da20f15420ad15de0fa650600afc998bbe3955',

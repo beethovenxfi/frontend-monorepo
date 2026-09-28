@@ -33,7 +33,6 @@ import {
   shouldMigrateStake,
 } from '../user-balance.helpers'
 import {
-  isVebalPool,
   shouldBlockAddLiquidity,
   getPoolAddBlockedReason,
   calcUserShareOfPool,
@@ -43,37 +42,32 @@ import {
 import { getCanStake, migrateStakeTooltipLabel } from '../actions/stake.helpers'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { getCompositionTokens, getNestedPoolTokens } from '../pool-tokens.utils'
+import { getCompositionTokens } from '../pool-tokens.utils'
 import { usePoolMetadata } from '../metadata/usePoolMetadata'
 import { formatTextListAsItems } from '@repo/lib/shared/utils/text-format'
 import { bn, fNum, ZERO_VALUE_DASH, formatFalsyValueAsDash } from '@repo/lib/shared/utils/numbers'
 import { StakeUnstakeButton } from './StakeUnstakeButton'
 
-function getTabs(isVeBalPool: boolean) {
-  return [
-    {
-      value: 'total',
-      label: 'Total',
-    },
-    {
-      value: 'unstaked',
-      label: isVeBalPool ? 'Unlocked' : 'Unstaked',
-    },
-    {
-      value: 'gauge',
-      label: isVeBalPool ? 'Locked' : 'Staked',
-    },
-  ]
-}
+const tabs = [
+  {
+    value: 'total',
+    label: 'Total',
+  },
+  {
+    value: 'unstaked',
+    label: 'Unstaked',
+  },
+  {
+    value: 'gauge',
+    label: 'Staked',
+  },
+]
 
 export default function PoolMyLiquidity() {
   const { pool, chain, isLoadingOnchainUserBalances, myLiquiditySectionRef } = usePool()
   const { toCurrency } = useCurrency()
   const { isConnected, isConnecting } = useUserAccount()
   const router = useRouter()
-
-  const isVeBal = isVebalPool(pool.id)
-  const tabs = useMemo(() => getTabs(isVeBal), [isVeBal])
 
   const [activeTab, setActiveTab] = useState<ButtonGroupOption>(tabs[0]!)
   const pathname = usePathname()
@@ -96,16 +90,6 @@ export default function PoolMyLiquidity() {
     setActiveTab(option)
   }
 
-  function getStakingType(tabsValue: string) {
-    switch (tabsValue) {
-      case 'gauge':
-        if (isVeBal) return GqlPoolStakingTypeValues.VeBal
-        return GqlPoolStakingTypeValues.Gauge
-      default:
-        return GqlPoolStakingTypeValues.Gauge
-    }
-  }
-
   function getBptBalanceForTab() {
     const rawTotalBalance = getUserTotalBalanceInt(pool)
 
@@ -113,7 +97,7 @@ export default function PoolMyLiquidity() {
       case 'total':
         return rawTotalBalance
       case 'gauge':
-        return calcStakedBalanceInt(pool, getStakingType(activeTab.value))
+        return calcStakedBalanceInt(pool, GqlPoolStakingTypeValues.Gauge)
       case 'unstaked':
         return getUserWalletBalanceInt(pool)
       default:
@@ -143,15 +127,15 @@ export default function PoolMyLiquidity() {
       case 'total':
         return 'My total balance'
       case 'gauge':
-        return isVeBal ? 'Locked' : 'Staked on Balancer'
+        return 'My staked balance'
       case 'unstaked':
-        return isVeBal ? 'Unlocked' : 'My unstaked balance'
+        return 'My unstaked balance'
       default:
         return ''
     }
   }
 
-  const stakedBalance = calcStakedBalanceUsd(pool, getStakingType(activeTab.value))
+  const stakedBalance = calcStakedBalanceUsd(pool, GqlPoolStakingTypeValues.Gauge)
   const unstakedBalance = getUserWalletBalanceUsd(pool)
 
   function getTotalBalanceUsd() {
@@ -265,28 +249,7 @@ export default function PoolMyLiquidity() {
                     pool={pool}
                     showZeroAmountAsDash
                     value={tokenBalanceFor(poolToken.address)}
-                    {...(poolToken.hasNestedPool && {
-                      isNestedBpt: true,
-                    })}
                   />
-                  {poolToken.hasNestedPool && poolToken.nestedPool && (
-                    <VStack pl="8" w="full">
-                      {getNestedPoolTokens(poolToken).map(nestedPoolToken => {
-                        return (
-                          <TokenRow
-                            abbreviated={false}
-                            address={nestedPoolToken.address as Address}
-                            chain={chain}
-                            iconSize={35}
-                            isNestedToken
-                            key={`nested-pool-${nestedPoolToken.address}`}
-                            showZeroAmountAsDash
-                            value={bn(nestedPoolToken.balance).times(shareOfPool).toString()}
-                          />
-                        )
-                      })}
-                    </VStack>
-                  )}
                 </VStack>
               )
             })}
@@ -333,26 +296,22 @@ export default function PoolMyLiquidity() {
               |
             </Text>
 
-            {!isVeBal && (
-              <>
-                <StakeUnstakeButton action="stake" pool={pool} />
+            <StakeUnstakeButton action="stake" pool={pool} />
 
-                {shouldMigrateStake(pool) ? (
-                  <Tooltip label={migrateStakeTooltipLabel}>
-                    <Button
-                      flex="1"
-                      maxW="120px"
-                      onClick={() => router.push(`${pathname}/migrate-stake`)}
-                      rightIcon={<InfoOutlineIcon fontSize="sm" />}
-                      variant="secondary"
-                    >
-                      Migrate stake
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  <StakeUnstakeButton action="unstake" pool={pool} />
-                )}
-              </>
+            {shouldMigrateStake(pool) ? (
+              <Tooltip label={migrateStakeTooltipLabel}>
+                <Button
+                  flex="1"
+                  maxW="120px"
+                  onClick={() => router.push(`${pathname}/migrate-stake`)}
+                  rightIcon={<InfoOutlineIcon fontSize="sm" />}
+                  variant="secondary"
+                >
+                  Migrate stake
+                </Button>
+              </Tooltip>
+            ) : (
+              <StakeUnstakeButton action="unstake" pool={pool} />
             )}
           </HStack>
         </VStack>

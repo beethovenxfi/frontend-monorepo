@@ -26,7 +26,6 @@ export function usePoolEnrichWithOnChainData(pool: Pool) {
     poolTokenBalances,
     isPoolInRecoveryMode,
     totalSupply,
-    nestedPoolData,
     refetch,
   } = usePoolOnchainData(pool)
 
@@ -37,7 +36,6 @@ export function usePoolEnrichWithOnChainData(pool: Pool) {
     poolTokenBalances,
     isPoolInRecoveryMode,
     totalSupply,
-    nestedPoolData,
   })
 
   return { isLoading: isLoadingTokenPrices || isLoadingPool, pool: clone, refetch }
@@ -91,39 +89,11 @@ function useV3PoolOnchainData(pool: Pool) {
     ],
   })
 
-  const nestedPoolTokens = pool.poolTokens.filter(token => token.hasNestedPool)
-
-  const v3QueryNestedPools = useReadContracts({
-    query: {
-      enabled: isV3Pool(pool) && pool.poolTokens.some(token => token.hasNestedPool),
-    },
-    allowFailure: false,
-    contracts: [
-      // first half of nestedPoolData will be token balances
-      ...nestedPoolTokens.map(token => ({
-        chainId,
-        abi: vaultExtensionAbi_V3,
-        address: vaultAddress,
-        functionName: 'getPoolTokenInfo',
-        args: [token.address as Address],
-      })),
-      // second half of nestedPoolData will be totalSupply
-      ...nestedPoolTokens.map(token => ({
-        chainId,
-        abi: totalSupplyAbi,
-        address: token.address as Address,
-        functionName: 'totalSupply',
-        args: [],
-      })),
-    ],
-  })
-
   return {
     ...v3Query,
     poolTokenBalances: v3Query.data?.[0][2],
     isPoolInRecoveryMode: v3Query.data?.[2].isPoolInRecoveryMode,
     totalSupply: v3Query.data?.[1],
-    nestedPoolData: v3QueryNestedPools.data,
   }
 }
 
@@ -160,7 +130,6 @@ function useV2PoolOnchainData(pool: Pool) {
     poolTokenBalances: v2Query.data?.[0][1],
     isPoolInRecoveryMode: undefined,
     totalSupply: v2Query.data?.[1],
-    nestedPoolData: undefined, // v2 pools w/ nested pools will not be supported
   }
 }
 
@@ -171,7 +140,6 @@ type Params = {
   poolTokenBalances: readonly bigint[] | undefined
   isPoolInRecoveryMode: boolean | undefined
   totalSupply: bigint | undefined
-  nestedPoolData: any // TODO: how to type this?
 }
 
 function enrichPool({
@@ -181,7 +149,6 @@ function enrichPool({
   poolTokenBalances,
   isPoolInRecoveryMode,
   totalSupply,
-  nestedPoolData,
 }: Params) {
   if (isLoading || !poolTokenBalances) return pool
 
@@ -205,46 +172,6 @@ function enrichPool({
   )
 
   clone.dynamicData.totalShares = formatUnits(totalSupply || 0n, BPT_DECIMALS)
-
-  if (nestedPoolData) {
-    const nestedPoolTokens = clone.poolTokens.filter(poolToken => poolToken.hasNestedPool)
-    const nestedPoolBalancesIndex = 0 // first half of nestedPoolData is token balances
-    const totalSupplyIndex = nestedPoolData.length / 2 // second half of nestedPoolData is totalSupply
-
-    nestedPoolTokens.forEach((poolToken, poolTokenIndex) => {
-      if (!poolToken.nestedPool) return
-
-      const totalSupply = nestedPoolData[totalSupplyIndex + poolTokenIndex]
-      poolToken.nestedPool.totalShares = formatUnits(totalSupply || 0n, BPT_DECIMALS)
-
-      poolToken.nestedPool.totalLiquidity = bn(poolToken.nestedPool.totalShares)
-        .times(priceFor(poolToken.address, pool.chain))
-        .toString()
-
-      poolToken.nestedPool.nestedPercentage = bn(poolToken.balance)
-        .div(poolToken.nestedPool.totalShares)
-        .toString()
-
-      poolToken.nestedPool.nestedShares = bn(poolToken.nestedPool.totalShares)
-        .times(poolToken.nestedPool.nestedPercentage)
-        .toString()
-
-      poolToken.nestedPool.tokens.forEach((nestedPoolToken, nestedPoolTokenIndex) => {
-        nestedPoolToken.balance = bn(
-          formatUnits(
-            nestedPoolData[nestedPoolBalancesIndex + poolTokenIndex][2][nestedPoolTokenIndex],
-            nestedPoolToken.decimals
-          )
-        )
-          .times(bn(poolToken.nestedPool?.nestedPercentage || 0))
-          .toString()
-
-        nestedPoolToken.balanceUSD = bn(nestedPoolToken.balance)
-          .times(priceFor(nestedPoolToken.address, pool.chain))
-          .toString()
-      })
-    })
-  }
 
   if (isPoolInRecoveryMode !== undefined) clone.dynamicData.isInRecoveryMode = isPoolInRecoveryMode
 

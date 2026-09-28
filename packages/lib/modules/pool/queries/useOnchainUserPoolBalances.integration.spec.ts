@@ -7,12 +7,12 @@ import { defaultTestUserAccount } from '@repo/test/anvil/anvil-setup'
 import { ChainId } from '@balancer/sdk'
 import { waitFor } from '@testing-library/react'
 import { useOnchainUserPoolBalances } from './useOnchainUserPoolBalances'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { getApiPoolMock } from '../__mocks__/api-mocks/api-mocks'
 import { scUsdStS } from '../__mocks__/pool-examples/flat'
 import { SONIC_CHAIN_ID } from '@repo/lib/test/integration/sonic-fixtures'
 
-async function testUseChainPoolBalances(pool: GqlPoolElement) {
+async function testUseChainPoolBalances(pool: Pool) {
   const weightedPoolMock = toGqlWeighedPoolMock(pool)
 
   const { result } = testHook(() => {
@@ -22,7 +22,7 @@ async function testUseChainPoolBalances(pool: GqlPoolElement) {
   return result
 }
 
-async function createSdkUtils(pool: GqlPoolElement) {
+async function createSdkUtils(pool: Pool) {
   return getSdkTestUtils({
     account: defaultTestUserAccount,
     chainId: SONIC_CHAIN_ID as ChainId,
@@ -40,7 +40,7 @@ await connectWithDefaultUser()
 */
 describe('fetches onchain and overrides user balances', async () => {
   test('when the user has wallet balance', async () => {
-    const poolMock = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement
+    const poolMock = getApiPoolMock(scUsdStS) as unknown as Pool
     const utils = await createSdkUtils(poolMock)
 
     // sets pool wallet balance
@@ -52,7 +52,7 @@ describe('fetches onchain and overrides user balances', async () => {
   })
 
   test('when the pool does not have staking info', async () => {
-    const poolMock = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement
+    const poolMock = getApiPoolMock(scUsdStS) as unknown as Pool
     poolMock.staking = undefined as any
 
     expect(poolMock.staking).toBeUndefined()
@@ -70,7 +70,7 @@ describe('fetches onchain and overrides user balances', async () => {
   })
 
   test('when the pool has no gaugeAddress', async () => {
-    const poolMock = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement
+    const poolMock = getApiPoolMock(scUsdStS) as unknown as Pool
 
     // Empty staking address
     if (poolMock.staking?.gauge?.gaugeAddress) {

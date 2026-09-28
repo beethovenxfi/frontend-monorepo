@@ -1,11 +1,8 @@
 import { getChainId } from '@repo/lib/config/app.config'
 import { useMemo } from 'react'
 import { Address } from 'viem'
-import { useApproveRelayerStep } from '../relayer/useApproveRelayerStep'
-import { useRelayerMode, RelayerMode } from '../relayer/useRelayerMode'
 import { RawAmount } from '../tokens/approvals/approval-rules'
 import { useTokenApprovalSteps } from '../tokens/approvals/useTokenApprovalSteps'
-import { useSignRelayerStep } from '../transactions/transaction-steps/useSignRelayerStep'
 import { orderRouteVersion } from './swap.helpers'
 import { OSwapAction, SdkSimulateSwapResponse, SwapAction } from './swap.types'
 import { useSignPermit2SwapStep } from './usePermit2SwapStep'
@@ -42,18 +39,6 @@ export function useSwapSteps({
 
   const hasSimulationQuery = !!simulationQuery
   const isPermit2 = orderRouteVersion(simulationQuery) === 3
-
-  const relayerMode = useRelayerMode()
-
-  const { step: approveRelayerStep, isLoading: isLoadingRelayerApproval } = useApproveRelayerStep(
-    chainId,
-    { relayerMode }
-  )
-
-  const signRelayerStep = useSignRelayerStep(swapState.selectedChain)
-
-  const swapRequiresRelayer =
-    relayerMode !== 'no-relayer-needed' && handler.name === 'AuraBalSwapHandler'
 
   const { shouldUseSignatures: userShouldUseSignatures } = useUserSettings()
 
@@ -127,10 +112,6 @@ export function useSwapSteps({
   const steps = useMemo(
     () =>
       getApprovalAndSwapSteps({
-        swapRequiresRelayer,
-        relayerMode,
-        approveRelayerStep,
-        signRelayerStep,
         tokenApprovalSteps,
         isPermit2,
         signPermit2Step,
@@ -141,10 +122,6 @@ export function useSwapSteps({
         swapStep,
       }),
     [
-      swapRequiresRelayer,
-      relayerMode,
-      approveRelayerStep,
-      signRelayerStep,
       tokenApprovalSteps,
       isPermit2,
       signPermit2Step,
@@ -158,10 +135,7 @@ export function useSwapSteps({
 
   return {
     isLoadingSteps:
-      isLoadingTokenApprovalSteps ||
-      isLoadingRelayerApproval ||
-      isSignPermit2Loading ||
-      isLoadingPermit2ApprovalSteps,
+      isLoadingTokenApprovalSteps || isSignPermit2Loading || isLoadingPermit2ApprovalSteps,
     steps,
   }
 }
@@ -174,10 +148,6 @@ function approvalActionType(isLBP: boolean, swapAction: SwapAction) {
 }
 
 export function getApprovalAndSwapSteps({
-  swapRequiresRelayer,
-  relayerMode,
-  approveRelayerStep,
-  signRelayerStep,
   tokenApprovalSteps,
   isPermit2,
   signPermit2Step,
@@ -187,10 +157,6 @@ export function getApprovalAndSwapSteps({
   shouldBatchTransactions,
   swapStep,
 }: {
-  swapRequiresRelayer: boolean
-  relayerMode: RelayerMode
-  approveRelayerStep: TransactionStep
-  signRelayerStep: TransactionStep
   tokenApprovalSteps: TransactionStep[]
   isPermit2: boolean
   signPermit2Step?: TransactionStep
@@ -201,11 +167,6 @@ export function getApprovalAndSwapSteps({
   swapStep: TransactionStep
 }): TransactionStep[] {
   const stepList: TransactionStep[] = []
-
-  if (swapRequiresRelayer) {
-    if (relayerMode === 'approveRelayer') stepList.push(approveRelayerStep)
-    else stepList.push(signRelayerStep)
-  }
 
   /*
   The approval branch depends only on the route (permit2 vs vault) and the token in,

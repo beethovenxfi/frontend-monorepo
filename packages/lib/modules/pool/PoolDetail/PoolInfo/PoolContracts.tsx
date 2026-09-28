@@ -180,32 +180,14 @@ export function PoolContracts({ ...props }: CardProps) {
       ) as RateProvider[]
   }, [pool])
 
-  const hooks = useMemo(() => {
-    const nestedHooks = pool.poolTokens.flatMap(token =>
-      token.nestedPool ? token.nestedPool.hook : []
-    )
-
-    return [...(pool.hook ? [pool.hook] : []), ...nestedHooks].filter(Boolean)
-  }, [pool])
+  const hooks = useMemo(() => (pool.hook ? [pool.hook] : []), [pool])
 
   const erc4626Tokens = useMemo(() => {
     if (!isV3Pool(pool)) return []
     // Avoid showing tokenized vaults when no token has isBufferAllowed
     if (!isBoosted(pool)) return []
 
-    const erc4626Tokens = pool.poolTokens.filter(
-      token => token.isErc4626 && token.useUnderlyingForAddRemove
-    )
-
-    const erc4626NestedTokens = pool.poolTokens.flatMap(token =>
-      token.nestedPool
-        ? token.nestedPool.tokens.filter(
-            token => token.isErc4626 && token.useUnderlyingForAddRemove
-          )
-        : []
-    )
-
-    return [...(erc4626Tokens ? erc4626Tokens : []), ...erc4626NestedTokens]
+    return pool.poolTokens.filter(token => token.isErc4626 && token.useUnderlyingForAddRemove)
   }, [pool])
 
   return (
@@ -260,7 +242,7 @@ export function PoolContracts({ ...props }: CardProps) {
             </GridItem>
             <GridItem>
               <VStack alignItems="flex-start">
-                {hooks.map((hook, index) => {
+                {hooks.map(hook => {
                   return (
                     hook && (
                       <HStack key={hook.address}>
@@ -278,7 +260,7 @@ export function PoolContracts({ ...props }: CardProps) {
                             <ArrowUpRight size={12} />
                           </HStack>
                         </Link>
-                        {(index > 0 || !pool.hook) && <Text variant="secondary">(nested)</Text>}
+
                         {getHookIcon(hook.reviewData)}
                       </HStack>
                     )

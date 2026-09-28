@@ -2,7 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { render } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { AddLiquidityFormTabs } from './AddLiquidityFormTabs'
-import { aBalWethPoolElementMock } from '@repo/lib/test/msw/builders/gqlPoolElement.builders'
+import { aWeightedPoolMock } from '@repo/lib/test/msw/builders/gqlPoolElement.builders'
 import { GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 
 vi.mock('@repo/lib/modules/autorange/useAutoRangeData', () => ({
@@ -49,14 +49,13 @@ vi.mock('../MinimumDepositErrorsAlert', () => ({
 import { useAutoRangeData } from '@repo/lib/modules/autorange/useAutoRangeData'
 
 function buildReclammPool() {
-  const pool = aBalWethPoolElementMock()
+  const pool = aWeightedPoolMock()
   pool.type = GqlPoolTypeValues.Reclamm
   return pool
 }
 
 const defaultProps = {
   totalUSDValue: '100',
-  nestedAddLiquidityEnabled: false,
   tabIndex: 0,
   setFlexibleTab: vi.fn(),
   setProportionalTab: vi.fn(),

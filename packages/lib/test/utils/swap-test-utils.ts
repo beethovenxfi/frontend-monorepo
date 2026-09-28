@@ -6,8 +6,6 @@ import type {
   SdkBuildSwapInputs,
   SdkSimulateSwapResponse,
   SimulateSwapInputs,
-  AuraBalBuildSwapInputs,
-  AuraBalSimulateSwapResponse,
 } from '../../modules/swap/swap.types'
 import type { Address } from 'viem'
 
@@ -16,7 +14,6 @@ export const TEST_ADDRESSES = {
   weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
   bal: '0xba100000625a3754423978a60c9317c58a424e3d',
-  auraBal: '0x616e8bfa43f920657b3497dbf40d6b1a02d4608d',
   steth: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
   wsteth: '0x7f39c581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
   vaultV2: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
@@ -104,7 +101,7 @@ export function createSdkBuildSwapInputs(overrides?: {
       scaledAmount: BigInt(1e20),
     },
     swapType: overrides?.swapType ?? GqlSorSwapTypeValues.ExactIn,
-    selectedChain: overrides?.selectedChain ?? GqlChainValues.Mainnet,
+    selectedChain: overrides?.selectedChain ?? GqlChainValues.Sonic,
     account: overrides?.account ?? TEST_ACCOUNT,
     slippagePercent: overrides?.slippagePercent ?? '0.5',
     simulateResponse,
@@ -121,97 +118,10 @@ export function createMockSimulateSwapInputs(overrides?: {
   swapAmount?: string
 }): SimulateSwapInputs {
   return {
-    chain: overrides?.chain ?? GqlChainValues.Mainnet,
+    chain: overrides?.chain ?? GqlChainValues.Sonic,
     tokenIn: overrides?.tokenIn ?? TEST_ADDRESSES.eth,
     tokenOut: overrides?.tokenOut ?? TEST_ADDRESSES.weth,
     swapType: overrides?.swapType ?? GqlSorSwapTypeValues.ExactIn,
     swapAmount: overrides?.swapAmount ?? '1.0',
-  }
-}
-
-export function createMockAuraBalSimulateResponse(): AuraBalSimulateSwapResponse {
-  return {
-    queryOutput: {
-      swapKind: 'GIVEN_IN',
-      expectedAmountOut: {
-        token: { address: TEST_ADDRESSES.weth, decimals: 18 },
-        amount: BigInt(1e18),
-      },
-      to: TEST_ADDRESSES.vaultV2,
-    } as unknown as AuraBalSimulateSwapResponse['queryOutput'],
-    swapType: GqlSorSwapTypeValues.ExactIn,
-    effectivePrice: '1',
-    effectivePriceReversed: '1',
-    returnAmount: '1.0',
-  }
-}
-
-export function createAuraBalBuildSwapInputs(overrides?: {
-  tokenInAddress?: Address
-  tokenOutAddress?: Address
-  slippagePercent?: string
-  wethIsEth?: boolean
-}): AuraBalBuildSwapInputs {
-  return {
-    tokenIn: {
-      address: overrides?.tokenInAddress ?? TEST_ADDRESSES.eth,
-      amount: '1.0',
-      scaledAmount: BigInt(1e18),
-    },
-    tokenOut: {
-      address: overrides?.tokenOutAddress ?? TEST_ADDRESSES.auraBal,
-      amount: '1.0',
-      scaledAmount: BigInt(1e18),
-    },
-    swapType: GqlSorSwapTypeValues.ExactIn,
-    selectedChain: GqlChainValues.Mainnet,
-    account: TEST_ACCOUNT,
-    slippagePercent: overrides?.slippagePercent ?? '1.0',
-    simulateResponse: createMockAuraBalSimulateResponse(),
-    wethIsEth: overrides?.wethIsEth ?? true,
-  }
-}
-
-export function createMockNetworkConfig(overrides?: {
-  supportedWrappers?: Array<{
-    baseToken: string
-    wrappedToken: string
-    swapHandler: string
-  }>
-}): {
-  chainId: number
-  chain: GqlChain
-  tokens: {
-    addresses: { wNativeAsset: string; auraBal: string; bal: string }
-    nativeAsset: { address: string }
-    supportedWrappers: Array<{ baseToken: string; wrappedToken: string; swapHandler: string }>
-  }
-  contracts: { balancer: { vaultV2: string } }
-} {
-  return {
-    chainId: 1,
-    chain: GqlChainValues.Mainnet as GqlChain,
-    tokens: {
-      addresses: {
-        wNativeAsset: TEST_ADDRESSES.weth,
-        auraBal: TEST_ADDRESSES.auraBal,
-        bal: TEST_ADDRESSES.bal,
-      },
-      nativeAsset: {
-        address: TEST_ADDRESSES.eth,
-      },
-      supportedWrappers: overrides?.supportedWrappers ?? [
-        {
-          baseToken: TEST_ADDRESSES.steth,
-          wrappedToken: TEST_ADDRESSES.wsteth,
-          swapHandler: 'LIDO' as const,
-        },
-      ],
-    },
-    contracts: {
-      balancer: {
-        vaultV2: TEST_ADDRESSES.vaultV2,
-      },
-    },
   }
 }

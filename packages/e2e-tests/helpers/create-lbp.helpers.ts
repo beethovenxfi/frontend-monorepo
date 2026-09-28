@@ -42,10 +42,9 @@ export const BEETS_LBP_CONFIGS: [BeetsLbpConfig, ...BeetsLbpConfig[]] = [
 ]
 
 /*
-  The Beets API URL has no graphql path segment (CI sets it to
-  https://backend-v3.beets-ftm-node.com/), so a graphql-suffix route would never match and the
-  CreateLBP mutation would hit the real backend and fail metadata syncing. Match the configured
-  API URL instead, keeping the suffix match as a fallback.
+  Match the configured API URL so the CreateLBP mutation can be intercepted
+  regardless of whether the endpoint has a graphql path segment, keeping the
+  suffix match as a fallback.
 */
 export async function mockCreateLbpMetadata(page: Page) {
   const apiUrl = process.env.NEXT_PUBLIC_BALANCER_API_URL?.replace(/\/$/, '')

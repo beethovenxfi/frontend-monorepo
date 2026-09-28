@@ -1,5 +1,5 @@
 import { PoolType, STABLE_POOL_CONSTRAINTS } from '@balancer/sdk'
-import { zeroAddress, Address } from 'viem'
+import { zeroAddress } from 'viem'
 import {
   SupportedPoolTypes,
   PoolTypeDetails,
@@ -10,8 +10,6 @@ import {
 } from './types'
 import { getSwapFeePercentageOptions } from './helpers'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
-import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { FormStep } from '@repo/lib/shared/hooks/useFormSteps'
 import { PoolTokensStep } from './steps/tokens/PoolTokensStep'
 import { PoolDetailsStep } from './steps/details/PoolDetailsStep'
@@ -24,16 +22,6 @@ export const POOL_CREATION_FORM_STEPS: FormStep[] = [
   { id: 'step-3-details', title: 'Details', Component: PoolDetailsStep },
   { id: 'step-4-fund', title: 'Fund', Component: PoolFundStep },
 ]
-
-const GNOSIS_BLACKLIST: Address[] = [
-  '0xcB444e90D8198415266c6a2724b7900fb12FC56E', // Monerium EUR emoney (EURe)
-  '0x417bc5b940475203A18C2f320a5ba470D6c5E463', // Wrapped Aave Gnosis EURe (waGnoEURe)
-  '0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430', //Monerium EURe (EURe)
-]
-
-export const TOKEN_BLACKLIST: Partial<Record<GqlChain, Set<string>>> = {
-  [GqlChainValues.Gnosis]: new Set(GNOSIS_BLACKLIST.map(addr => addr.toLowerCase())),
-}
 
 export const NUM_FORMAT = '0.00000000' // up to 8 decimals?
 export const PERCENTAGE_DECIMALS = 16

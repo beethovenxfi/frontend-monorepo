@@ -151,11 +151,11 @@ export function FeaturedPoolWeightChart({
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 1,
-                  color: getTokenColor(chain, token.address as Address, i).from,
+                  color: getTokenColor(token.address as Address, i).from,
                 },
                 {
                   offset: 0,
-                  color: getTokenColor(chain, token.address as Address, i).to,
+                  color: getTokenColor(token.address as Address, i).to,
                 },
               ]),
             },

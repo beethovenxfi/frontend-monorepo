@@ -1,5 +1,4 @@
 import type {
-  GqlNestedPool,
   QuantAmmWeightSnapshot,
   GqlPoolLiquidityBootstrappingV3,
   GqlPoolFixedPriceLbp,
@@ -24,7 +23,6 @@ export type PoolList = GetPoolsQuery['pools']
 export type PoolListItem = PoolList[0]
 export type LbpV3 = GqlPoolLiquidityBootstrappingV3 | GqlPoolFixedPriceLbp
 
-type ApiTokenWithNestedPool = ApiToken & { nestedPool?: GqlNestedPool }
 export type VotingPool = Pick<
   PoolListItem,
   | 'id'
@@ -39,7 +37,7 @@ export type VotingPool = Pick<
   | 'tags'
   // We need hook to show when the pool has hooks in the voting list
   | 'hook'
-> & { poolTokens: ApiTokenWithNestedPool[] }
+> & { poolTokens: ApiToken[] }
 
 // PoolCore defines the shared fields between PoolListItem, Pool that are required for pool related shared logic
 export type PoolCore = VotingPool | Pool | PoolListItem
@@ -97,11 +95,7 @@ export type PoolFilterType = (typeof poolTypeFilters)[number]
 // We need to map toggalable pool types to their corresponding set of GqlPoolTypes.
 export const POOL_TYPE_MAP: { [key in PoolFilterType]: GqlPoolType[] } = {
   [GqlPoolTypeValues.Weighted]: [GqlPoolTypeValues.Weighted],
-  [GqlPoolTypeValues.Stable]: [
-    GqlPoolTypeValues.Stable,
-    GqlPoolTypeValues.ComposableStable,
-    GqlPoolTypeValues.MetaStable,
-  ],
+  [GqlPoolTypeValues.Stable]: [GqlPoolTypeValues.Stable, GqlPoolTypeValues.ComposableStable],
   [GqlPoolTypeValues.LiquidityBootstrapping]: [GqlPoolTypeValues.LiquidityBootstrapping],
   [GqlPoolTypeValues.Gyro]: [
     GqlPoolTypeValues.Gyro,
@@ -151,10 +145,7 @@ export type TokenCore = {
   index: number
 }
 
-export type PoolToken = ApiToken &
-  Pool['poolTokens'][0] & {
-    nestedPool?: GqlNestedPool
-  }
+export type PoolToken = ApiToken & Pool['poolTokens'][0]
 
 export enum PoolDisplayType {
   Name = 'name',

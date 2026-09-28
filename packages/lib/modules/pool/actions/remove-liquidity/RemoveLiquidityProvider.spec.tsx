@@ -1,5 +1,5 @@
 import { aTokenPriceMock } from '@repo/lib/modules/tokens/__mocks__/token.builders'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { aUserPoolBalance } from '@repo/lib/test/msw/builders/gqlUserBalance.builders'
 import { mockTokenPricesList } from '@repo/lib/test/msw/handlers/Tokens.handlers'
 import {
@@ -48,14 +48,14 @@ vi.mock('./queries/useRemoveLiquiditySimulationQuery', () => {
   }
 })
 
-const poolMock = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement // Sonic v2 scUSD/stS
+const poolMock = getApiPoolMock(scUsdStS) as unknown as Pool // Sonic v2 scUSD/stS
 
 poolMock.userBalance = aUserPoolBalance({ totalBalance: '200' }) // maxBptUnits
 poolMock.dynamicData.totalLiquidity = '1000'
 poolMock.dynamicData.totalShares = '100'
 // bptPrice = 1000/100 = 10
 
-async function testUseRemoveLiquidity(pool: GqlPoolElement = poolMock) {
+async function testUseRemoveLiquidity(pool: Pool = poolMock) {
   mockPool(pool)
 
   const { result } = testHook(() => useRemoveLiquidityLogic(), {

@@ -8,9 +8,9 @@ import { usePoolLogic } from './PoolProvider'
 import {} from '@repo/lib/test/msw/builders/gqlStaking.builders'
 import { getApiPoolMock } from './__mocks__/api-mocks/api-mocks'
 import { scUsdStS } from './__mocks__/pool-examples/flat'
-import { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import { Pool } from '@repo/lib/modules/pool/pool.types'
 
-const sonicPool = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement
+const sonicPool = getApiPoolMock(scUsdStS) as unknown as Pool
 const sonicPoolResponse: GetPoolQuery = { __typename: 'Query', pool: sonicPool }
 
 async function testUsePool({

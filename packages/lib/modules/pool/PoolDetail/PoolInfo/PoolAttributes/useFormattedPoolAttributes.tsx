@@ -52,19 +52,22 @@ export function useFormattedPoolAttributes() {
 
   const poolOwnerData = useMemo(() => {
     if (!pool) return
-    const { owner, swapFeeManager, chain } = pool
-    if (!owner) return
+    const { poolCreator, swapFeeManager, chain } = pool
+    const manager = (isV2 ? poolCreator : swapFeeManager) || ''
+    if (!manager) return
 
-    if (owner === zeroAddress && isV2) {
+    if (manager === zeroAddress) {
       return {
-        title: 'No owner',
+        title: isV2 ? 'No owner' : 'Delegate manager',
         link: '',
-        editableText: 'non-editable',
-        attributeImmutabilityText: '',
+        editableText: isV2 ? 'non-editable' : 'editable by governance',
+        attributeImmutabilityText: isStable(pool.type)
+          ? ' except for swap fees and AMP factor editable by governance'
+          : ' except for swap fees editable by governance',
       }
     }
 
-    if (owner === delegateOwner || (owner === zeroAddress && isV3)) {
+    if (manager === delegateOwner) {
       return {
         title: `Delegate ${isV2 ? 'owner' : 'manager'}`,
         link: '',
@@ -77,15 +80,9 @@ export function useFormattedPoolAttributes() {
 
     const editableBy = `editable by ${isV2 ? 'pool owner' : 'swap fee manager'}`
 
-    const link = isV2
-      ? getBlockExplorerAddressUrl(owner, chain)
-      : swapFeeManager
-        ? getBlockExplorerAddressUrl(swapFeeManager, chain)
-        : ''
-
     return {
-      title: abbreviateAddress((isV2 ? owner : swapFeeManager) || ''),
-      link,
+      title: abbreviateAddress(manager),
+      link: getBlockExplorerAddressUrl(manager, chain),
       editableText: editableBy,
       attributeImmutabilityText: isStable(pool.type)
         ? ` except for swap fees and AMP factor ${editableBy}`

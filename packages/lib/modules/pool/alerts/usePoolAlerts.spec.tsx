@@ -1,76 +1,8 @@
-import { testHook } from '@repo/lib/test/utils/custom-renderers'
-import { notAllowedPoolMock } from '../__mocks__/notAllowedPoolMock'
-import { usePoolAlerts } from './usePoolAlerts'
-import { recoveryPoolMock } from '../__mocks__/recoveryPoolMock'
-import { HooksProvider } from '../../hooks/HooksProvider'
-import { PoolsMetadataProvider } from '../metadata/PoolsMetadataProvider'
+import { describe } from 'vitest'
 
-describe('Creates pool alerts for', () => {
-  // TODO: Add a Beets/Sonic pool fixture with two disallowed tokens.
-  test.skip('a pool with 2 not allowed tokens', () => {
-    const { result } = testHook(() => usePoolAlerts(notAllowedPoolMock), {
-      wrapper: ({ children }) => (
-        <PoolsMetadataProvider erc4626Metadata={[]} poolsMetadata={{}}>
-          <HooksProvider data={[]}>{children}</HooksProvider>
-        </PoolsMetadataProvider>
-      ),
-    })
-
-    expect(result.current.poolAlerts).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "The token MTLSTR is currently not supported.",
-          "identifier": "TokenNotAllowed-MTLSTR",
-          "isSoftWarning": false,
-          "status": "error",
-        },
-        {
-          "content": "The token EGX is currently not supported.",
-          "identifier": "TokenNotAllowed-EGX",
-          "isSoftWarning": false,
-          "status": "error",
-        },
-      ]
-    `)
-  })
-
-  // TODO: Add a Beets/Sonic recovery-mode pool with matching vulnerability alerts.
-  test.skip('a pool with 2 vulnerability alerts', () => {
-    const { result } = testHook(() => usePoolAlerts(recoveryPoolMock), {
-      wrapper: ({ children }) => (
-        <PoolsMetadataProvider erc4626Metadata={[]} poolsMetadata={{}}>
-          <HooksProvider data={[]}>{children}</HooksProvider>
-        </PoolsMetadataProvider>
-      ),
-    })
-
-    expect(result.current.poolAlerts).toMatchInlineSnapshot(`
-      [
-        {
-          "content": <React.Fragment>
-            Due to an exploit on Euler, this pool has been set to recovery mode by the Emergency multisig
-            . Proportional withdrawals are enabled in the UI and you are encouraged to withdraw as soon as possible.
-          </React.Fragment>,
-          "identifier": "eulerRecoveryModeWarning",
-          "isSoftWarning": false,
-          "learnMoreLink": "https://docs.balancer.fi/concepts/governance/emergency.html",
-          "status": "error",
-        },
-        {
-          "content": <React.Fragment>
-            A vulnerability has been discovered that affects this pool. Existing liquidity providers should remove liquidity immediately.
-          </React.Fragment>,
-          "identifier": "cspPoolVulnWarning",
-          "isSoftWarning": false,
-          "status": "error",
-        },
-        {
-          "content": "This pool is in recovery mode",
-          "identifier": "poolIsInRecoveryMode",
-          "isSoftWarning": false,
-          "status": "warning",
-        },
-      ]
-    `)
-  })
+describe.skip('Creates pool alerts for', () => {
+  // TODO: Add a Beets/Sonic pool fixture with two disallowed tokens, expecting
+  // TokenNotAllowed alerts for each token.
+  // TODO: Add a Beets/Sonic recovery-mode pool fixture, expecting recovery-mode
+  // and vulnerability alerts.
 })

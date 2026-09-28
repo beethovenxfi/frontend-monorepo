@@ -1,7 +1,6 @@
 'use client'
 
 import { TokenInput } from '@repo/lib/modules/tokens/TokenInput/TokenInput'
-import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { HumanAmount, Path } from '@balancer/sdk'
 import {
   Card,
@@ -24,8 +23,6 @@ import { Address } from 'viem'
 import { SwapPreviewModal } from './modal/SwapModal'
 import { TransactionSettings } from '../user/settings/TransactionSettings'
 import { PriceImpactAccordion } from '../price-impact/PriceImpactAccordion'
-import { ChainSelect } from '../chains/ChainSelect'
-import { hasMultipleNetworks } from '../pool/pool.utils'
 import { ArrowDown, CheckCircle, Link, Repeat } from 'lucide-react'
 import { SwapRate } from './SwapRate'
 import { SwapDetails } from './SwapDetails'
@@ -40,8 +37,7 @@ import { useIsPoolSwapUrl } from './useIsPoolSwapUrl'
 import { CompactTokenSelectModal } from '../tokens/TokenSelectModal/TokenSelectList/CompactTokenSelectModal'
 import { PoolSwapCard } from './PoolSwapCard'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
-import { isPoolSwapAllowed, isV3LBP } from '../pool/pool.helpers'
-import { supportsNestedActions } from '../pool/actions/LiquidityActionHelpers'
+import { isV3LBP } from '../pool/pool.helpers'
 import { ApiToken } from '../tokens/token.types'
 import { SwapSimulationError } from './SwapSimulationError'
 import { LbpSwapCard } from '@repo/lib/modules/swap/LbpSwapCard'
@@ -49,7 +45,7 @@ import { ContractWalletAlert } from '@repo/lib/shared/components/alerts/Contract
 import { useContractWallet } from '../web3/wallets/useContractWallet'
 import { useIsSafeAccount } from '../web3/safe.hooks'
 import { SdkSimulateSwapResponse } from './swap.types'
-import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
+
 import { usePriceImpact } from '@repo/lib/modules/price-impact/PriceImpactProvider'
 import { RoutesCard } from './RoutesCard'
 
@@ -87,7 +83,6 @@ export function SwapForm({
     pool,
     poolActionableTokens,
     isLbpSwap,
-    setSelectedChain,
     setTokenInAmount,
     setTokenOutAmount,
     setTokenSelectKey,
@@ -152,28 +147,6 @@ export function SwapForm({
     }
 
     if (!token) return
-
-    if (
-      pool &&
-      tokenSelectKey === 'tokenIn' &&
-      supportsNestedActions(pool) &&
-      !isPoolSwapAllowed(pool, tokenAddress, tokenOut.address)
-    ) {
-      setTokenIn(tokenAddress)
-      setTokenOut('' as Address)
-      return
-    }
-
-    if (
-      pool &&
-      tokenSelectKey === 'tokenOut' &&
-      supportsNestedActions(pool) &&
-      !isPoolSwapAllowed(pool, tokenAddress, tokenIn.address)
-    ) {
-      setTokenIn('' as Address)
-      setTokenOut(tokenAddress)
-      return
-    }
 
     handleTokenSelect(token)
   }
@@ -256,15 +229,6 @@ export function SwapForm({
                 <ContractWalletAlert />
               )}
 
-              {!isPoolSwap && hasMultipleNetworks(PROJECT_CONFIG.supportedNetworks) && (
-                <ChainSelect
-                  onChange={newValue => {
-                    setSelectedChain(newValue as GqlChain)
-                    setTokenInAmount('')
-                  }}
-                  value={selectedChain}
-                />
-              )}
               <VStack w="full">
                 <TokenInput
                   address={tokenIn.address}

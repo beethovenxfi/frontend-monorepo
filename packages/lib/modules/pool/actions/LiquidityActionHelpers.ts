@@ -11,15 +11,11 @@ import {
   HumanAmount,
   InputAmount,
   MinimalToken,
-  NestedPoolState,
-  PoolGetPool,
   PoolState,
   PoolStateWithUnderlyings,
   PoolTokenWithUnderlying,
   Token,
   TokenAmount,
-  mapPoolToNestedPoolStateV2,
-  mapPoolToNestedPoolStateV3,
   mapPoolType,
 } from '@balancer/sdk'
 import BigNumber from 'bignumber.js'
@@ -39,7 +35,6 @@ import {
   isV2Pool,
   isV3Pool,
   supportsWethIsEth,
-  hasNestedPools,
   isWeightedV1,
 } from '../pool.helpers'
 import { getActionableTokenSymbol } from '../pool-tokens.utils'
@@ -67,20 +62,6 @@ export class LiquidityActionHelpers {
   /* Used by default (non-nested) SDK handlers */
   public get poolState(): PoolState {
     return toPoolState(this.pool)
-  }
-
-  /* Used by default nested SDK handlers */
-  public get nestedPoolStateV2(): NestedPoolState {
-    const result = mapPoolToNestedPoolStateV2(this.pool as PoolGetPool)
-    result.protocolVersion = 2
-    return result
-  }
-
-  /* Used by default nested SDK handlers */
-  public get nestedPoolStateV3(): NestedPoolState {
-    const result = mapPoolToNestedPoolStateV3(this.pool as PoolGetPool)
-    result.protocolVersion = 3
-    return result
   }
 
   /* Used by V3 boosted SDK handlers */
@@ -247,13 +228,6 @@ It looks that you tried to call useBuildCallData before the last query finished 
   return queryResponse
 }
 
-export function supportsNestedActions(pool: Pool): boolean {
-  if (!hasNestedPools(pool)) return false
-  const disallowNestedActions = getNetworkConfig(pool.chain).pools?.disallowNestedActions ?? []
-  if (disallowNestedActions.includes(pool.id)) return false
-  return true
-}
-
 export function shouldUseRecoveryRemoveLiquidity(pool: Pool): boolean {
   // DEBUG: Uncomment following if condition to allow testing pools in recovery mode (but note paused). Examples:
   // pools/ethereum/v2/0x0da692ac0611397027c91e559cfd482c4197e4030002000000000000000005c9 (WEIGHTED)
@@ -294,10 +268,6 @@ export function supportsProportionalAddLiquidityKind(pool: Pool): boolean {
 export function supportsProportionalAddLiquidityReasons(pool: Pool): string | undefined {
   if (isV2Pool(pool)) {
     if (pool.type === GqlPoolTypeValues.Stable) return supportsProportionalTemplate('v2 stable')
-
-    if (pool.type === GqlPoolTypeValues.MetaStable) {
-      return supportsProportionalTemplate('v2 metastable')
-    }
   }
 
   // WeightedPool2Tokens pool types do not support AddLiquidityKind.Proportional in the SDK

@@ -30,52 +30,27 @@ import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 
 // URL slug for each chain
 export enum ChainSlug {
-  Ethereum = 'ethereum',
-  Arbitrum = 'arbitrum',
-  Polygon = 'polygon',
-  Avalanche = 'avalanche',
-  Fantom = 'fantom',
-  Base = 'base',
-  Optimisim = 'optimism',
-  Gnosis = 'gnosis',
-  Sepolia = 'sepolia',
-  Mode = 'mode',
-  Fraxtal = 'fraxtal',
   Sonic = 'sonic',
-  HyperEVM = 'hyperevm',
-  Plasma = 'plasma',
-  Monad = 'monad',
 }
 
 // Maps GraphQL chain enum to URL slug
 export const chainToSlugMap: Partial<Record<GqlChain, ChainSlug>> = {
-  [GqlChainValues.Mainnet]: ChainSlug.Ethereum,
-  [GqlChainValues.Arbitrum]: ChainSlug.Arbitrum,
-  [GqlChainValues.Polygon]: ChainSlug.Polygon,
-  [GqlChainValues.Avalanche]: ChainSlug.Avalanche,
-  [GqlChainValues.Fantom]: ChainSlug.Fantom,
-  [GqlChainValues.Base]: ChainSlug.Base,
-  [GqlChainValues.Optimism]: ChainSlug.Optimisim,
-  [GqlChainValues.Gnosis]: ChainSlug.Gnosis,
-  [GqlChainValues.Sepolia]: ChainSlug.Sepolia,
   [GqlChainValues.Sonic]: ChainSlug.Sonic,
-  [GqlChainValues.Hyperevm]: ChainSlug.HyperEVM,
-  [GqlChainValues.Plasma]: ChainSlug.Plasma,
-  [GqlChainValues.Monad]: ChainSlug.Monad,
+}
+
+const slugToChainMap = invert(chainToSlugMap) as Record<ChainSlug, GqlChain>
+
+export function isChainSlug(value: string): value is ChainSlug {
+  return value in slugToChainMap
 }
 
 export function getChainSlug(chainSlug: ChainSlug): GqlChain {
-  const slugToChainMap = invert(chainToSlugMap) as Record<ChainSlug, GqlChain>
   const chain = slugToChainMap[chainSlug]
   if (!chain) throw new Error(`Chain ${chainSlug} is not a valid chainName`)
   return chain
 }
 
-const unsupportedPoolTypes = [
-  GqlPoolTypeValues.CowAmm,
-  GqlPoolTypeValues.Element,
-  GqlPoolTypeValues.Fx,
-] as GqlPoolType[]
+const unsupportedPoolTypes = [GqlPoolTypeValues.Unknown] as GqlPoolType[]
 
 export function assertSupportedPoolDetailRoute({
   type,
@@ -114,17 +89,6 @@ export function getPoolPath(
 ) {
   const variant = getVariant(params.type, params.protocolVersion, params.variant)
   return `/pools/${chainToSlugMap[params.chain]}/${variant}/${params.id}`
-}
-
-export function getNestedPoolPath({
-  pool,
-  nestedPoolAddress,
-}: {
-  pool: PoolCore
-  nestedPoolAddress: Address
-}) {
-  const variant = getVariant(pool.type, pool.protocolVersion)
-  return `/pools/${chainToSlugMap[pool.chain]}/${variant}/${nestedPoolAddress}`
 }
 
 // TODO: the following 2 functions (getAprLabel & getTotalAprLabel) most likely need revisiting somewhere in the near future and refactored to just one
@@ -166,12 +130,6 @@ export function getTotalApr(aprItems: GqlPoolAprItem[]): [BigNumber, BigNumber] 
         return
       }
 
-      if (item.type === GqlPoolAprItemTypeValues.VeBalEmissions) {
-        // We don't add this to maxTotal as is already included on the staking boost
-        minTotal = bn(item.apr).plus(minTotal)
-        return // Deprecated, should be 0 once emissions stop
-      }
-
       if (item.type === GqlPoolAprItemTypeValues.MaBeetsEmissions) {
         minTotal = bn(item.apr).plus(minTotal)
         maxTotal = bn(item.apr).plus(maxTotal)
@@ -209,14 +167,10 @@ export function getTotalAprRaw(aprItems: GqlPoolAprItem[]): string {
 // Maps GraphQL pool type enum to human readable label for UI.
 const poolTypeLabelMap: Partial<Record<GqlPoolType, string>> = {
   [GqlPoolTypeValues.Weighted]: 'Weighted',
-  [GqlPoolTypeValues.Element]: 'Element',
   [GqlPoolTypeValues.Gyro]: '2-CLP',
   [GqlPoolTypeValues.Gyro3]: '3-CLP',
   [GqlPoolTypeValues.GyroE]: 'E-CLP',
-  [GqlPoolTypeValues.Investment]: 'Managed',
   [GqlPoolTypeValues.LiquidityBootstrapping]: 'Dynamic LBP',
-  [GqlPoolTypeValues.MetaStable]: 'Stable',
-  [GqlPoolTypeValues.PhantomStable]: 'Stable',
   [GqlPoolTypeValues.Stable]: 'Stable',
   [GqlPoolTypeValues.Unknown]: 'Unknown',
   [GqlPoolTypeValues.ComposableStable]: 'Stable',
@@ -333,8 +287,4 @@ export function removeHookDataFromPoolIfNecessary(pool: Pool | PoolListItem) {
   }
 
   return clone
-}
-
-export function hasMultipleNetworks(supportedNetworks: GqlChain[]) {
-  return supportedNetworks.length > 1
 }

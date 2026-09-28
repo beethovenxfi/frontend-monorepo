@@ -1,12 +1,7 @@
 'use client'
 
 import { createContext, PropsWithChildren, useEffect, useMemo, useState } from 'react'
-import {
-  GetPoolsDocument,
-  GqlChain,
-  GqlPoolType,
-} from '@repo/lib/shared/services/api/generated/graphql'
-import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
+import { GetPoolsDocument, GqlPoolType } from '@repo/lib/shared/services/api/generated/graphql'
 import { useApolloClient, useQuery } from '@apollo/client/react'
 import { usePoolListQueryState } from './usePoolListQueryState'
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
@@ -23,10 +18,8 @@ import { useWalletTokenBalances } from '../../tokens/useWalletTokenBalances'
 
 export function usePoolListLogic({
   fixedPoolTypes,
-  fixedChains,
 }: {
   fixedPoolTypes?: GqlPoolType[]
-  fixedChains?: GqlChain[]
 } = {}) {
   const queryState = usePoolListQueryState()
   const { userAddress, isConnected } = useUserAccount()
@@ -44,7 +37,6 @@ export function usePoolListLogic({
     where: {
       ...queryVariables.where,
       poolTypeIn: fixedPoolTypes || queryVariables.where.poolTypeIn,
-      chainIn: fixedChains || queryVariables.where.chainIn,
     },
   }
 
@@ -59,23 +51,17 @@ export function usePoolListLogic({
 
   const poolsData = pools.map(pool => removeHookDataFromPoolIfNecessary(pool)) as PoolListItem[]
 
-  const selectedChains = variables.where.chainIn || []
-  const joinableChains = selectedChains.filter(chain => chain !== GqlChainValues.Sepolia)
-
   const {
-    tokenBalancesByChain: walletTokenAddressesByChain,
+    tokenAddresses: walletTokenAddresses,
     isLoading: isWalletBalancesLoading,
     errors: walletBalanceErrors,
     hasBalance: hasWalletTokenBalance,
-  } = useWalletTokenBalances(joinableChains, joinablePools)
+  } = useWalletTokenBalances(joinablePools)
 
   const joinablePoolsQuery = useReactQuery({
     queryKey: [
       'pool-list-joinable-pools',
-      joinableChains.join(','),
-      joinableChains
-        .map(chain => `${chain}:${(walletTokenAddressesByChain.get(chain) || []).join(',')}`)
-        .join('|'),
+      walletTokenAddresses.join(','),
       queryVariables.first,
       queryVariables.skip,
       queryVariables.orderBy,
@@ -88,36 +74,20 @@ export function usePoolListLogic({
       queryVariables.where.tagNotIn?.join(',') || '',
     ],
     queryFn: async () => {
-      const chainsWithTokens = joinableChains
-        .map(chain => ({
-          chain,
-          tokensIn: (walletTokenAddressesByChain.get(chain) || []).map(address =>
-            address.toLowerCase()
-          ),
-        }))
-        .filter(({ tokensIn }) => tokensIn.length > 0)
+      const response = await apolloClient.query({
+        query: GetPoolsDocument,
+        variables: {
+          ...queryVariables,
+          where: {
+            ...queryVariables.where,
+            tokensIn: walletTokenAddresses,
+            minTvl: 50_000,
+            reviewedOnly: true,
+          },
+        },
+      })
 
-      const results = await Promise.allSettled(
-        chainsWithTokens.map(async ({ chain, tokensIn }) => {
-          const response = await apolloClient.query({
-            query: GetPoolsDocument,
-            variables: {
-              ...queryVariables,
-              where: {
-                ...queryVariables.where,
-                chainIn: [chain],
-                tokensIn,
-                minTvl: 50_000,
-                reviewedOnly: true,
-              },
-            },
-          })
-
-          return response.data?.pools || []
-        })
-      )
-
-      return results.flatMap(result => (result.status === 'fulfilled' ? result.value : []))
+      return response.data?.pools || []
     },
     enabled:
       joinablePools &&
@@ -125,7 +95,7 @@ export function usePoolListLogic({
       isAddress(userAddress) &&
       !isLoadingTokens &&
       !isLoadingTokenPrices &&
-      joinableChains.some(chain => (walletTokenAddressesByChain.get(chain) || []).length > 0),
+      walletTokenAddresses.length > 0,
     staleTime: 30_000,
   })
 
@@ -133,18 +103,11 @@ export function usePoolListLogic({
     if (!joinablePools || !isConnected || !isAddress(userAddress)) return poolsData
     if (walletBalanceErrors.length > 0) return poolsData
 
-    const allJoinablePools = joinablePoolsQuery.data || []
-    const uniquePools = new Map<string, PoolListItem>()
-
-    allJoinablePools.forEach(pool => {
-      if (!uniquePools.has(pool.id)) {
-        uniquePools.set(pool.id, removeHookDataFromPoolIfNecessary(pool) as PoolListItem)
-      }
-    })
-
-    return Array.from(uniquePools.values()).sort((a, b) => {
-      return bn(b.dynamicData.totalLiquidity).comparedTo(bn(a.dynamicData.totalLiquidity)) ?? 0
-    })
+    return ((joinablePoolsQuery.data || []) as PoolListItem[])
+      .map(pool => removeHookDataFromPoolIfNecessary(pool) as PoolListItem)
+      .sort((a, b) => {
+        return bn(b.dynamicData.totalLiquidity).comparedTo(bn(a.dynamicData.totalLiquidity)) ?? 0
+      })
   }, [
     joinablePools,
     poolsData,
@@ -197,16 +160,11 @@ export const PoolListContext = createContext<ReturnType<typeof usePoolListLogic>
 
 export function PoolListProvider({
   fixedPoolTypes,
-  fixedChains,
   children,
 }: PropsWithChildren<{
   fixedPoolTypes?: GqlPoolType[]
-  fixedChains?: GqlChain[]
 }>) {
-  const hook = usePoolListLogic({
-    fixedPoolTypes,
-    fixedChains,
-  })
+  const hook = usePoolListLogic({ fixedPoolTypes })
 
   return <PoolListContext.Provider value={hook}>{children}</PoolListContext.Provider>
 }

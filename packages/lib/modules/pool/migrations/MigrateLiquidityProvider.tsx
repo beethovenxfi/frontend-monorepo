@@ -49,7 +49,7 @@ function useMigrateLiquidityLogic(protocol: number, chainId: number, poolId: str
   const newPool = newPoolData?.pool as Pool | undefined
 
   const removeLiquidityReceipt = useRemoveLiquidityReceipt({
-    chain: oldPool?.chain || GqlChainValues.Mainnet,
+    chain: oldPool?.chain || GqlChainValues.Sonic,
     txHash: removeLiquidityTxHash,
     userAddress,
     protocolVersion: oldPool?.protocolVersion as ProtocolVersion,

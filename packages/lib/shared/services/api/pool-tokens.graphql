@@ -7,8 +7,6 @@ fragment UnderlyingToken on GqlToken {
   decimals
   name
   symbol
-  priority
-  tradable
   isErc4626
   logoURI
 }
@@ -28,8 +26,6 @@ fragment PoolTokens on GqlPoolTokenDetail {
   decimals
   name
   symbol
-  priority
-  tradable
   canUseBufferForSwaps
   useWrappedForAddRemove
   useUnderlyingForAddRemove
@@ -39,7 +35,6 @@ fragment PoolTokens on GqlPoolTokenDetail {
   priceRate
   decimals
   weight
-  hasNestedPool
   isAllowed
   priceRateProvider
   logoURI
@@ -56,44 +51,9 @@ fragment PoolTokens on GqlPoolTokenDetail {
     reviewFile
     factory
   }
-  nestedPool {
-    id
-    address
-    type
-    bptPriceRate
-    nestedPercentage
-    nestedShares
-    totalLiquidity
-    totalShares
-    tokens {
-      index
-      address
-      decimals
-      balance
-      balanceUSD
-      chain
-      symbol
-      weight
-      isErc4626
-      canUseBufferForSwaps
-      useWrappedForAddRemove
-      useUnderlyingForAddRemove
-      logoURI
-      underlyingToken {
-        ...UnderlyingToken
-      }
-      erc4626ReviewData {
-        ...Erc4626ReviewData
-      }
-    }
-    hook {
-      ...Hook
-    }
-  }
   isErc4626
   maxDeposit
   maxWithdraw
-  isBufferAllowed
   underlyingToken {
     ...UnderlyingToken
   }

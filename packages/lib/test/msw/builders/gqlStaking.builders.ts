@@ -12,7 +12,7 @@ export function aGqlStakingMock(...options: Partial<GqlPoolStaking>[]): GqlPoolS
     __typename: 'GqlPoolStaking',
     id: defaultTestGaugeAddress,
     address: '0x',
-    chain: GqlChainValues.Mainnet,
+    chain: GqlChainValues.Sonic,
     type: GqlPoolStakingTypeValues.Gauge,
     gauge: {
       __typename: 'GqlPoolStakingGauge',

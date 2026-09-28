@@ -1,7 +1,6 @@
 import { getNativeAssetAddress, getNetworkConfig } from '@repo/lib/config/app.config'
 import { BPT_DECIMALS } from '@repo/lib/modules/pool/pool.constants'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { bn } from '@repo/lib/shared/utils/numbers'
 import { HumanAmount } from '@balancer/sdk'
 import { Address, Log, erc20Abi, formatUnits, parseAbiItem, parseAbi, parseEventLogs } from 'viem'
@@ -9,7 +8,6 @@ import { HumanTokenAmount } from '../../../tokens/token.types'
 import { emptyAddress } from '../../../web3/contracts/wagmi-helpers'
 import { ProtocolVersion } from '@repo/lib/modules/pool/pool.types'
 import { ApiToken } from '@repo/lib/modules/tokens/token.types'
-import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 
 type ParseProps = {
   receiptLogs: Log[]
@@ -51,7 +49,7 @@ export function parseAddLiquidityReceipt({
   const receivedBptUnits = formatUnits(receivedBptAmount || 0n, BPT_DECIMALS)
 
   return {
-    sentTokens: filterEdgeCases(sentTokens, chain),
+    sentTokens,
     receivedBptUnits,
   }
 }
@@ -84,7 +82,7 @@ export function parseRemoveLiquidityReceipt({
   const sentBptUnits = formatUnits(sentBptAmount || 0n, BPT_DECIMALS)
 
   return {
-    receivedTokens: filterEdgeCases(receivedTokens, chain),
+    receivedTokens,
     sentBptUnits,
   }
 }
@@ -303,21 +301,4 @@ function getIncomingLogsLoopsWithdraw(logs: Log[], userAddress?: Address) {
     args: { to: userAddress },
     logs,
   })[0]?.args?.value
-}
-
-function filterEdgeCases(tokens: HumanTokenAmount[], chain: GqlChain) {
-  // ERC-20: Monerium EURe (EURe)
-  const getERC20EUReAddress = () => {
-    if (chain === GqlChainValues.Gnosis) return '0x420ca0f9b9b604ce0fd9c18ef134c705e5fa3430'
-    if (chain === GqlChainValues.Polygon) return '0xE0aEa583266584DafBB3f9C3211d5588c73fEa8d'
-    return '0x39b8B6385416f4cA36a20319F70D28621895279D' // mainnet
-  }
-
-  /*
-      TODO:
-        properly implement this filter getting this info from LiquidityAdded/Removed event instead of Transfers
-        They use frontend (erc20) <> controller (upgradable proxy) setup - where calls to erc20 are forwarded to the controller.
-        Both emit events, which explains the duplicates.
-    */
-  return tokens.filter(t => !isSameAddress(t.tokenAddress, getERC20EUReAddress()))
 }

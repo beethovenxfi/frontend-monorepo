@@ -113,7 +113,6 @@ export function UserSnapshotValues() {
               chain={pool.chain}
               height="28px"
               pool={pool}
-              poolId={pool.id}
               textProps={{ fontWeight: 'bold', fontSize: '2xl', lineHeight: '28px' }}
             />
           ) : (

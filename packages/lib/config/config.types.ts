@@ -2,7 +2,6 @@ import { Address } from 'viem'
 import type { GqlChain } from '../shared/services/api/generated/graphql'
 import { chains } from '@repo/lib/modules/web3/ChainConfig'
 import { PoolIssue } from '../modules/pool/alerts/pool-issues/PoolIssue.type'
-import { SupportedWrapHandler } from '../modules/swap/swap.types'
 import { PoolDisplayType, PoolFilterType } from '../modules/pool/pool.types'
 import { AppLink } from '../shared/components/navs/useNav'
 import { LinkSection } from '../shared/components/navs/footer.types'
@@ -16,21 +15,12 @@ type TokenInfo = {
 }
 export interface TokensConfig {
   addresses: {
-    bal: Address
     wNativeAsset: Address
-    auraBal?: Address
-    veBalBpt?: Address
     beets?: Address
   }
   nativeAsset: TokenInfo
   stakedAsset?: TokenInfo
   loopedAsset?: TokenInfo
-  supportedWrappers?: {
-    baseToken: Address
-    wrappedToken: Address
-    swapHandler: SupportedWrapHandler
-  }[]
-  doubleApprovalRequired?: string[]
   defaultSwapTokens?: {
     tokenIn?: Address
     tokenOut?: Address
@@ -53,7 +43,6 @@ export interface ContractsConfig {
     router?: Address
     batchRouter?: Address
     compositeLiquidityRouterBoosted?: Address
-    compositeLiquidityRouterNested?: Address
     relayerV6: Address
     WeightedPool2TokensFactory?: Address
     unbalancedAddViaSwapRouter?: Address
@@ -72,14 +61,7 @@ export interface ContractsConfig {
   merkl?: {
     claims: Address
   }
-  feeDistributor?: Address
-  veDelegationProxy?: Address
-  veBAL?: Address
   permit2?: Address
-  omniVotingEscrow?: Address
-  gaugeWorkingBalanceHelper?: Address
-  gaugeController?: Address
-  signatureRegistry?: Address
 }
 
 export interface PoolsConfig {

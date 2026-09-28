@@ -1,14 +1,11 @@
 import { useMemo } from 'react'
 import { Pool } from '../../pool/pool.types'
-import { isVebalPool } from '../../pool/pool.helpers'
 import { getCanStake } from '../../pool/actions/stake.helpers'
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 
 export enum ExpandedPoolType {
-  StakedBal = 'staked-bal',
+  Staked = 'staked',
   Unstaked = 'unstaked',
-  Locked = 'locked',
-  Unlocked = 'unlocked',
   Default = 'default',
 }
 
@@ -24,8 +21,6 @@ function generateUniqueKey(...args: string[]) {
 
 export const StakingFilterKey = {
   Staked: 'Staked',
-  Locked: 'Locked',
-  Unlocked: 'Unlocked',
   Unstaked: 'Unstaked',
   Default: 'Default',
 } as const
@@ -34,9 +29,7 @@ export type StakingFilterKeyType = (typeof StakingFilterKey)[keyof typeof Stakin
 
 // Maps UI filter keys to the actual pool types they represent
 export const STAKING_FILTER_MAP: Record<StakingFilterKeyType, ExpandedPoolType[]> = {
-  [StakingFilterKey.Staked]: [ExpandedPoolType.StakedBal],
-  [StakingFilterKey.Locked]: [ExpandedPoolType.Locked],
-  [StakingFilterKey.Unlocked]: [ExpandedPoolType.Unlocked],
+  [StakingFilterKey.Staked]: [ExpandedPoolType.Staked],
   [StakingFilterKey.Unstaked]: [ExpandedPoolType.Unstaked],
   [StakingFilterKey.Default]: [ExpandedPoolType.Default],
 }
@@ -44,8 +37,6 @@ export const STAKING_FILTER_MAP: Record<StakingFilterKeyType, ExpandedPoolType[]
 // Maps UI filter keys to their display labels
 export const STAKING_LABEL_MAP: Record<StakingFilterKeyType, string> = {
   [StakingFilterKey.Staked]: 'Staked',
-  [StakingFilterKey.Locked]: 'Locked',
-  [StakingFilterKey.Unlocked]: 'Unlocked',
   [StakingFilterKey.Unstaked]: 'Unstaked',
   [StakingFilterKey.Default]: 'N/A',
 }
@@ -55,42 +46,26 @@ export function useExpandedPools(pools: Pool[]) {
     const expandedPools: ExpandedPoolInfo[] = []
 
     pools.forEach(pool => {
-      const isVeBal = isVebalPool(pool.id)
-
-      const stakedBalancesBalUsd =
+      const stakedBalancesUsd =
         pool.userBalance?.stakedBalances
           ?.filter(balance =>
-            (
-              [
-                GqlPoolStakingTypeValues.Gauge,
-                GqlPoolStakingTypeValues.VeBal,
-                GqlPoolStakingTypeValues.FreshBeets,
-              ] as string[]
-            ).includes(balance.stakingType)
+            ([GqlPoolStakingTypeValues.Gauge] as string[]).includes(balance.stakingType)
           )
           .reduce((acc, balance) => acc + Number(balance.balanceUsd), 0) || 0
 
       const walletBalanceUsd = pool.userBalance?.walletBalanceUsd || 0
 
-      if (stakedBalancesBalUsd > 0) {
-        const poolType = isVeBal ? ExpandedPoolType.Locked : ExpandedPoolType.StakedBal
-
+      if (stakedBalancesUsd > 0) {
         expandedPools.push({
           ...pool,
-          poolType,
-          poolPositionUsd: stakedBalancesBalUsd,
-          uniqueKey: generateUniqueKey(pool.id, poolType),
+          poolType: ExpandedPoolType.Staked,
+          poolPositionUsd: stakedBalancesUsd,
+          uniqueKey: generateUniqueKey(pool.id, ExpandedPoolType.Staked),
         })
       }
 
       if (walletBalanceUsd > 0) {
-        const canStake = getCanStake(pool)
-
-        const poolType = canStake
-          ? isVeBal
-            ? ExpandedPoolType.Unlocked
-            : ExpandedPoolType.Unstaked
-          : ExpandedPoolType.Default
+        const poolType = getCanStake(pool) ? ExpandedPoolType.Unstaked : ExpandedPoolType.Default
 
         expandedPools.push({
           ...pool,
@@ -100,14 +75,12 @@ export function useExpandedPools(pools: Pool[]) {
         })
       }
 
-      if (stakedBalancesBalUsd === 0 && walletBalanceUsd === 0) {
-        const poolType = ExpandedPoolType.Default
-
+      if (stakedBalancesUsd === 0 && walletBalanceUsd === 0) {
         expandedPools.push({
           ...pool,
-          poolType,
+          poolType: ExpandedPoolType.Default,
           poolPositionUsd: 0,
-          uniqueKey: generateUniqueKey(pool.id, poolType),
+          uniqueKey: generateUniqueKey(pool.id, ExpandedPoolType.Default),
         })
       }
     })

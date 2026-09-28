@@ -14,10 +14,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
-import {
-  requiresProportionalInput,
-  supportsNestedActions,
-} from '@repo/lib/modules/pool/actions/LiquidityActionHelpers'
+import { requiresProportionalInput } from '@repo/lib/modules/pool/actions/LiquidityActionHelpers'
 import { PoolActionsLayout } from '@repo/lib/modules/pool/actions/PoolActionsLayout'
 import { PoolActionsPriceImpactDetails } from '@repo/lib/modules/pool/actions/PoolActionsPriceImpactDetails'
 import { useAddLiquidity } from '@repo/lib/modules/pool/actions/add-liquidity/AddLiquidityProvider'
@@ -115,8 +112,6 @@ function ReliquaryAddLiquidityForm({ relicId }: { relicId?: string }) {
   const hasPriceImpact = priceImpact !== undefined && priceImpact !== null
   const priceImpactLabel = hasPriceImpact ? fNum('priceImpact', priceImpact) : '-'
 
-  const nestedAddLiquidityEnabled = supportsNestedActions(pool)
-
   const isLoading = simulationQuery.isLoading || priceImpactQuery.isLoading
   const isFetching = simulationQuery.isFetching || priceImpactQuery.isFetching
 
@@ -159,7 +154,6 @@ function ReliquaryAddLiquidityForm({ relicId }: { relicId?: string }) {
             <BalAlert content={`Adding liquidity to maBEETS #${relicId}`} status="info" />
           )}
           <AddLiquidityFormTabs
-            nestedAddLiquidityEnabled={nestedAddLiquidityEnabled}
             setFlexibleTab={setFlexibleTab}
             setProportionalTab={setProportionalTab}
             tabIndex={tabIndex}

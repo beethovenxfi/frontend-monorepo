@@ -1,12 +1,12 @@
 import { getApiPoolMock } from '../../../__mocks__/api-mocks/api-mocks'
 import {} from '../../../__mocks__/pool-examples/flat'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '../../../pool.types'
 import { getPoolRisks, RiskCategory, RiskKey } from './usePoolRisks'
 import { anSSiloWSBoosted } from '../../../__mocks__/pool-examples/boosted'
 
 describe('getPoolRisks', () => {
   it('includes Oracle risk when a rate provider has the market-rate warning', () => {
-    const pool = getApiPoolMock(anSSiloWSBoosted) as GqlPoolElement
+    const pool = getApiPoolMock(anSSiloWSBoosted) as Pool
 
     pool.poolTokens[0]!.priceRateProviderData = {
       __typename: 'GqlPriceRateProviderData',
@@ -34,7 +34,7 @@ describe('getPoolRisks', () => {
   })
 
   it('does not include Oracle risk without a market-rate warning', () => {
-    const pool = getApiPoolMock(anSSiloWSBoosted) as GqlPoolElement
+    const pool = getApiPoolMock(anSSiloWSBoosted) as Pool
     const riskGroups = getPoolRisks(pool)
     const poolSpecificRisks = riskGroups.find(group => group.category === RiskCategory.PoolSpecific)
 

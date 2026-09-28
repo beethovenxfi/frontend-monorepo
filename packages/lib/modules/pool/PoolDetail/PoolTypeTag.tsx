@@ -60,9 +60,7 @@ function getPoolTypeLabel(pool: Pool | PoolListItem) {
       )
 
     case GqlPoolTypeValues.Stable:
-    case GqlPoolTypeValues.PhantomStable:
     case GqlPoolTypeValues.ComposableStable:
-    case GqlPoolTypeValues.MetaStable:
       return (
         <TagWrapper pl="8px">
           <Text {...TEXT_PROPS}>Stable</Text>

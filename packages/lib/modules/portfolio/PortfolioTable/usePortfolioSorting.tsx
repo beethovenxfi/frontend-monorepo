@@ -35,8 +35,7 @@ const generateStakingWeightForSort = (pool: ExpandedPoolInfo) => {
 
   if (canStake) {
     return (
-      Number(pool.poolType === ExpandedPoolType.Unlocked) * 50 +
-      Number(pool.poolType === ExpandedPoolType.StakedBal) * 20 +
+      Number(pool.poolType === ExpandedPoolType.Staked) * 20 +
       Number(pool.poolType === ExpandedPoolType.Unstaked) * 10
     )
   } else {
@@ -61,15 +60,14 @@ function sortingReducer(state: SortingState, action: SortingAction): SortingStat
 }
 
 export function usePortfolioSorting() {
-  const { filteredExpandedPools, selectedNetworks, selectedPoolTypes, selectedStakingTypes } =
-    usePortfolioFilters()
+  const { filteredExpandedPools, selectedPoolTypes, selectedStakingTypes } = usePortfolioFilters()
 
   const [manualSortingObj, dispatch] = useReducer(sortingReducer, null)
 
   // need useMemo here to prevent infinite loop in useEffect below
   const filterStateKey = useMemo(() => {
-    return `${selectedNetworks?.length || 0}-${selectedPoolTypes?.length || 0}-${selectedStakingTypes?.length || 0}`
-  }, [selectedNetworks, selectedPoolTypes, selectedStakingTypes])
+    return `${selectedPoolTypes?.length || 0}-${selectedStakingTypes?.length || 0}`
+  }, [selectedPoolTypes, selectedStakingTypes])
 
   // Dispatch reset when filter state changes
   useEffect(() => {
@@ -83,7 +81,6 @@ export function usePortfolioSorting() {
 
     // set sorting to liquidity when any filter is applied
     if (
-      (selectedNetworks && selectedNetworks.length > 0) ||
       (selectedPoolTypes && selectedPoolTypes.length > 0) ||
       (selectedStakingTypes && selectedStakingTypes.length > 0)
     ) {
@@ -92,7 +89,7 @@ export function usePortfolioSorting() {
       // set sorting to staking when no filters are applied
       return { id: 'staking' as const, desc: true }
     }
-  }, [selectedNetworks, selectedPoolTypes, selectedStakingTypes, manualSortingObj])
+  }, [selectedPoolTypes, selectedStakingTypes, manualSortingObj])
 
   const setSorting = useCallback((sorting: PortfolioSortingData) => {
     dispatch({ type: 'SET_SORTING', payload: sorting })
@@ -104,20 +101,6 @@ export function usePortfolioSorting() {
 
     return arr.sort((a, b) => {
       if (currentSortingObj.id === 'staking') {
-        const isALocked = a.poolType === ExpandedPoolType.Locked
-        const isBLocked = b.poolType === ExpandedPoolType.Locked
-
-        // Prioritize Locked pools regardless of canStake status
-        if (currentSortingObj.desc) {
-          if (isALocked && !isBLocked) return -1 // A (Locked) comes before B
-          if (!isALocked && isBLocked) return 1 // B (Locked) comes before A
-        } else {
-          // Ascending sort (Locked comes last)
-          if (isALocked && !isBLocked) return 1 // A (Locked) comes after B
-          if (!isALocked && isBLocked) return -1 // B (Locked) comes after A
-        }
-
-        // If both are Locked or neither is Locked, use the weight function
         const aStakingWeight = generateStakingWeightForSort(a)
         const bStakingWeight = generateStakingWeightForSort(b)
 

@@ -61,7 +61,7 @@ export function useAddLiquidityBuildCallDataQuery({
       humanAmountsIn: debouncedHumanAmountsIn,
       slippagePercent: slippage,
       queryOutput,
-      relayerApprovalSignature, // only present in Add Nested Liquidity with sign relayer mode
+      relayerApprovalSignature, // only present in signRelayer mode
       permit2, // only present in V3 pools
     })
 

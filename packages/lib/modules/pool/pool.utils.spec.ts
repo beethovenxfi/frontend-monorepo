@@ -55,28 +55,12 @@ describe('getPoolPath', () => {
     ).toBe('/pools/sonic/v3/0xpoolid')
   })
 
-  test('rejects CowAMM and FX pool detail routes', () => {
+  test('rejects unsupported pool types on detail routes', () => {
     expect(() =>
       getPoolPath({
         ...basePool,
-        type: GqlPoolTypeValues.CowAmm,
+        type: GqlPoolTypeValues.Unknown,
         protocolVersion: 1,
-      })
-    ).toThrow(/Unsupported pool type/)
-
-    expect(() =>
-      getPoolPath({
-        ...basePool,
-        type: GqlPoolTypeValues.Fx,
-        protocolVersion: 2,
-      })
-    ).toThrow(/Unsupported pool type/)
-
-    expect(() =>
-      getPoolPath({
-        ...basePool,
-        type: GqlPoolTypeValues.Element,
-        protocolVersion: 2,
       })
     ).toThrow(/Unsupported pool type/)
   })

@@ -21,7 +21,6 @@ import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { AlertTriangle } from 'lucide-react'
 import { usePoolMigrations } from '../../pool/migrations/PoolMigrationsProvider'
 import { getChainId } from '@repo/lib/config/app.config'
-import { isChainDeprecated } from '../../chains/chain.utils'
 
 interface Props extends GridProps {
   pool: ExpandedPoolInfo
@@ -33,12 +32,8 @@ const MemoizedMainAprTooltip = memo(MainAprTooltip)
 // Helper to get the filter key from the pool type
 const getStakingFilterKey = (poolType: ExpandedPoolType): StakingFilterKeyType => {
   switch (poolType) {
-    case ExpandedPoolType.StakedBal:
+    case ExpandedPoolType.Staked:
       return StakingFilterKey.Staked
-    case ExpandedPoolType.Locked:
-      return StakingFilterKey.Locked
-    case ExpandedPoolType.Unlocked:
-      return StakingFilterKey.Unlocked
     case ExpandedPoolType.Unstaked:
       return StakingFilterKey.Unstaked
     case ExpandedPoolType.Default:
@@ -75,11 +70,6 @@ export const PortfolioTableRow = memo(function PortfolioTableRow({
             <GridItem>
               <HStack>
                 <NetworkIcon chain={pool.chain} size={6} />
-                {isChainDeprecated(pool.chain) && (
-                  <Box color="font.warning">
-                    <AlertTriangle size="16" />
-                  </Box>
-                )}
               </HStack>
             </GridItem>
             <GridItem>
@@ -116,7 +106,6 @@ export const PortfolioTableRow = memo(function PortfolioTableRow({
                 aprItems={pool.dynamicData.aprItems}
                 chain={pool.chain}
                 pool={pool}
-                poolId={pool.id}
                 textProps={{ fontWeight: 'medium' }}
               />
             </GridItem>

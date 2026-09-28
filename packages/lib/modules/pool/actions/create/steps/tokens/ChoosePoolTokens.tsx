@@ -18,7 +18,7 @@ import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import { ApiToken, ApiOrCustomToken } from '@repo/lib/modules/tokens/token.types'
 import { Address, zeroAddress } from 'viem'
 import { useState } from 'react'
-import { TOKEN_BLACKLIST, WeightedPoolStructure } from '../../constants'
+import { WeightedPoolStructure } from '../../constants'
 import { AlertTriangle, ArrowUpRight, PlusCircle, Trash2 } from 'lucide-react'
 import { ConfigureTokenRateProvider } from './ConfigureTokenRateProvider'
 import { TotalWeightDisplay } from './TotalWeightDisplay'
@@ -60,7 +60,6 @@ export function ChoosePoolTokens() {
 
   const { getTokensByChain } = useTokens()
   const listedTokens = getTokensByChain(network)
-  const blacklistTokens = network ? TOKEN_BLACKLIST[network] : null
 
   const selectedTokenAddress =
     selectedTokenIndex !== null ? poolTokens[selectedTokenIndex]?.address : undefined
@@ -72,9 +71,7 @@ export function ChoosePoolTokens() {
     const listTokenAddress = listToken.address.toLowerCase()
     const isTokenAlreadyInPool = poolTokenAddresses.has(listTokenAddress)
     const isEditingPoolToken = listTokenAddress === selectedTokenAddress
-    const isBlacklisted = blacklistTokens?.has(listTokenAddress) ?? false
 
-    if (isBlacklisted) return false
     if (isEditingPoolToken) return true
     return !isTokenAlreadyInPool
   })

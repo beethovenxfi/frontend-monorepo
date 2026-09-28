@@ -19,7 +19,6 @@ import { invert } from 'lodash'
 import { PropsWithChildren, createContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Address, Hash, isAddress } from 'viem'
 import { ChainSlug, chainToSlugMap, getChainSlug } from '../pool/pool.utils'
-import { getWalletChainSyncAction } from './useWalletChainSync'
 import { calcMarketPriceImpact } from '../price-impact/price-impact.utils'
 import { usePriceImpact } from '../price-impact/PriceImpactProvider'
 import { useTokenBalances } from '../tokens/TokenBalancesProvider'
@@ -28,12 +27,11 @@ import { useTokens } from '../tokens/TokensProvider'
 import { useTransactionSteps } from '../transactions/transaction-steps/useTransactionSteps'
 import { emptyAddress } from '../web3/contracts/wagmi-helpers'
 import { useUserAccount } from '../web3/UserAccountProvider'
-import { AuraBalSwapHandler } from './handlers/AuraBalSwap.handler'
 import { DefaultSwapHandler } from './handlers/DefaultSwap.handler'
 import { NativeWrapHandler } from './handlers/NativeWrap.handler'
 import { SwapHandler } from './handlers/Swap.handler'
 import { useSimulateSwapQuery } from './queries/useSimulateSwapQuery'
-import { isAuraBalSwap, sanitizeSwapState } from './swap.helpers'
+import { sanitizeSwapState } from './swap.helpers'
 import {
   OSwapAction,
   SdkSimulateSwapResponse,
@@ -43,18 +41,8 @@ import {
 } from './swap.types'
 import { useIsPoolSwapUrl } from './useIsPoolSwapUrl'
 import { useSwapSteps } from './useSwapSteps'
-import {
-  getWrapHandlerClass,
-  getWrapType,
-  getWrapperForBaseToken,
-  isNativeWrap,
-  isSupportedWrap,
-  isWrapOrUnwrap,
-} from './wrap.helpers'
+import { getWrapType, isNativeWrap, isWrapOrUnwrap } from './wrap.helpers'
 import { LbpV3, Pool } from '../pool/pool.types'
-import { getStandardRootTokens, isStandardOrUnderlyingRootToken } from '../pool/pool-tokens.utils'
-import { getChildTokens } from '../pool/pool-tokens.utils'
-import { supportsNestedActions } from '../pool/actions/LiquidityActionHelpers'
 import { ProtocolVersion } from '../pool/pool.types'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { ApiToken } from '../tokens/token.types'
@@ -78,19 +66,13 @@ function selectSwapHandler(
   tokenOutAddress: Address,
   chain: GqlChain,
   swapType: GqlSorSwapType,
-  apolloClient: ApolloClient,
-  tokens: ApiToken[]
+  apolloClient: ApolloClient
 ): SwapHandler {
   if (isNativeWrap(tokenInAddress, tokenOutAddress, chain)) {
     return new NativeWrapHandler(apolloClient)
-  } else if (isSupportedWrap(tokenInAddress, tokenOutAddress, chain)) {
-    const WrapHandler = getWrapHandlerClass(tokenInAddress, tokenOutAddress, chain)
-    return new WrapHandler()
-  } else if (isAuraBalSwap(tokenInAddress, tokenOutAddress, chain, swapType)) {
-    return new AuraBalSwapHandler(tokens)
+  } else {
+    return new DefaultSwapHandler(apolloClient)
   }
-
-  return new DefaultSwapHandler(apolloClient)
 }
 
 export type SwapProviderProps = {
@@ -131,7 +113,6 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
 
   const swapState = useReactiveVar(swapStateVar)
   const [tokenSelectKey, setTokenSelectKey] = useState<'tokenIn' | 'tokenOut'>('tokenIn')
-  const hasInitializedUserChain = useRef(false)
 
   const { isConnected } = useUserAccount()
   const { chain: walletChain } = useNetworkConfig()
@@ -156,8 +137,7 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
       swapState.tokenOut.address,
       selectedChain,
       swapState.swapType,
-      client,
-      tokens as unknown as ApiToken[] // for swaps page the token select modal only allows listed tokens
+      client
     )
   }, [swapState.tokenIn.address, swapState.tokenOut.address, selectedChain])
 
@@ -211,11 +191,7 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
   function getPoolSwapPoolsIds(): string[] | undefined {
     if (!isPoolSwap) return undefined
 
-    const tokensNestedPools = pool.poolTokens
-      .map(poolToken => poolToken.nestedPool?.id)
-      .filter(Boolean) as string[]
-
-    return [pool.id, ...tokensNestedPools]
+    return [pool.id]
   }
 
   const simulationQuery = useSimulateSwapQuery({
@@ -612,7 +588,6 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
 
   // Sets initial swap state for pool swap edge-case
   function setInitialPoolSwapState(pool: Pool) {
-    const { tokenIn } = pathParams
     const slugChain = chainToSlugMap[pool.chain]
     if (!slugChain) throw new Error(`Chain slug not found for chain ${pool.chain}`)
     setInitialChain(slugChain)
@@ -620,16 +595,7 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
     if (isLbpSwap) {
       setInitialTokenIn(lbpPool.poolTokens[lbpPool.reserveTokenIndex]!.address)
       setInitialTokenOut(lbpPool.poolTokens[lbpPool.projectTokenIndex]!.address)
-    } else if (supportsNestedActions(pool)) {
-      setInitialTokenIn(tokenIn)
-
-      if (isStandardOrUnderlyingRootToken(pool, tokenIn as Address)) {
-        setInitialTokenOut(getChildTokens(pool, poolActionableTokens)[0]?.address)
-      } else {
-        setInitialTokenOut(getStandardRootTokens(pool, poolActionableTokens)[0]?.address)
-      }
     } else {
-      // Does not support nested actions:
       setInitialTokenIn(poolActionableTokens?.[0]?.address)
       setInitialTokenOut(poolActionableTokens?.[1]?.address)
     }
@@ -665,43 +631,12 @@ export function useSwapLogic({ poolActionableTokens, pool, pathParams }: SwapPro
     selectedChainRef.current = selectedChain
   }, [selectedChain])
 
-  // When wallet chain changes, update the swap form chain
-  useEffect(() => {
-    const action = getWalletChainSyncAction(
-      isConnected,
-      hasInitializedUserChain.current,
-      walletChain,
-      selectedChainRef.current
-    )
-
-    if (action === 'reset') {
-      hasInitializedUserChain.current = false
-    } else if (action === 'sync') {
-      setSelectedChain(walletChain)
-      hasInitializedUserChain.current = true
-    } else {
-      hasInitializedUserChain.current = true
-    }
-  }, [isConnected, walletChain])
-
   // When a new simulation is triggered, update the state
   useEffect(() => {
     if (simulationQuery.data) {
       handleSimulationResponse(simulationQuery.data)
     }
   }, [simulationQuery.data])
-
-  // Check if tokenIn is a base wrap token and set tokenOut as the wrapped token.
-  useEffect(() => {
-    const wrapper = getWrapperForBaseToken(swapState.tokenIn.address, selectedChain)
-    if (wrapper) setTokenOut(wrapper.wrappedToken)
-  }, [swapState.tokenIn.address])
-
-  // Check if tokenOut is a base wrap token and set tokenIn as the wrapped token.
-  useEffect(() => {
-    const wrapper = getWrapperForBaseToken(swapState.tokenOut.address, selectedChain)
-    if (wrapper) setTokenIn(wrapper.wrappedToken)
-  }, [swapState.tokenOut.address])
 
   // Update the URL path when the tokens change
   useEffect(() => {

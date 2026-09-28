@@ -132,9 +132,7 @@ export function getStakedBalance(pool: Pool, stakingType: GqlPoolStakingType): S
     stakingType === GqlPoolStakingTypeValues.Gauge ? pool.staking?.gauge?.id : undefined
 
   const stakedBalance = userBalance.stakedBalances.find(
-    balance =>
-      balance.stakingType === stakingType &&
-      (balance.stakingId === stakingAddress || stakingType === GqlPoolStakingTypeValues.VeBal)
+    balance => balance.stakingType === stakingType && balance.stakingId === stakingAddress
   )
 
   if (!stakedBalance) {
@@ -167,10 +165,6 @@ export function hasTotalBalance(pool: Pool) {
 
 export function hasBalancerStakedBalance(pool: Pool | PoolListItem): boolean {
   return hasStakedBalanceFor(pool, GqlPoolStakingTypeValues.Gauge)
-}
-
-export function hasVeBalStaking(pool: Pool | PoolListItem): boolean {
-  return hasStakingType(pool, GqlPoolStakingTypeValues.VeBal)
 }
 
 export function hasStakedBalanceFor(

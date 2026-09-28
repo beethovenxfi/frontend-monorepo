@@ -408,7 +408,7 @@ describe('useEip5792BatchSubmitter', () => {
         hash: CALLS_ID,
         type: 'eip5792',
         status: 'confirming',
-        chain: 'MAINNET',
+        chain: 'SONIC',
         init: labels.init,
         label: labels.confirming,
       }),

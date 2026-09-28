@@ -1,5 +1,4 @@
 import { TransactionStep } from '@repo/lib/modules/transactions/transaction-steps/lib'
-import { RelayerMode } from '@repo/lib/modules/relayer/useRelayerMode'
 import { getApprovalAndSwapSteps } from './useSwapSteps'
 
 const mockTransactionStep = (id: string, completed = false): TransactionStep =>
@@ -11,8 +10,6 @@ const mockTransactionStep = (id: string, completed = false): TransactionStep =>
 
 const swapStep = mockTransactionStep('swapStep')
 const signPermit2Step = mockTransactionStep('signPermit2Step')
-const approveRelayerStep = mockTransactionStep('approveRelayerStep')
-const signRelayerStep = mockTransactionStep('signRelayerStep')
 
 const tokenApprovalSteps = [
   mockTransactionStep('tokenApprovalStep1'),
@@ -25,10 +22,6 @@ const permit2ApprovalSteps = [
 ]
 
 const baseProps = {
-  swapRequiresRelayer: false,
-  relayerMode: 'no-relayer-needed' as RelayerMode,
-  approveRelayerStep,
-  signRelayerStep,
   tokenApprovalSteps,
   isPermit2: false,
   signPermit2Step,
@@ -40,7 +33,7 @@ const baseProps = {
 }
 
 describe('getApprovalAndSwapSteps', () => {
-  describe('without relayer', () => {
+  describe('standard swaps', () => {
     it('standard swap', () => {
       const steps = getApprovalAndSwapSteps({ ...baseProps })
 
@@ -55,40 +48,6 @@ describe('getApprovalAndSwapSteps', () => {
       })
 
       expect(steps).toEqual([swapStep])
-      expect(swapStep.nestedSteps).toEqual(tokenApprovalSteps)
-    })
-  })
-
-  describe('with relayer', () => {
-    it('prepends the approve relayer step when in approveRelayer mode', () => {
-      const steps = getApprovalAndSwapSteps({
-        ...baseProps,
-        swapRequiresRelayer: true,
-        relayerMode: 'approveRelayer',
-      })
-
-      expect(steps).toEqual([approveRelayerStep, ...tokenApprovalSteps, swapStep])
-    })
-
-    it('prepends the sign relayer step otherwise', () => {
-      const steps = getApprovalAndSwapSteps({
-        ...baseProps,
-        swapRequiresRelayer: true,
-        relayerMode: 'signRelayer',
-      })
-
-      expect(steps).toEqual([signRelayerStep, ...tokenApprovalSteps, swapStep])
-    })
-
-    it('keeps the relayer step outside the batch', () => {
-      const steps = getApprovalAndSwapSteps({
-        ...baseProps,
-        swapRequiresRelayer: true,
-        relayerMode: 'approveRelayer',
-        shouldBatchTransactions: true,
-      })
-
-      expect(steps).toEqual([approveRelayerStep, swapStep])
       expect(swapStep.nestedSteps).toEqual(tokenApprovalSteps)
     })
   })

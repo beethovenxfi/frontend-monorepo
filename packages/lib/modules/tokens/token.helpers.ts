@@ -5,15 +5,13 @@ import {
 } from '@repo/lib/config/app.config'
 import { SupportedChainId } from '@repo/lib/config/config.types'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { includesAddress, isSameAddress } from '@repo/lib/shared/utils/addresses'
+import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import { Address } from 'viem'
 import { HumanTokenAmountWithSymbol, TokenBase } from './token.types'
 import { InputAmount } from '@balancer/sdk'
 import { Pool } from '../pool/pool.types'
 import { getVaultConfig, isV3Pool } from '../pool/pool.helpers'
-import { PoolToken } from '../pool/pool.types'
 import { ApiToken, ApiOrCustomToken } from './token.types'
-import mainnetNetworkConfig from '@repo/lib/config/networks/mainnet'
 
 export function isNativeAsset(token: TokenBase | string, chain: GqlChain | SupportedChainId) {
   return nativeAssetFilter(chain)(token)
@@ -113,42 +111,6 @@ export function swapWrappedWithNative(inputAmounts: HumanTokenAmountWithSymbol[]
   })
 }
 
-export function requiresDoubleApproval(
-  chainId: GqlChain | SupportedChainId,
-  tokenAddress: Address
-) {
-  return includesAddress(
-    getNetworkConfig(chainId).tokens.doubleApprovalRequired || [],
-    tokenAddress
-  )
-}
-
-export function getLeafTokens(poolTokens: PoolToken[]) {
-  const leafTokens: ApiToken[] = []
-
-  poolTokens.forEach(poolToken => {
-    if (poolToken.nestedPool) {
-      const nestedTokens = poolToken.nestedPool.tokens.filter(
-        // Exclude the pool token itself
-        t => !isSameAddress(t.address, poolToken.address)
-      ) as PoolToken[]
-
-      const nestedLeafTokens = nestedTokens.map(t => getTokenOrUnderlying(t))
-      leafTokens.push(...nestedLeafTokens)
-    } else {
-      leafTokens.push(getTokenOrUnderlying(poolToken))
-    }
-  })
-
-  return leafTokens
-}
-
-function getTokenOrUnderlying(token: PoolToken): ApiToken {
-  return token.isErc4626 && token.useUnderlyingForAddRemove && token.underlyingToken
-    ? token.underlyingToken
-    : token
-}
-
 export function getSpenderForAddLiquidity(pool: Pool): Address {
   if (isV3Pool(pool)) {
     const permit2Address = getNetworkConfig(pool.chain).contracts.permit2
@@ -172,12 +134,6 @@ export function getSpenderForCreatePool(chain: GqlChain): Address {
   }
 
   return permit2Address
-}
-
-export const veBalBptAddress = mainnetNetworkConfig.tokens.addresses.veBalBpt as Address
-
-export function isVeBalBtpAddress(tokenAddress: Address) {
-  return isSameAddress(tokenAddress, veBalBptAddress)
 }
 
 export const isConstantRateProvider = (token: ApiToken) =>

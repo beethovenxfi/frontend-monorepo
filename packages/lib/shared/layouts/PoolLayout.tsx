@@ -4,6 +4,7 @@ import {
   ChainSlug,
   getChainSlug,
   getPoolTypeLabel,
+  isChainSlug,
 } from '@repo/lib/modules/pool/pool.utils'
 import { PropsWithChildren, Suspense } from 'react'
 import { PoolDetailSkeleton } from '@repo/lib/modules/pool/PoolDetail/PoolDetailSkeleton'
@@ -32,6 +33,8 @@ export async function generatePoolMetadata({
   chain,
   variant,
 }: PoolLayoutProps): Promise<PoolMetadata> {
+  if (!isChainSlug(chain)) return { metadata: {} }
+
   const { data } = await getPoolQuery(getApolloServerClient(), chain, id)
 
   const pool = data?.pool
@@ -59,6 +62,8 @@ export async function generatePoolMetadata({
 }
 
 export async function PoolLayout({ id, chain, variant, children }: PoolLayoutProps) {
+  if (!isChainSlug(chain)) notFound()
+
   const _chain = getChainSlug(chain)
 
   const { data, error } = await getPoolQuery(getApolloServerClient(), chain, id)

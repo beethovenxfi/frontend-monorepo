@@ -1,4 +1,4 @@
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import {
   VAULT_V2,
@@ -51,7 +51,7 @@ export async function getSdkTestUtils({
   client?: Client & PublicActions & WalletActions & TestActions
   account?: Address
   chainId?: ChainId
-  pool: GqlPoolElement
+  pool: Pool
 }) {
   return {
     approveToken,
