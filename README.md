@@ -72,13 +72,13 @@ make fork-sonic
 3. Start the local development server in fork mode:
 
 ```
-pnpm dev:beets:fork
+pnpm dev:fork
 ```
 
 4. Start the playwright UI for Beets:
 
 ```
-pnpm test:e2e:dev:ui:beets
+pnpm test:e2e:dev:ui
 ```
 
 ### Install a package

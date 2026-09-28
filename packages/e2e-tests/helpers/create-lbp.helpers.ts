@@ -9,10 +9,6 @@ import {
 import { LBP_FORM_STEPS } from '@repo/lib/modules/lbp/constants.lbp'
 
 /*
-  Beets counterpart of helpers/create-lbp.helpers.ts. Kept as a separate file rather than
-  parameterizing the shared one so that changes for Beets cannot alter what the Balancer LBP spec
-  drives.
-
   Sale token is BEETS for all three sale types: it is the only Sonic token that both supports
   EIP-2612 (the seedless path signs `Sign permit: <symbol>`) and is already funded in
   sonicTokenBalances. Collateral is wS because SaleStructureStep restricts it to
