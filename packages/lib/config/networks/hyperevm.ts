@@ -57,7 +57,6 @@ const networkConfig: NetworkConfig = {
     },
   }),
   layerZeroChainId: 367,
-  supportsVeBalSync: false,
   lbps: {
     collateralTokens: [
       '0x5555555555555555555555555555555555555555', // wHYPE

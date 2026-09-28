@@ -69,7 +69,6 @@ const networkConfig: NetworkConfig = {
     issues: { [PoolIssue.CspPoolVulnWarning]: CSP_ISSUE_POOL_IDS[GqlChainValues.Gnosis] },
   }),
   layerZeroChainId: 145,
-  supportsVeBalSync: true,
   lbps: {
     collateralTokens: [
       '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d', // WXDAI

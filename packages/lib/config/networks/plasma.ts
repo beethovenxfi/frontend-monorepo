@@ -63,7 +63,6 @@ const networkConfig: NetworkConfig = {
   pools: convertHexToLowerCase({
     issues: { [PoolIssue.CspPoolVulnWarning]: CSP_ISSUE_POOL_IDS[GqlChainValues.Plasma] },
   }),
-  supportsVeBalSync: false,
 }
 
 export default networkConfig

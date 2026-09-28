@@ -73,7 +73,6 @@ const networkConfig: NetworkConfig = {
     },
   }),
   layerZeroChainId: 111,
-  supportsVeBalSync: true,
   lbps: {
     collateralTokens: [
       '0x4200000000000000000000000000000000000006', // WETH

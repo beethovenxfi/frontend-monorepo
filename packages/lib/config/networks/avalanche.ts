@@ -62,7 +62,6 @@ const networkConfig: NetworkConfig = {
     },
   }),
   layerZeroChainId: 106,
-  supportsVeBalSync: true,
   lbps: {
     collateralTokens: [
       '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7', // WAVAX
