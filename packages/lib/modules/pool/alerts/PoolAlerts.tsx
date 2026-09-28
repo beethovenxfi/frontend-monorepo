@@ -67,28 +67,13 @@ function V2ExploitContentWarning() {
       <Text color="#000">
         This pool was part of an exploit on some v2 Composable Stable pools (v3 pools not affected).
       </Text>
-      <Link
-        _hover={{
-          color: '#555',
-        }}
-        color="#000"
-        fontWeight="bold"
-        href="https://x.com/Balancer/status/1990856260988670132"
-        isExternal
-        textDecoration="underline"
-      >
-        Read the Post-Mortem
-      </Link>
     </HStack>
   )
 }
 
 function DeprecatedChainWarningContent({ chain }: { chain: GqlChain }) {
   const chainName = getChainName(chain)
-  const problem = `The ${chainName} network is being sunset on Balancer.`
-
-  const learnMoreLink =
-    'https://forum.balancer.fi/t/bip-906-deprecation-of-polygon-zkevm-fraxtal-and-mode/6951'
+  const problem = `The ${chainName} network is being sunset.`
 
   return (
     <HStack>
@@ -96,18 +81,6 @@ function DeprecatedChainWarningContent({ chain }: { chain: GqlChain }) {
         {problem}
       </Text>
       <Text color="#000">{`Remove any liquidity you have in ${chainName} pools.`}</Text>
-      <Link
-        _hover={{
-          color: '#555',
-        }}
-        color="#000"
-        fontWeight="bold"
-        href={learnMoreLink}
-        isExternal
-        textDecoration="underline"
-      >
-        Learn more
-      </Link>
     </HStack>
   )
 }

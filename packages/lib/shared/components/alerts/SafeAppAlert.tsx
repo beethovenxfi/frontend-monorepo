@@ -51,8 +51,8 @@ function Content({
         wrapText
       />
       {/*
-        It is not possible to link to custom pool pages within balancer.fi/pools as the Safe App will not recognize them as valid Safe Apps :(
-      */}
+        It is not possible to link to custom pool pages within the app's pools section as the Safe
+          App will not recognize them as valid Safe Apps :( */}
       <BalAlertButtonLink href={content.href}>{content.buttonLabel}</BalAlertButtonLink>
     </VStack>
   )

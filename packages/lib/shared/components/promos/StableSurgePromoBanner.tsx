@@ -1,9 +1,8 @@
 'use client'
 
-import { Button, Heading, Flex, Box, Center, Text, Stack, Link } from '@chakra-ui/react'
+import { Heading, Flex, Box, Center, Text, Stack } from '@chakra-ui/react'
 import { HookIcon } from '@repo/lib/shared/components/icons/HookIcon'
 import { Picture } from '../other/Picture'
-import { ArrowUpRight } from 'lucide-react'
 
 export function StableSurgePromoBanner() {
   return (
@@ -126,39 +125,6 @@ export function StableSurgePromoBanner() {
                 </Box>
               </Stack>
             </Box>
-            <Button
-              _hover={{
-                bg: '#000',
-                color: '#fff',
-              }}
-              as={Link}
-              borderColor="font.maxContrast"
-              color="font.maxContrast"
-              cursor="hand"
-              flex="1"
-              gap="xs"
-              h={{ base: '32px', sm: '40px', lg: '48px' }}
-              href="https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219"
-              isExternal
-              maxW="132px"
-              py="sm"
-              role="group"
-              rounded="full"
-              size="md"
-              variant="outline"
-              w="132px"
-            >
-              Learn more
-              <Box
-                _groupHover={{
-                  transform: 'translateX(2px)',
-                }}
-                as="span"
-                transition="all 0.3s var(--ease-out-cubic)"
-              >
-                <ArrowUpRight size="14px" />
-              </Box>
-            </Button>
           </Flex>
         </Center>
       </Box>

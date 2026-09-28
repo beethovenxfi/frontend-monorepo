@@ -113,11 +113,6 @@ export const ProjectConfigBeets: ProjectConfig = {
             isExternal: true,
           },
           { label: 'Governance', href: 'https://snapshot.box/#/s:beets.eth', isExternal: true },
-          {
-            label: 'Bug bounties',
-            href: 'https://immunefi.com/bug-bounty/balancer',
-            isExternal: true,
-          },
         ],
       },
     ],
@@ -197,9 +192,6 @@ export const ProjectConfigBeets: ProjectConfig = {
         'A dynamic directional surge swap fee in times of volatility to help defend the peg. LPs get MEV protection and increased fees.',
       buttonText: 'View pools',
       buttonLink: '/pools?poolHookTags=HOOKS_STABLESURGE',
-      linkText: 'Learn more',
-      linkURL: 'https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219',
-      linkExternal: true,
       bgImageActive: {
         directory: '/images/promos/promo-banner/',
         imgName: 'bg-active',

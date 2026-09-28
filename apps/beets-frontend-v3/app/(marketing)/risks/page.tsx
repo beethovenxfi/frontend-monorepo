@@ -179,8 +179,7 @@ export default function Risks() {
                   exploits have been introduced.
                 </li>
                 <li>
-                  In addition, Balancer has a bug bounty program via{' '}
-                  <a href="https://immunefi.com/bounty/balancer/">Immunefi</a> to attract white-hat
+                  In addition, Balancer has a bug bounty program via Immunefi to attract white-hat
                   hackers to responsibly disclose any bugs. Rewards are distributed based on threat
                   level—for critical smart contract vulnerabilities, there is a minimum reward of
                   250 ETH and a maximum reward of 1,000 ETH.

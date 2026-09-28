@@ -4,7 +4,6 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
-  Link,
   Box,
   ModalHeader,
   VStack,
@@ -58,16 +57,9 @@ export function RecoveredFundsLearnMoreModal({
               </ListItem>
               <ListItem mb="xs">
                 <Text>
-                  Your share has been calculated by following{' '}
-                  <Link
-                    href="https://forum.balancer.fi/t/bip-892-distribution-of-rescued-funds-from-balancer-v2-november-3rd-2025-attacks/6883"
-                    isExternal
-                  >
-                    BIP-892
-                  </Link>{' '}
-                  . That means that each pool's funds go only to LPs of that specific pool and
-                  network, pro-rata by BPT holdings at the snapshot block and you receive the same
-                  tokens rescued
+                  Your share has been calculated by following BIP-892. That means that each pool's
+                  funds go only to LPs of that specific pool and network, pro-rata by BPT holdings
+                  at the snapshot block and you receive the same tokens rescued
                 </Text>
               </ListItem>
               <ListItem mb="xs">
@@ -84,15 +76,6 @@ export function RecoveredFundsLearnMoreModal({
         </ModalBody>
 
         <ModalFooter gap={3}>
-          <Button
-            as={Link}
-            flex="1"
-            href="https://x.com/Balancer/status/2021554863314977087"
-            isExternal
-            variant="secondary"
-          >
-            Read post
-          </Button>
           <Button flex="1" onClick={onClose} variant="tertiary">
             Close
           </Button>

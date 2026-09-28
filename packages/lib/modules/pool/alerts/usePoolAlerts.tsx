@@ -262,7 +262,6 @@ export function usePoolAlerts(pool: Pool) {
     const alerts: PoolAlert[] = []
 
     // alert for specific AutoRange pool
-    // https://balancer.fi/pools/plasma/v3/0xe14ba497a7c51f34896d327ec075f3f18210a270
     if (pool.id === '0xe14ba497a7c51f34896d327ec075f3f18210a270') {
       alerts.push({
         identifier: 'poolIsAutoRange',
