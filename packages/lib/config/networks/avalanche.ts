@@ -45,7 +45,6 @@ const networkConfig: NetworkConfig = {
     balancer: {
       vaultV2: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
       relayerV6: '0xA084c11cb55e67C9becf9607f1DBB20ec4D5E7b2',
-      minter: '0x85a80afee867aDf27B50BdB7b76DA70f1E853062',
       router: AddressProvider.Router(avalanche.id),
       compositeLiquidityRouterBoosted: AddressProvider.CompositeLiquidityRouter(avalanche.id),
     },

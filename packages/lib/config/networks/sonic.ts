@@ -62,7 +62,6 @@ const networkConfig: NetworkConfig = {
       vaultV2: '0xba12222222228d8ba445958a75a0704d566bf2c8',
       vaultV3: AddressProvider.Vault(sonic.id),
       relayerV6: '0x7b52D5ef006E59e3227629f97F182D6442380bb6',
-      minter: zeroAddress,
       router: AddressProvider.Router(sonic.id),
       batchRouter: AddressProvider.BatchRouter(sonic.id),
       compositeLiquidityRouterBoosted: AddressProvider.CompositeLiquidityRouter(sonic.id),

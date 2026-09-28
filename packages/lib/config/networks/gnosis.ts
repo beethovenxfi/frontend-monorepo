@@ -55,7 +55,6 @@ const networkConfig: NetworkConfig = {
       vaultV2: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
       vaultV3: AddressProvider.Vault(gnosis.id),
       relayerV6: '0x2163c2FcD0940e84B8a68991bF926eDfB0Cd926C',
-      minter: '0xA8920455934Da4D853faac1f94Fe7bEf72943eF1',
       router: AddressProvider.Router(gnosis.id),
       batchRouter: AddressProvider.BatchRouter(gnosis.id),
       compositeLiquidityRouterBoosted: AddressProvider.CompositeLiquidityRouter(gnosis.id),

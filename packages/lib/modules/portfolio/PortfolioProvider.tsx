@@ -4,7 +4,6 @@ import { GetPoolsDocument } from '@repo/lib/shared/services/api/generated/graphq
 import { useQuery } from '@apollo/client/react'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 import { ClaimableReward, useClaimableBalances } from './PortfolioClaim/useClaimableBalances'
-import { BalTokenReward, useBalTokenRewards } from './PortfolioClaim/useBalRewards'
 import { bn } from '@repo/lib/shared/utils/numbers'
 import type BigNumber from 'bignumber.js'
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
@@ -28,7 +27,6 @@ export interface ClaimableBalanceResult {
 }
 
 export type PoolRewardsData = Pool & {
-  balReward?: BalTokenReward
   claimableRewards?: ClaimableReward[]
   totalFiatClaimBalance?: BigNumber
 }
@@ -130,12 +128,6 @@ export function usePortfolioLogic() {
     }
   }, [poolsWithOnchainUserBalances, isConnected, userAddress])
 
-  // Bal token rewards
-  const { balRewardsData, refetchBalRewards, isLoadingBalRewards } = useBalTokenRewards(
-    portfolioData.stakedPools || []
-  )
-
-  // Other tokens rewards
   const {
     claimableRewards,
     refetchClaimableRewards,
@@ -143,36 +135,10 @@ export function usePortfolioLogic() {
     isLoadingClaimableRewards,
   } = useClaimableBalances(portfolioData.stakedPools || [])
 
-  const poolRewardsMap = useMemo(() => {
-    return portfolioData.stakedPools?.reduce((acc: PoolRewardsDataMap, pool) => {
-      const balReward = balRewardsData.find(r => r.pool.id === pool.id)
-      const claimableReward = claimableRewardsByPoolMap[pool.id]
-
-      const poolRewardsData: PoolRewardsData = {
-        ...pool,
-      }
-
-      acc[pool.id] = poolRewardsData
-
-      let totalFiatClaimableBalance = bn(0)
-
-      if (balReward) {
-        poolRewardsData.balReward = balReward
-        totalFiatClaimableBalance = totalFiatClaimableBalance.plus(balReward.fiatBalance)
-      }
-
-      if (claimableReward) {
-        poolRewardsData.claimableRewards = claimableReward
-
-        claimableReward.forEach(
-          r => (totalFiatClaimableBalance = totalFiatClaimableBalance.plus(r.fiatBalance))
-        )
-      }
-
-      poolRewardsData.totalFiatClaimBalance = totalFiatClaimableBalance
-      return acc
-    }, {})
-  }, [portfolioData.stakedPools, balRewardsData, claimableRewardsByPoolMap])
+  const poolRewardsMap = useMemo(
+    () => buildPoolRewardsMap(portfolioData.stakedPools, claimableRewardsByPoolMap),
+    [portfolioData.stakedPools, claimableRewardsByPoolMap]
+  )
 
   const rewardsByChainMap = useMemo(() => {
     return portfolioData.stakedPools?.reduce((acc: Record<string, PoolRewardsData[]>, pool) => {
@@ -214,13 +180,11 @@ export function usePortfolioLogic() {
   }, [poolsByChainMap, poolRewardsMap])
 
   const refetchClaimPoolData = useCallback(() => {
-    refetchBalRewards()
     refetchClaimableRewards()
-  }, [refetchBalRewards, refetchClaimableRewards])
+  }, [refetchClaimableRewards])
 
   return {
     portfolioData,
-    balRewardsData,
     claimableRewards,
     poolRewardsMap,
     poolsByChainMap,
@@ -229,12 +193,39 @@ export function usePortfolioLogic() {
     totalFiatClaimableBalanceByChain,
     rewardsByChainMap,
     refetchClaimPoolData,
-    isLoadingBalRewards,
     isLoadingClaimableRewards,
     isLoadingPortfolio:
       isLoadingPoolsUserAddress || isLoadingOnchainUserBalances || isLoadingPoolsId,
-    isLoadingRewards: isLoadingBalRewards || isLoadingClaimableRewards,
+    isLoadingRewards: isLoadingClaimableRewards,
   }
+}
+
+export function buildPoolRewardsMap(
+  stakedPools: Pool[],
+  claimableRewardsByPoolMap: Record<string, ClaimableReward[]>
+): PoolRewardsDataMap {
+  return stakedPools.reduce((acc: PoolRewardsDataMap, pool) => {
+    const claimableReward = claimableRewardsByPoolMap[pool.id]
+
+    const poolRewardsData: PoolRewardsData = {
+      ...pool,
+    }
+
+    acc[pool.id] = poolRewardsData
+
+    let totalFiatClaimableBalance = bn(0)
+
+    if (claimableReward) {
+      poolRewardsData.claimableRewards = claimableReward
+
+      claimableReward.forEach(
+        r => (totalFiatClaimableBalance = totalFiatClaimableBalance.plus(r.fiatBalance))
+      )
+    }
+
+    poolRewardsData.totalFiatClaimBalance = totalFiatClaimableBalance
+    return acc
+  }, {})
 }
 
 export const PortfolioContext = createContext<UsePortfolio | null>(null)

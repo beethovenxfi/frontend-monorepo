@@ -3,7 +3,6 @@ import { balancerV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contrac
 import {
   EncodeGaugeClaimRewardsInput,
   EncodeGaugeDepositInput,
-  EncodeGaugeMintInput,
   EncodeGaugeWithdrawInput,
 } from '../relayer-types'
 
@@ -29,14 +28,6 @@ export class GaugeActionsService {
       abi: balancerV2BatchRelayerLibraryAbi,
       functionName: 'gaugeClaimRewards',
       args: [params.gauges],
-    })
-  }
-
-  public encodeMint(params: EncodeGaugeMintInput): Hex {
-    return encodeFunctionData({
-      abi: balancerV2BatchRelayerLibraryAbi,
-      functionName: 'gaugeMint',
-      args: [params.gauges, params.outputReference],
     })
   }
 }

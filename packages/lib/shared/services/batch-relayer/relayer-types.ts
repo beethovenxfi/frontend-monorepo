@@ -39,8 +39,3 @@ export type EncodeGaugeWithdrawInput = EncodeGaugeDepositInput
 export interface EncodeGaugeClaimRewardsInput {
   gauges: Address[]
 }
-
-export interface EncodeGaugeMintInput {
-  gauges: Address[]
-  outputReference: bigint
-}

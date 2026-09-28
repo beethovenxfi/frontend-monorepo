@@ -44,7 +44,6 @@ const networkConfig: NetworkConfig = {
       vaultV2: zeroAddress,
       vaultV3: AddressProvider.Vault(hyperEVM.id),
       relayerV6: zeroAddress,
-      minter: zeroAddress,
       router: AddressProvider.Router(hyperEVM.id),
       compositeLiquidityRouterBoosted: AddressProvider.CompositeLiquidityRouter(hyperEVM.id),
     },

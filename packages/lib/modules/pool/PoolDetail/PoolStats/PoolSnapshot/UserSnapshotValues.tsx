@@ -36,14 +36,12 @@ export function UserSnapshotValues() {
     isDisabled,
     previewModalDisclosure,
     isLoading: isLoadingClaiming,
-    balRewards,
-    nonBalRewards,
+    allClaimableRewards,
   } = useClaim()
 
   const { myClaimableRewards, tokens, rewardsByToken } = useGetUserPoolRewards({
     pool,
-    balRewards,
-    nonBalRewards,
+    rewards: allClaimableRewards,
   })
 
   const myAprRaw = getTotalAprRaw(pool.dynamicData.aprItems)

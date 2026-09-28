@@ -55,7 +55,6 @@ export interface ContractsConfig {
     compositeLiquidityRouterBoosted?: Address
     compositeLiquidityRouterNested?: Address
     relayerV6: Address
-    minter: Address
     WeightedPool2TokensFactory?: Address
     bCoWFactory?: Address
     unbalancedAddViaSwapRouter?: Address

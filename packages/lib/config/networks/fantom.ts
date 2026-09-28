@@ -1,6 +1,5 @@
 import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { NetworkConfig } from '../config.types'
-import { zeroAddress } from 'viem'
 import { convertHexToLowerCase } from '@repo/lib/shared/utils/objects'
 import { emptyAddress } from '@repo/lib/modules/web3/contracts/wagmi-helpers'
 
@@ -40,7 +39,6 @@ const networkConfig: NetworkConfig = {
     balancer: {
       vaultV2: '0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce',
       relayerV6: '0x0faa25293a36241c214f3760c6ff443e1b731981',
-      minter: zeroAddress,
     },
     beets: {
       lstStaking: '0x310A1f7bd9dDE18CCFD701A796Ecb83CcbedE21A',

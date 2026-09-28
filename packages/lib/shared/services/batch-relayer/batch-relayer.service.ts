@@ -2,7 +2,6 @@ import {
   EncodeExitPoolInput,
   EncodeGaugeClaimRewardsInput,
   EncodeGaugeDepositInput,
-  EncodeGaugeMintInput,
   EncodeGaugeWithdrawInput,
   EncodeJoinPoolInput,
 } from './relayer-types'
@@ -40,10 +39,6 @@ export class BatchRelayerService {
 
   public gaugeEncodeClaimRewards(params: EncodeGaugeClaimRewardsInput): Hex {
     return this.gaugeActionsService.encodeClaimRewards(params)
-  }
-
-  public gaugeEncodeMint(params: EncodeGaugeMintInput): Hex {
-    return this.gaugeActionsService.encodeMint(params)
   }
 
   public vaultEncodeJoinPool(params: EncodeJoinPoolInput): string {

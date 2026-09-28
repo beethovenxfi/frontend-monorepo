@@ -5,7 +5,6 @@ import { OmniVotingEscrowAbi } from './abi/OmniVotingEscrowAbi'
 import { GaugeControllerAbi } from './abi/GaugeControllerAbi'
 import { DelegateRegistryAbi } from './abi/DelegateRegistryAbi'
 import {
-  balancerMinterAbi,
   balancerV2BalancerRelayerV6Abi,
   balancerV2GaugeV5Abi,
   balancerV2VaultAbi,
@@ -28,7 +27,6 @@ import { merklClaimsAbi } from './abi/merklClaimsAbi'
 export const AbiMap = {
   'balancer.vaultV2': balancerV2VaultAbi,
   'balancer.gaugeV5': balancerV2GaugeV5Abi,
-  'balancer.minter': balancerMinterAbi,
   'balancer.relayerV6': balancerV2BalancerRelayerV6Abi,
   'balancer.feeDistributorStatic': FeeDistributorStaticAbi,
   'balancer.gaugeWorkingBalanceHelperAbi': GaugeWorkingBalanceHelperAbi,

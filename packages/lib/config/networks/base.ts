@@ -47,7 +47,6 @@ const networkConfig: NetworkConfig = {
       vaultV2: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
       vaultV3: AddressProvider.Vault(base.id),
       relayerV6: '0x7C3C773C878d2238a9b64d8CEE02377BF07ED06a',
-      minter: '0x0c5538098EBe88175078972F514C9e101D325D4F',
       vaultAdminV3: AddressProvider.VaultAdmin(base.id),
       unbalancedAddViaSwapRouter: AddressProvider.UnbalancedAddViaSwapRouter(base.id),
       router: AddressProvider.Router(base.id),

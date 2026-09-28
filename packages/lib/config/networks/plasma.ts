@@ -52,7 +52,6 @@ const networkConfig: NetworkConfig = {
       vaultV2: '0xba12222222228d8ba445958a75a0704d566bf2c8',
       vaultV3: AddressProvider.Vault(chainId),
       relayerV6: zeroAddress,
-      minter: zeroAddress,
       router: AddressProvider.Router(chainId),
       batchRouter: AddressProvider.BatchRouter(chainId),
       compositeLiquidityRouterBoosted: AddressProvider.CompositeLiquidityRouter(chainId),
