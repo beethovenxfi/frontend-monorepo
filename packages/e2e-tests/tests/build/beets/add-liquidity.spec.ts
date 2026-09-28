@@ -1,12 +1,9 @@
 import { expect, test } from '@playwright/test'
 
 /*
-  Ported from tests/build/balancer/bal.add-liquidity.spec.ts
-
   Target: "I believe I can FLY" (25USDC-50FLY-25stS), a v3 weighted pool on Sonic. Its TVL is
-  below the $50k balanced-add threshold, so the tab states are the inverse of the Balancer
-  original (a v2 WeightedPool2Tokens that does not support proportional adds): here flexible
-  adds are disabled and proportional is the only option.
+  below the $50k balanced-add threshold, so flexible adds are disabled and proportional is the
+  only option.
 */
 const flyPoolId = '0xa476b33460e792bac5cc294ba19f0543ab00dc01'
 

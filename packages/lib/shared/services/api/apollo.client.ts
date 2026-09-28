@@ -10,7 +10,7 @@ const defaultHeaders = {
 // ── Optional Apollo cache persistence ───────────────────────────────────
 //
 // Opt-in via `createApolloClient({ persistKey })`. Read-only dashboards
-// (e.g. balancer-analytics) benefit massively from persisting Apollo's
+// benefit massively from persisting Apollo's
 // `InMemoryCache` across reloads / new tabs: every cache-first useQuery
 // served on warm tabs avoids an api-v3 roundtrip entirely. Apps with
 // user-facing wallet actions (swaps, add/remove liquidity, approvals)

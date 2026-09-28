@@ -44,7 +44,6 @@ Use `gh pr create --title ... --body ...` with a fully populated body. Do not re
 ### Rules
 
 - Verify each claim against the actual diff — do not invent test steps, flags, or risks. If you did not change it, do not describe it.
-- If the PR touches `packages/lib`, note in **Risks** whether the change affects the other app (Balancer ↔ Beets) via `NEXT_PUBLIC_PROJECT_ID`.
 - Always write test steps you could actually run — no generic filler.
 
 ## Testing

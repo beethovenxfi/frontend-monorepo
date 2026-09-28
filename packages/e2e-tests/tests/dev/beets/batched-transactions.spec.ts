@@ -5,8 +5,6 @@ import { EIP5792_EMULATION_LS_KEY } from '@repo/lib/modules/web3/impersonation/c
 import { defaultAnvilAccount } from '@repo/lib/test/utils/wagmi/fork.helpers'
 
 /*
-  Ported from tests/dev/balancer/batched-transactions.spec.ts
-
   Covers the batched transaction flow (EIP-5792 wallet_sendCalls) end to end against a Sonic fork.
 
   The mock connector emulates an atomic-batching wallet (like an EIP-7702 upgraded EOA) when the
@@ -20,8 +18,7 @@ import { defaultAnvilAccount } from '@repo/lib/test/utils/wagmi/fork.helpers'
   Target is Boosted Angular Symphony (bpt-anS-SiloWS), the Sonic v3 boosted stable pool at the
   requested URL. The add-liquidity transaction requires both pool tokens, so its Sonic fork balance
   fixtures include anS, SiloWS, and the SiloWS underlying wS. Its TVL is below the balanced-add
-  threshold, so flexible adds are disabled and the test drives the proportional tab (the Balancer
-  original used flexible on a higher-TVL pool).
+  threshold, so flexible adds are disabled and the test drives the proportional tab.
 */
 const boostedPoolId = '0x944d4ae892de4bfd38742cc8295d6d5164c5593c'
 
