@@ -13,7 +13,6 @@ export const ProjectConfigBeets: ProjectConfig = {
   projectLogo: 'https://beets.fi/images/icons/beets.svg',
   acceptedPoliciesVersion: 2,
   supportedNetworks: beetsSupportedNetworks,
-  networksForProtocolStats: [...beetsSupportedNetworks, GqlChainValues.Fantom],
   corePoolId: '0x10ac2f9dae6539e77e372adb14b1bf8fbd16b3e8000200000000000000000005', // maBEETS BEETS8020 (Fresh BEETS) pool on Sonic
   defaultNetwork: GqlChainValues.Sonic,
   ensNetwork: GqlChainValues.Sonic,

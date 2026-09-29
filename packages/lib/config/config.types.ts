@@ -213,7 +213,6 @@ export interface ProjectConfig {
   links: Links
   footer: { linkSections: LinkSection[] }
   cowSupportedNetworks: GqlChain[]
-  networksForProtocolStats?: GqlChain[]
   partnerCards?: PartnerCard[]
   merklRewardsChains: GqlChain[]
   promoItems?: PromoItem[]
