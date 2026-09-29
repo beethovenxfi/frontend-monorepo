@@ -3,7 +3,7 @@ import { InfoIconPopover } from '@repo/lib/modules/pool/actions/create/InfoIconP
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import MainAprTooltip from '@repo/lib/shared/components/tooltips/apr-tooltip/MainAprTooltip'
-import { bn, fNumCustom, isValidNumber } from '@repo/lib/shared/utils/numbers'
+import { bn, fNumCustom } from '@repo/lib/shared/utils/numbers'
 import { zeroAddress } from 'viem'
 import { useReliquaryGlobalStats } from '../../hooks/useReliquaryGlobalStats'
 import RelicStat, { StatLabel, StatValueText } from './RelicStat'
@@ -32,22 +32,6 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
   )
 
   const totalBalance = bn(globalStats?.totalBalance || '0')
-
-  const relicMaturityLevels = globalStats?.levelBalances.map((balance: any) => ({
-    level: isValidNumber(balance.level) ? bn(balance.level).plus(1) : bn(0),
-    percentageOfTotal:
-      totalBalance.isZero() || !isValidNumber(balance.balance)
-        ? bn(0)
-        : bn(balance.balance).div(totalBalance),
-  }))
-
-  const avgRelicMaturity = fNumCustom(
-    relicMaturityLevels?.reduce(
-      (total: number, obj: any) => total + obj.level * obj.percentageOfTotal,
-      0
-    ) || 0,
-    '0.00'
-  )
 
   const totalShares = bn(data.totalShares || '0')
   const totalRelics = bn(globalStats?.relicCount || '0')
@@ -106,9 +90,9 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
           </Skeleton>
         </RelicStat>
         <RelicStat>
-          <StatLabel label="Avg Maturity Level" />
+          <StatLabel label="User Count" />
           <Skeleton isLoaded={!loading}>
-            <StatValueText>{avgRelicMaturity}</StatValueText>
+            <StatValueText>{fNumCustom(globalStats?.userCount || 0, '0,0')}</StatValueText>
           </Skeleton>
         </RelicStat>
         <RelicStat>
