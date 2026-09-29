@@ -191,7 +191,7 @@ describe('useEip5792BatchSubmitter', () => {
         }),
       {
         initialProps: {
-          chainId: props?.chainId ?? 1,
+          chainId: props?.chainId ?? 146,
           currentStep: props?.currentStep ?? makeCurrentStep(),
         },
       }
@@ -237,7 +237,7 @@ describe('useEip5792BatchSubmitter', () => {
 
     expect(sendCallsMock).toHaveBeenCalledWith({
       account: USER_ADDRESS,
-      chainId: 1,
+      chainId: 146,
       calls: [makeTxCall(1), makeTxCall(2), makeTxCall(9)],
       forceAtomic: true,
     })
@@ -257,7 +257,7 @@ describe('useEip5792BatchSubmitter', () => {
 
     expect(onTransactionChange).toHaveBeenCalledWith(
       expect.objectContaining({
-        chainId: 1,
+        chainId: 146,
         result: expect.objectContaining({
           status: 'pending',
           isSuccess: false,
@@ -305,7 +305,7 @@ describe('useEip5792BatchSubmitter', () => {
     })
 
     await act(async () => {
-      await rerender({ chainId: 1, currentStep: makeCurrentStep() })
+      await rerender({ chainId: 146, currentStep: makeCurrentStep() })
     })
 
     // The early pending report and the settled success report are separate calls

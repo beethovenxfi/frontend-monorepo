@@ -2,7 +2,7 @@ import { Address, createPublicClient, createTestClient, http, isAddress, PublicC
 import { SetBalanceMutation } from '../../anvil/useSetErc20Balance'
 import { TokenBalance, TokenBalancesByChain } from './fork-options'
 import { createConfig } from 'wagmi'
-import { mainnet, sonic } from 'viem/chains'
+import { sonic } from 'viem/chains'
 import { drpcUrlByChainId } from '@repo/lib/shared/utils/rpc'
 
 /*
@@ -71,7 +71,7 @@ export async function setTokenBalances({
   }
 }
 
-export function resetFork(chainId: number = mainnet.id) {
+export function resetFork(chainId: number = sonic.id) {
   const privateKey = process.env['NEXT_PRIVATE_DRPC_KEY']
 
   if (!privateKey) {

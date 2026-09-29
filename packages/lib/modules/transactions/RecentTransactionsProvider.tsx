@@ -35,7 +35,7 @@ const EIP5792_STALE_BATCH_MS = milliseconds({ minutes: 10 })
 // confirmed = transaction has been mined and is present on chain
 // reverted = transaction has been mined and is present on chain - but the execution was reverted
 // rejected = transaction was rejected by the rpc / other execution error prior to submission to chain
-// timeout =  the transaction hash was generated but waitForTransactionReceipt throws a timeout error (edge-case in polygon)
+// timeout =  the transaction hash was generated but waitForTransactionReceipt throws a timeout error
 // unknown =  the transaction hash was generated but waitForTransactionReceipt throws a non timeout error (we never had this error)
 export type TransactionStatus =
   'confirming' | 'confirmed' | 'reverted' | 'rejected' | 'timeout' | 'unknown'
@@ -124,7 +124,7 @@ export function useRecentTransactionsLogic() {
       } catch (error) {
         console.error('Error in RecentTransactionsProvider: ', error)
 
-        /* This is an edge-case that we found randomly happening in polygon.
+        /* This is an edge-case that we found randomly happening.
           Debug tip:
           Enforce a timeout in waitForTransactionReceipt inside node_modules/viem waitForTransactionReceipt
           to reproduce the issue

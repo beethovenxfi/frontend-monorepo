@@ -50,16 +50,12 @@ export interface ContractsConfig {
   beets?: {
     lstStaking: Address
     lstStakingProxy: Address
-    // TODO: make it required when fantom is removed
     sfcProxy?: Address
     sfc?: Address
     lstWithdrawRequestHelper?: Address
     reliquary?: Address
     magpieLoopedSonicRouter?: Address
     loopedSonicVault?: Address
-  }
-  merkl?: {
-    claims: Address
   }
   permit2?: Address
 }

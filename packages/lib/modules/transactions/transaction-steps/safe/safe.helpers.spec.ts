@@ -42,22 +42,14 @@ function nonMultisigDetails(): GatewayTransactionDetails {
 }
 
 describe('getSafeWebUrl', () => {
-  it('builds a safe web url with the chain shortname prefix', () => {
-    expect(getSafeWebUrl(1, SAFE_ADDRESS, '0xabc')).toBe(
-      `https://app.safe.global/transactions/tx?safe=/eth:${SAFE_ADDRESS}&id=0xabc`
+  it('builds a safe web url with the Sonic chain shortname prefix', () => {
+    expect(getSafeWebUrl(146, SAFE_ADDRESS, '0xabc')).toBe(
+      `https://app.safe.global/transactions/tx?safe=/sonic:${SAFE_ADDRESS}&id=0xabc`
     )
   })
 
-  it('maps every supported chain to its safe shortname', () => {
-    expect(getSafeWebUrl(1, SAFE_ADDRESS, 'id')).toContain('eth:')
-    expect(getSafeWebUrl(100, SAFE_ADDRESS, 'id')).toContain('gno:')
-    expect(getSafeWebUrl(11155111, SAFE_ADDRESS, 'id')).toContain('sep:')
-    expect(getSafeWebUrl(42161, SAFE_ADDRESS, 'id')).toContain('arb:')
-    expect(getSafeWebUrl(137, SAFE_ADDRESS, 'id')).toContain('matic:')
-    expect(getSafeWebUrl(10, SAFE_ADDRESS, 'id')).toContain('oeth:')
-    expect(getSafeWebUrl(8453, SAFE_ADDRESS, 'id')).toContain('base:')
-    expect(getSafeWebUrl(146, SAFE_ADDRESS, 'id')).toContain('sonic:')
-    expect(getSafeWebUrl(43114, SAFE_ADDRESS, 'id')).toContain('avax:')
+  it('throws for unsupported chain ids', () => {
+    expect(() => getSafeWebUrl(1, SAFE_ADDRESS, 'id')).toThrow(/Unsupported Safe chain id 1/)
   })
 })
 

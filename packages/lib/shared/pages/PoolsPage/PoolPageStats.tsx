@@ -32,11 +32,11 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
   const fees: Fee[] = [
     {
       label: 'Swap fees',
-      value: protocolData?.protocolMetricsAggregated.swapFee24h,
+      value: protocolData?.protocolMetricsChain.swapFee24h,
     },
     {
       label: 'Yield-bearing tokens',
-      value: protocolData?.protocolMetricsAggregated.yieldCapture24h,
+      value: protocolData?.protocolMetricsChain.yieldCapture24h,
     },
   ]
 
@@ -74,7 +74,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
             popover
             value={
               <AnimatedNumber
-                value={safeToNumber(protocolData?.protocolMetricsAggregated.totalLiquidity)}
+                value={safeToNumber(protocolData?.protocolMetricsChain.totalLiquidity)}
               />
             }
           />
@@ -93,7 +93,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
             popover
             value={
               <AnimatedNumber
-                value={safeToNumber(protocolData?.protocolMetricsAggregated.swapVolume24h)}
+                value={safeToNumber(protocolData?.protocolMetricsChain.swapVolume24h)}
               />
             }
           />

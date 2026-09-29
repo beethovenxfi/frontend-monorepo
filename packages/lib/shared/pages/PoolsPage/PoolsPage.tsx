@@ -90,7 +90,7 @@ export function PoolsPage({ children, rewardsClaimed24h }: PoolsPageProps) {
                     Earn passively on {PROJECT_CONFIG.projectName}
                   </Heading>
                   <Text sx={{ textWrap: 'balance' }} variant="secondary">
-                    {`Join ${fNumCustom(protocolData?.protocolMetricsAggregated.numLiquidityProviders || '0', '0a')}+ Liquidity Providers in yield-bearing pools`}
+                    {`Join ${fNumCustom(protocolData?.protocolMetricsChain.numLiquidityProviders || '0', '0a')}+ Liquidity Providers in yield-bearing pools`}
                   </Text>
                 </Box>
                 <PoolPageStats rewardsClaimed24h={rewardsClaimed24h} />

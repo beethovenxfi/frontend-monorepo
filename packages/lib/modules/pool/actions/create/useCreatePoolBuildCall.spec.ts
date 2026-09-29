@@ -50,7 +50,7 @@ describe('useCreatePoolBuildCall', () => {
     vi.clearAllMocks()
   })
 
-  const v3Input = { protocolVersion: 3 as const, chainId: 1 }
+  const v3Input = { protocolVersion: 3 as const, chainId: 146 }
 
   async function setupV3Mocks() {
     const { CreatePool } = await import('@balancer/sdk')
@@ -93,7 +93,7 @@ describe('useCreatePoolBuildCall', () => {
     expect(mockInstance.buildCall).toHaveBeenCalledWith(v3Input)
 
     expect(result.current.data).toEqual({
-      chainId: 1,
+      chainId: 146,
       account: defaultTestUserAccount,
       data: mockBuildCall.callData,
       to: mockBuildCall.to,
@@ -144,7 +144,7 @@ describe('useCreatePoolBuildCall', () => {
 
     const { result } = testHook(() =>
       useCreatePoolBuildCall({
-        createPoolInput: { protocolVersion: 2, chainId: 1 } as any,
+        createPoolInput: { protocolVersion: 2, chainId: 146 } as any,
         enabled: true,
       })
     )

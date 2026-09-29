@@ -49,7 +49,7 @@ export function aTokenAmountMock(options?: Partial<TokenAmount>): TokenAmount {
   const defaultTokenAmount: TokenAmount = {
     address: '0xc67b12049c2d0cf6e476bc64c7f82fc6c63cffc5',
     amount: 0n,
-    chainId: 1,
+    chainId: 146,
     decimals: 8,
     formatted: '0',
   }

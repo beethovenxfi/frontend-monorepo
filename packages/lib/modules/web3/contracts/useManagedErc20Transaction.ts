@@ -61,7 +61,7 @@ export function useManagedErc20Transaction({
     query: {
       enabled: enabled && !shouldChangeNetwork,
       meta: simulationMeta,
-      // In chains like polygon, we don't want background refetches while waiting for min block confirmations
+      // Avoid background refetches while waiting for min block confirmations.
       ...onlyExplicitRefetch,
     },
   })
@@ -70,7 +70,7 @@ export function useManagedErc20Transaction({
     ...txConfig,
     query: {
       enabled: !!txConfig && !shouldChangeNetwork,
-      // In chains like polygon, we don't want background refetches while waiting for min block confirmations
+      // Avoid background refetches while waiting for min block confirmations.
       ...onlyExplicitRefetch,
     },
   })

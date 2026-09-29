@@ -37,7 +37,7 @@ export function getNetworkConfig(
   chain?: GqlChain | number,
   defaultNetwork?: GqlChain
 ): NetworkConfig {
-  // cannot get default network directly from config here
+  // Wallet/network selection can be temporarily unavailable; retain the configured Sonic default.
   if (!chain) return config.networks[defaultNetwork || GqlChainValues.Sonic] as NetworkConfig
 
   if (typeof chain === 'number') {

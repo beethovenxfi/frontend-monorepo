@@ -143,11 +143,6 @@
       "allowedVersions": "<7.0.0"
     },
     {
-      "description": "Block @nktkas/hyperliquid updates. The library introduces frequent breaking changes (client redesigns, schema refactors, renamed parameters) between minor versions. Updating past 0.23.1 would require significant refactoring of packages/lib/modules/chains/hyperevm/useHyperEvm.ts.",
-      "matchPackageNames": ["@nktkas/hyperliquid"],
-      "enabled": false
-    },
-    {
       "description": "Keep @x402 packages in sync.",
       "groupName": "@x402",
       "matchPackageNames": ["@x402/**"]
