@@ -21,7 +21,6 @@ import {
 import { useUserSettings } from './UserSettingsProvider'
 import { blockInvalidNumberInput, bn, isBnParseable } from '@repo/lib/shared/utils/numbers'
 import { Percent, Settings } from 'lucide-react'
-import { CurrencySelect } from './CurrencySelect'
 import { EnableTxBundleSetting } from './EnableTxBundlesSetting'
 import { useEffect, useRef, useState } from 'react'
 
@@ -174,12 +173,6 @@ export function UserSettings() {
             </Heading>
           </HStack>
           <VStack align="start" p="md" spacing="lg">
-            <Box w="full">
-              <Heading pb="2" size="sm">
-                Currency
-              </Heading>
-              <CurrencySelect id="user-settings-currency-select" />
-            </Box>
             <Box w="full">
               <Heading pb="2" size="sm">
                 Slippage

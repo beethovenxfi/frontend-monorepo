@@ -1,20 +1,8 @@
 import { testHook } from '@repo/lib/test/utils/custom-renderers'
 import { useCurrency } from './useCurrency'
 
-import { PropsWithChildren } from 'react'
-import { FxRatesContext } from './FxRatesProvider'
-
-export function MockFiatFxRatesProvider({ children }: PropsWithChildren) {
-  const hook = {
-    hasFxRates: false,
-    getFxRate: () => 1, // mock that always return 1 as Fx rate
-  }
-
-  return <FxRatesContext.Provider value={hook}>{children}</FxRatesContext.Provider>
-}
-
 function testUseCurrency() {
-  const { result } = testHook(() => useCurrency(), { wrapper: MockFiatFxRatesProvider })
+  const { result } = testHook(() => useCurrency())
   return result
 }
 

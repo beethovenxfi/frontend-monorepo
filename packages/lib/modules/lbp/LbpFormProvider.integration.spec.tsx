@@ -2,14 +2,8 @@ import { testHook } from '@repo/lib/test/utils/custom-renderers'
 import { useLbpFormLogic } from './LbpFormProvider'
 import { clearLocalStorageMock, mockLocalStorage } from '@repo/lib/test/utils/localstorage-mock'
 import { LS_KEYS } from '@repo/lib/modules/local-storage/local-storage.constants'
-import { FiatFxRatesProvider } from '@repo/lib/shared/hooks/FxRatesProvider'
 import { INITIAL_SALE_STRUCTURE, INITIAL_PROJECT_INFO } from './constants.lbp'
 import { act, waitFor } from '@testing-library/react'
-import { PropsWithChildren } from 'react'
-
-function LbpTestWrapper({ children }: PropsWithChildren) {
-  return <FiatFxRatesProvider data={undefined}>{children}</FiatFxRatesProvider>
-}
 
 vi.mock('next/navigation', async importOriginal => {
   const actual = await importOriginal<typeof import('next/navigation')>()
@@ -29,7 +23,7 @@ afterAll(() => {
 })
 
 async function renderLbpForm() {
-  const rendered = testHook(() => useLbpFormLogic(), { wrapper: LbpTestWrapper })
+  const rendered = testHook(() => useLbpFormLogic())
 
   await waitFor(() => {
     expect(rendered.result.current.saleStructureForm.isHydrated).toBe(true)
