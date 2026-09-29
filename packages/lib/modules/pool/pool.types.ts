@@ -23,24 +23,8 @@ export type PoolList = GetPoolsQuery['pools']
 export type PoolListItem = PoolList[0]
 export type LbpV3 = GqlPoolLiquidityBootstrappingV3 | GqlPoolFixedPriceLbp
 
-export type VotingPool = Pick<
-  PoolListItem,
-  | 'id'
-  | 'address'
-  | 'chain'
-  | 'type'
-  | 'symbol'
-  // We need these fields to display boosted underlying tokens in pool token pills (shared by voting, portfolio and standard pool list)
-  | 'protocolVersion'
-  | 'hasErc4626'
-  // We need tags to display erc4626Metadata in PoolListTableDetailsCell
-  | 'tags'
-  // We need hook to show when the pool has hooks in the voting list
-  | 'hook'
-> & { poolTokens: ApiToken[] }
-
 // PoolCore defines the shared fields between PoolListItem, Pool that are required for pool related shared logic
-export type PoolCore = VotingPool | Pool | PoolListItem
+export type PoolCore = Pool | PoolListItem
 
 export enum BaseVariant {
   v2 = 'v2',
