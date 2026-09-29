@@ -1,17 +1,25 @@
 import { useQuery } from '@apollo/client/react'
-import { GetVeBalTotalSupplyDocument } from '../services/api/generated/graphql'
-import { GqlChainValues } from '../services/api/graphql-enums'
+import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
+import { GetApiHealthDocument, GetApiHealthQuery } from '../services/api/generated/graphql'
 import { secondsToMilliseconds } from 'date-fns'
 
 export function useApiHealth() {
-  const { error } = useQuery(GetVeBalTotalSupplyDocument, {
-    variables: {
-      chain: GqlChainValues.Mainnet,
-    },
+  const { data, error, loading } = useQuery(GetApiHealthDocument, {
+    variables: { chain: PROJECT_CONFIG.defaultNetwork },
     pollInterval: secondsToMilliseconds(15),
   })
 
   return {
-    apiOK: error === undefined,
+    apiOK: getApiHealthStatus(data, error, loading),
   }
+}
+
+export function getApiHealthStatus(
+  data: GetApiHealthQuery | undefined,
+  error: unknown,
+  loading: boolean
+): boolean | undefined {
+  if (error) return false
+  if (data?.protocolMetricsChain != null) return true
+  return loading ? undefined : false
 }

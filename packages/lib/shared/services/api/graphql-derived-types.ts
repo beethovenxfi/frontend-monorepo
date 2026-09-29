@@ -1,5 +1,5 @@
 /** Derived type aliases for broad schema object types that Codegen 6 no longer emits.
- *  Codegen 5 generated standalone types like GqlToken, GqlPoolElement, etc.
+ *  Codegen 5 generated standalone types like GqlToken, GqlPool, etc.
  *  Codegen 6 only emits operation-specific result types and fragment types.
  *  These aliases restore the old names so consumers don't need refactoring. */
 
@@ -13,7 +13,6 @@ import type {
   HookFragment,
   LbpV3CommonMetadataFieldsFragment,
   Erc4626ReviewDataFragment,
-  GetVeBalUserQuery,
   GetStakedSonicDataQuery,
 } from './generated/graphql.ts'
 
@@ -33,7 +32,6 @@ export type GqlTokenPrice = GetTokenPricesQuery['tokenPrices'][number]
 
 // ── Pool discriminated union members ──
 
-export type GqlPoolElement = Extract<GetPoolQuery['pool'], { __typename: 'GqlPoolElement' }>
 export type GqlPoolWeighted = Extract<GetPoolQuery['pool'], { __typename: 'GqlPoolWeighted' }>
 export type GqlPoolGyro = Extract<GetPoolQuery['pool'], { __typename: 'GqlPoolGyro' }>
 export type GqlPoolComposableStable = Extract<
@@ -71,7 +69,6 @@ export type GqlPoolMinimal = GetPoolsQuery['pools'][number]
 // ── Token detail / nested pool types ──
 
 export type GqlPoolTokenDetail = PoolTokensFragment
-export type GqlNestedPool = NonNullable<PoolTokensFragment['nestedPool']>
 
 // ── Staking types (extracted from GetPoolsQuery) ──
 
@@ -100,10 +97,6 @@ export type GqlPoolAddRemoveEventV3 = Extract<
 export type GqlPoolSwapEventV3 = Extract<
   GetPoolEventsQuery['poolEvents'][number],
   { __typename: 'GqlPoolSwapEventV3' }
->
-export type GqlPoolSwapEventCowAmm = Extract<
-  GetPoolEventsQuery['poolEvents'][number],
-  { __typename: 'GqlPoolSwapEventCowAmm' }
 >
 
 // ── APR item types ──
@@ -186,5 +179,4 @@ export type QuantAmmWeightSnapshot = NonNullable<
 
 // ── Misc types from other queries ──
 
-export type GqlVeBalLockSnapshot = GetVeBalUserQuery['veBalGetUser']['lockSnapshots'][number]
 export type GqlStakedSonicData = GetStakedSonicDataQuery['stsGetGqlStakedSonicData']

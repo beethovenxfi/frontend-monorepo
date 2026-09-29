@@ -118,42 +118,16 @@ describe('validatePoolCreationForm', () => {
     describe('hasAmountError', () => {
       it('returns no error when token has no address or empty amount', () => {
         expect(
-          validatePoolTokens.hasAmountError(mockToken({ address: undefined }), PoolType.Weighted)
-            .error
+          validatePoolTokens.hasAmountError(mockToken({ address: undefined })).error
         ).toBeUndefined()
 
-        expect(
-          validatePoolTokens.hasAmountError(mockToken({ amount: '' }), PoolType.Weighted).error
-        ).toBeUndefined()
+        expect(validatePoolTokens.hasAmountError(mockToken({ amount: '' })).error).toBeUndefined()
       })
 
       it('returns error for zero amount', () => {
-        expect(
-          validatePoolTokens.hasAmountError(mockToken({ amount: '0' }), PoolType.Weighted).error
-        ).toBe('Amount must be greater than 0')
-      })
-
-      it('does not throw for malformed token amounts', () => {
-        expect(
-          validatePoolTokens.hasAmountError(mockToken({ amount: 'abc' }), PoolType.CowAmm)
-        ).toEqual({
-          error: 'Amount must be greater than 0',
-          possibleErrors: ['Amount must be greater than 0', 'Minimum amount is 1'],
-        })
-      })
-
-      it('enforces higher minimum for CowAmm tokens with low decimals', () => {
-        const lowDecimalsToken = mockToken({ amount: '0.001', data: { decimals: 6 } as any })
-
-        expect(validatePoolTokens.hasAmountError(lowDecimalsToken, PoolType.CowAmm).error).toBe(
-          'Minimum amount is 1'
+        expect(validatePoolTokens.hasAmountError(mockToken({ amount: '0' })).error).toBe(
+          'Amount must be greater than 0'
         )
-
-        const sufficientToken = mockToken({ amount: '100', data: { decimals: 6 } as any })
-
-        expect(
-          validatePoolTokens.hasAmountError(sufficientToken, PoolType.CowAmm).error
-        ).toBeUndefined()
       })
     })
   })

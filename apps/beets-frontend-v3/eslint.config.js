@@ -22,7 +22,7 @@ export default [
         'error',
         {
           paths: [
-            // Disable direct wagmi imports from balancer and beets apps to avoid WagmiProvider useConfig error (introduced by eslint 9 + nextjs 15)
+            // Disable direct wagmi imports from the beets app to avoid WagmiProvider useConfig error (introduced by eslint 9 + nextjs 15)
             {
               name: 'wagmi',
               message: 'Import from @repo/lib/shared/utils/wagmi instead',

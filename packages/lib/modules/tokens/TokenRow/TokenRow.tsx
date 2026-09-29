@@ -11,7 +11,6 @@ import {
   PopoverContent,
   VStack,
   Flex,
-  Link,
   Badge,
 } from '@chakra-ui/react'
 import { Address } from 'viem'
@@ -26,10 +25,9 @@ import { TokenInfoPopover } from '../TokenInfoPopover'
 import { ChevronDown } from 'lucide-react'
 import { BullseyeIcon } from '@repo/lib/shared/components/icons/BullseyeIcon'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
-import NextLink from 'next/link'
-import { getNestedPoolPath, getPoolTypeLabel } from '../../pool/pool.utils'
+import { getPoolTypeLabel } from '../../pool/pool.utils'
 import { ApiToken, CustomToken, ApiOrCustomToken } from '../token.types'
-import { getFlatUserReferenceTokens } from '../../pool/pool-tokens.utils'
+import { getUserReferenceTokens } from '../../pool/pool-tokens.utils'
 import { usePoolTokenPriceWarnings } from '../../pool/usePoolTokenPriceWarnings'
 import { TokenMissingPriceWarning } from '../TokenMissingPriceWarning'
 import { getTokenColor } from '@repo/lib/styles/token-colors'
@@ -45,7 +43,6 @@ export type TokenInfoProps = {
   showSelect?: boolean
   showInfoPopover?: boolean
   isBpt?: boolean
-  isNestedBpt?: boolean
   isNestedToken?: boolean
   iconSize?: number
   logoURI?: string
@@ -86,7 +83,7 @@ function TokenInfo({
     variant: 'secondary',
   }
 
-  const tokenColor = getTokenColor(chain, address as Address).from
+  const tokenColor = getTokenColor(address as Address).from
 
   return (
     <HStack spacing={{ base: 'sm', md: 'ms' }}>
@@ -103,13 +100,7 @@ function TokenInfo({
       )}
       <VStack alignItems="flex-start" spacing="none">
         <HStack spacing="none">
-          {isBpt && pool ? (
-            <Link as={NextLink} href={getNestedPoolPath({ pool, nestedPoolAddress: address })}>
-              <Heading {...headingProps}>{tokenSymbol}</Heading>
-            </Link>
-          ) : (
-            <Heading {...headingProps}>{tokenSymbol}</Heading>
-          )}
+          <Heading {...headingProps}>{tokenSymbol}</Heading>
           {isVirtual && (
             <Badge colorScheme="yellow" ml="1">
               Virtual
@@ -143,7 +134,6 @@ export type TokenRowProps = {
   isLoading?: boolean
   abbreviated?: boolean
   isBpt?: boolean
-  isNestedBpt?: boolean
   isNestedToken?: boolean
   pool?: Pool
   showZeroAmountAsDash?: boolean
@@ -167,7 +157,6 @@ export default function TokenRow({
   disabled,
   isLoading,
   isBpt,
-  isNestedBpt,
   isNestedToken,
   pool,
   abbreviated = true,
@@ -187,7 +176,7 @@ export default function TokenRow({
     usePoolTokenPriceWarnings(pool)
 
   const token = customToken || (address ? getToken(address, chain) : undefined)
-  const userReferenceTokens = pool ? getFlatUserReferenceTokens(pool) : []
+  const userReferenceTokens = pool ? getUserReferenceTokens(pool) : []
 
   const poolToken = address
     ? userReferenceTokens.find(t => isSameAddress(t.address, address))
@@ -206,7 +195,7 @@ export default function TokenRow({
     usdValue = undefined
   } else if (customUsdPrice) {
     usdValue = bn(customUsdPrice).times(value).toString()
-  } else if ((isBpt || isNestedBpt) && pool && address) {
+  } else if (isBpt && pool && address) {
     usdValue = usdValueForTokenAddress(address, chain, value)
   } else if (token) {
     usdValue = usdValueForToken(token, value)
@@ -265,12 +254,7 @@ export default function TokenRow({
     }
 
     return (
-      <TokenInfo
-        {...props}
-        isBpt={isBpt || isNestedBpt}
-        isVirtual={isVirtual}
-        showInfoPopover={showInfoPopover}
-      />
+      <TokenInfo {...props} isBpt={isBpt} isVirtual={isVirtual} showInfoPopover={showInfoPopover} />
     )
   })()
 

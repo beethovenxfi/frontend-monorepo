@@ -3,7 +3,7 @@ import { PoolName } from '@repo/lib/modules/pool/PoolName'
 import { Pool } from '@repo/lib/modules/pool/pool.types'
 import { ClaimModal } from '@repo/lib/modules/pool/actions/claim/ClaimModal'
 import { ClaimProvider } from '@repo/lib/modules/pool/actions/claim/ClaimProvider'
-import { ChainSlug, getChainSlug } from '@repo/lib/modules/pool/pool.utils'
+import { ChainSlug, getChainSlug, isChainSlug } from '@repo/lib/modules/pool/pool.utils'
 import { Button, Card, HStack, Heading, Skeleton, Stack, Text, VStack } from '@chakra-ui/react'
 import { ClaimNetworkPoolsLayout } from '@repo/lib/modules/portfolio/PortfolioClaim/ClaimNetworkPools/ClaimNetworkPoolsLayout'
 import { usePortfolio } from '@repo/lib/modules/portfolio/PortfolioProvider'
@@ -11,7 +11,7 @@ import { TokenIconStack } from '@repo/lib/modules/tokens/TokenIconStack'
 import { NetworkIcon } from '@repo/lib/shared/components/icons/NetworkIcon'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
 import { capitalize } from 'lodash'
-import { useParams } from 'next/navigation'
+import { notFound, useParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { getUserReferenceTokens } from '@repo/lib/modules/pool/pool-tokens.utils'
 import { isMaBeetsPool } from '@repo/lib/modules/pool/pool.helpers'
@@ -29,11 +29,12 @@ export default function ClaimNetworkPoolsLayoutWrapper() {
     refetchClaimPoolData,
   } = usePortfolio()
 
-  const gqlChain = getChainSlug(chain as ChainSlug)
+  const gqlChain = isChainSlug(chain as string) ? getChainSlug(chain as ChainSlug) : undefined
 
-  const pools = poolsByChainMap[gqlChain]
+  const pools = gqlChain ? poolsByChainMap[gqlChain] : undefined
   const chainName = capitalize(chain as string)
-  const claimableFiatBalance = totalFiatClaimableBalanceByChain[gqlChain]
+
+  const claimableFiatBalance = gqlChain ? totalFiatClaimableBalanceByChain[gqlChain] : undefined
 
   const isClaimAllDisabled = pools?.every(pool =>
     poolRewardsMap[pool.id]?.totalFiatClaimBalance?.isEqualTo(0)
@@ -60,6 +61,8 @@ export default function ClaimNetworkPoolsLayoutWrapper() {
   }, [pools, poolRewardsMap])
 
   const hasMultipleClaims = useMemo(() => poolsWithClaims.length > 1, [poolsWithClaims])
+
+  if (!gqlChain) notFound()
 
   return (
     <RelayerSignatureProvider>

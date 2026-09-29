@@ -14,14 +14,14 @@ test('Has fake definitions for all the symbols in FakeTokenSymbol', () => {
 
 test('fakeGetToken', () => {
   expect(
-    fakeGetToken('0x7b79995e5f793a07bc00c21412e50ecae098e7f9', GqlChainValues.Sepolia)?.symbol
-  ).toBe('WETH')
+    fakeGetToken('0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38', GqlChainValues.Sonic)?.symbol
+  ).toBe('wS')
 
   expect(
-    fakeGetToken('0x8a88124522dbbf1e56352ba3de1d9f78c143751e', GqlChainValues.Sepolia)?.symbol
-  ).toBe('stataEthUSDC')
+    fakeGetToken('0xe5da20f15420ad15de0fa650600afc998bbe3955', GqlChainValues.Sonic)?.symbol
+  ).toBe('stS')
 
   expect(
-    fakeGetToken('0x94a9d9ac8a22534e3faca9f4e7f2e2cf85d5e4c8', GqlChainValues.Sepolia)?.symbol
-  ).toBe('usdc-aave')
+    fakeGetToken('0x29219dd400f2bf60e5a23d13be72b486d4038894', GqlChainValues.Sonic)?.symbol
+  ).toBe('USDC')
 })

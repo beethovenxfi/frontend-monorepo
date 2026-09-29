@@ -33,7 +33,7 @@ export function useLevelUpStep(relicId: string | undefined) {
     contractId: 'beets.reliquary',
     contractAddress: getNetworkConfig(chainId).contracts.beets?.reliquary || '',
     functionName: 'updatePosition',
-    args: relicId ? [relicId] : null,
+    args: relicId ? [BigInt(relicId)] : null,
     enabled: isConnected && !!relicId,
     onTransactionChange: setTransaction,
   }

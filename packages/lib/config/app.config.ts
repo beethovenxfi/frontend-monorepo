@@ -37,14 +37,14 @@ export function getNetworkConfig(
   chain?: GqlChain | number,
   defaultNetwork?: GqlChain
 ): NetworkConfig {
-  // cannot get default network directly from config here
-  if (!chain) return config.networks[defaultNetwork || GqlChainValues.Mainnet] as NetworkConfig
+  // Wallet/network selection can be temporarily unavailable; retain the configured Sonic default.
+  if (!chain) return config.networks[defaultNetwork || GqlChainValues.Sonic] as NetworkConfig
 
   if (typeof chain === 'number') {
-    return networksByChainId[chain] || (config.networks.MAINNET as NetworkConfig)
+    return networksByChainId[chain] || (config.networks.SONIC as NetworkConfig)
   }
 
-  return config.networks[chain] || (config.networks.MAINNET as NetworkConfig)
+  return config.networks[chain] || (config.networks.SONIC as NetworkConfig)
 }
 
 export function getChainId(gqlChain: GqlChain): SupportedChainId {

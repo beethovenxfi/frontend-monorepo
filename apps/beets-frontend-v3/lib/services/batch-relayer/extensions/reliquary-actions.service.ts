@@ -5,7 +5,7 @@ import {
   EncodeReliquaryHarvestAllInput,
   EncodeReliquaryRemoveLiquidityAndClaimInput,
 } from '../reliquary-types'
-import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 
 export class ReliquaryActionsService {
   public encodeCreateRelicAndAddLiquidity(

@@ -8,7 +8,6 @@ import { abbreviateAddress } from '@repo/lib/shared/utils/addresses'
 import { fNum } from '@repo/lib/shared/utils/numbers'
 import {
   isBoosted,
-  isCowAmmPool,
   isDynamicLBP,
   isQuantAmmPool,
   isStable,
@@ -16,7 +15,7 @@ import {
   isV3Pool,
 } from '../../../pool.helpers'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
-import { getPoolTypeLabel, shouldHideSwapFee } from '../../../pool.utils'
+import { getPoolTypeLabel } from '../../../pool.utils'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import { compact } from 'lodash'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
@@ -53,19 +52,22 @@ export function useFormattedPoolAttributes() {
 
   const poolOwnerData = useMemo(() => {
     if (!pool) return
-    const { owner, swapFeeManager, chain } = pool
-    if (!owner) return
+    const { poolCreator, swapFeeManager, chain } = pool
+    const manager = (isV2 ? poolCreator : swapFeeManager) || ''
+    if (!manager) return
 
-    if ((owner === zeroAddress && isV2) || isCowAmmPool(pool.type)) {
+    if (manager === zeroAddress) {
       return {
-        title: 'No owner',
+        title: isV2 ? 'No owner' : 'Delegate manager',
         link: '',
-        editableText: 'non-editable',
-        attributeImmutabilityText: '',
+        editableText: isV2 ? 'non-editable' : 'editable by governance',
+        attributeImmutabilityText: isStable(pool.type)
+          ? ' except for swap fees and AMP factor editable by governance'
+          : ' except for swap fees editable by governance',
       }
     }
 
-    if (owner === delegateOwner || (owner === zeroAddress && isV3)) {
+    if (manager === delegateOwner) {
       return {
         title: `Delegate ${isV2 ? 'owner' : 'manager'}`,
         link: '',
@@ -78,15 +80,9 @@ export function useFormattedPoolAttributes() {
 
     const editableBy = `editable by ${isV2 ? 'pool owner' : 'swap fee manager'}`
 
-    const link = isV2
-      ? getBlockExplorerAddressUrl(owner, chain)
-      : swapFeeManager
-        ? getBlockExplorerAddressUrl(swapFeeManager, chain)
-        : ''
-
     return {
-      title: abbreviateAddress((isV2 ? owner : swapFeeManager) || ''),
-      link,
+      title: abbreviateAddress(manager),
+      link: getBlockExplorerAddressUrl(manager, chain),
       editableText: editableBy,
       attributeImmutabilityText: isStable(pool.type)
         ? ` except for swap fees and AMP factor ${editableBy}`
@@ -114,7 +110,7 @@ export function useFormattedPoolAttributes() {
       },
       {
         title: 'Protocol version',
-        value: isCowAmmPool(pool.type) ? 'Balancer CoW AMM' : `Balancer v${pool.protocolVersion}`,
+        value: `Balancer v${pool.protocolVersion}`,
       },
       {
         title: 'Network',
@@ -152,10 +148,6 @@ export function useFormattedPoolAttributes() {
         value: toCurrency(usdValueForTokenAddress(pool.address, pool.chain, '1')),
       },
     ])
-
-    if (shouldHideSwapFee(pool?.type)) {
-      return attributes.filter(a => a?.title !== 'Swap fees')
-    }
 
     return attributes
   }, [pool, poolOwnerData, isV2, toCurrency, usdValueForTokenAddress])

@@ -5,7 +5,7 @@ import {
   TransactionStep,
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useCallback, useMemo, useState } from 'react'
 import { usePool } from '../../PoolProvider'
 import { Pool } from '../../pool.types'
@@ -39,7 +39,7 @@ export function useStakeStep(
     [pool.staking]
   )
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Staking deposit transaction)',
     {
       chainId,

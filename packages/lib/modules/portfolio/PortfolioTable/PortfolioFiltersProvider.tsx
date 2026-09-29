@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useMemo, useState } from 'react'
-import type { GqlChain, GqlPoolType } from '@repo/lib/shared/services/api/generated/graphql'
+import type { GqlPoolType } from '@repo/lib/shared/services/api/generated/graphql'
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
 import { uniq } from 'lodash'
 import { POOL_TYPE_MAP, PoolFilterType } from '../../pool/pool.types'
@@ -22,7 +22,6 @@ import { removeHookDataFromPoolIfNecessary } from '@repo/lib/modules/pool/pool.u
 export type UsePortfolioFiltersResult = ReturnType<typeof usePortfolioFiltersLogic>
 
 export function usePortfolioFiltersLogic() {
-  const [selectedNetworks, setSelectedNetworks] = useState<GqlChain[]>([])
   const [selectedPoolTypes, setSelectedPoolTypes] = useState<PoolFilterType[]>([])
   const [selectedStakingTypes, setSelectedStakingTypes] = useState<StakingFilterKeyType[]>([])
   const [shouldFilterTinyBalances, setShouldFilterTinyBalances] = useState(true)
@@ -41,14 +40,6 @@ export function usePortfolioFiltersLogic() {
 
   const expandedPools = useExpandedPools(filteredBalancePools)
 
-  function toggleNetwork(checked: boolean, network: GqlChain) {
-    if (checked) {
-      setSelectedNetworks(current => uniq([...current, network]))
-    } else {
-      setSelectedNetworks(current => current.filter(chain => chain !== network))
-    }
-  }
-
   function togglePoolType(checked: boolean, poolType: PoolFilterType) {
     if (checked) {
       setSelectedPoolTypes(current => uniq([...current, poolType]))
@@ -66,19 +57,11 @@ export function usePortfolioFiltersLogic() {
   }
 
   function resetFilters() {
-    setSelectedNetworks([])
     setSelectedPoolTypes([])
     setSelectedStakingTypes([])
   }
 
-  const totalFilterCount =
-    selectedNetworks.length + selectedPoolTypes.length + selectedStakingTypes.length
-
-  const availableNetworks = useMemo(
-    () =>
-      [...new Set(filteredBalancePools.map(pool => pool.chain))].sort((a, b) => a.localeCompare(b)),
-    [filteredBalancePools]
-  )
+  const totalFilterCount = selectedPoolTypes.length + selectedStakingTypes.length
 
   const availablePoolTypes = useMemo(() => {
     const gqlTypeToFilterKeyMap = new Map<GqlPoolType, PoolFilterType>()
@@ -114,12 +97,8 @@ export function usePortfolioFiltersLogic() {
 
     expandedPools.forEach(pool => {
       if (pool.poolType) {
-        if (pool.poolType === ExpandedPoolType.StakedBal) {
+        if (pool.poolType === ExpandedPoolType.Staked) {
           foundFilterKeys.add(StakingFilterKey.Staked)
-        } else if (pool.poolType === ExpandedPoolType.Locked) {
-          foundFilterKeys.add(StakingFilterKey.Locked)
-        } else if (pool.poolType === ExpandedPoolType.Unlocked) {
-          foundFilterKeys.add(StakingFilterKey.Unlocked)
         } else if (pool.poolType === ExpandedPoolType.Unstaked) {
           foundFilterKeys.add(StakingFilterKey.Unstaked)
         } else if (pool.poolType === ExpandedPoolType.Default) {
@@ -154,10 +133,6 @@ export function usePortfolioFiltersLogic() {
   const filteredExpandedPools = useMemo(() => {
     let filtered = [...expandedPools]
 
-    if (selectedNetworks.length > 0) {
-      filtered = filtered.filter(pool => selectedNetworks.includes(pool.chain))
-    }
-
     if (selectedPoolTypes.length > 0) {
       filtered = filtered.filter(pool =>
         selectedPoolTypes.some(selectedFilterKey => {
@@ -174,15 +149,11 @@ export function usePortfolioFiltersLogic() {
     }
 
     return filtered.map(pool => removeHookDataFromPoolIfNecessary(pool)) as ExpandedPoolInfo[]
-  }, [expandedPools, selectedNetworks, selectedPoolTypes, selectedStakingTypes])
+  }, [expandedPools, selectedPoolTypes, selectedStakingTypes])
 
   return {
-    selectedNetworks,
-    setSelectedNetworks,
-    toggleNetwork,
     totalFilterCount,
     resetFilters,
-    availableNetworks,
     selectedPoolTypes,
     setSelectedPoolTypes,
     togglePoolType,

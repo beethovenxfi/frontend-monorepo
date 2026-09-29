@@ -2,7 +2,6 @@ import { getChainId, getNetworkConfig } from '@repo/lib/config/app.config'
 import { BalAlertButton } from '@repo/lib/shared/components/alerts/BalAlertButton'
 import { BalAlertContent } from '@repo/lib/shared/components/alerts/BalAlertContent'
 import type { GqlPoolTokenDetail } from '@repo/lib/shared/services/api/graphql-derived-types'
-import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { usePathname, useRouter } from 'next/navigation'
 import { useMemo, useState, useCallback } from 'react'
 import { Pool } from '../pool.types'
@@ -64,9 +63,6 @@ export function usePoolAlerts(pool: Pool) {
   }
 
   const getTokenPoolAlerts = (pool: Pool): PoolAlert[] => {
-    // Disable alerts for Sepolia pools
-    if (pool.chain === GqlChainValues.Sepolia) return []
-
     const poolTokens = pool.poolTokens as GqlPoolTokenDetail[]
     const hook = pool.hook
 
@@ -151,82 +147,6 @@ export function usePoolAlerts(pool: Pool) {
       }
     }
 
-    // check alerts for nested pools & tokens
-    poolTokens?.forEach(token => {
-      if (token.hasNestedPool && token.nestedPool) {
-        const nestedPool = token.nestedPool
-
-        if (!nestedPool.hook) {
-          return
-        }
-
-        if (nestedPool.hook) {
-          const hookName = hooks.find(
-            hook =>
-              nestedPool.hook &&
-              hook?.addresses[getChainId(pool.chain)]?.includes(nestedPool.hook.address as Address)
-          )?.name
-
-          if (!hasReviewedHook(nestedPool.hook)) {
-            alerts.push({
-              identifier: `NestedPoolHookNotReviewed`,
-              content: `This pool contains a nested pool with a hook called ${hookName} which has not been reviewed. For your safety, you can’t interact with this pool on this UI.`,
-              status: 'error',
-              isSoftWarning: true,
-            })
-          }
-
-          if (nestedPool.hook?.reviewData?.summary === 'unsafe') {
-            alerts.push({
-              identifier: `NestedPoolHookReviewedUnsafe`,
-              content: `This pool contains a nested pool with a hook called ${hookName} which has been reviewed as 'unsafe'. For your safety, you can’t interact with this pool on this UI.`,
-              status: 'error',
-              isSoftWarning: true,
-            })
-          }
-
-          if (
-            nestedPool.hook?.reviewData?.summary === 'safe' &&
-            nestedPool.hook?.reviewData?.warnings.length > 0
-          ) {
-            alerts.push({
-              identifier: `NestedPoolHookReviewedSafeWithWarnings`,
-              content: `This pool contains a a hook called ${hookName} which has been reviewed as ‘safe’ but with warnings. Please review it in the Pool contracts section.`,
-              status: 'error',
-              isSoftWarning: true,
-            })
-          }
-        }
-
-        nestedPool.tokens.forEach((nestedToken: any) => {
-          if (!hasRateProvider(nestedToken)) {
-            return
-          }
-
-          if (!hasReviewedRateProvider(nestedToken)) {
-            alerts.push({
-              identifier: `NestedRateProviderNotReviewed-${nestedToken.symbol}`,
-              content: `The rate provider for ${nestedToken.symbol} in a nested pool has not been reviewed. For your safety, you can’t interact with this pool on this UI.`,
-              status: 'error',
-              isSoftWarning: true,
-            })
-          }
-
-          if (
-            nestedToken.priceRateProviderData &&
-            nestedToken.priceRateProviderData?.summary !== 'safe'
-          ) {
-            alerts.push({
-              identifier: `UnsafeNestedRateProvider-${nestedToken.symbol}`,
-              content: `The rate provider for ${nestedToken.symbol} in a nested pool has been reviewed as 'unsafe'. For your safety, you can't interact with this pool on this UI.`,
-              status: 'error',
-              isSoftWarning: true,
-            })
-          }
-        })
-      }
-    })
-
     return alerts
   }
 
@@ -236,7 +156,7 @@ export function usePoolAlerts(pool: Pool) {
     function MigrateStakeContent() {
       return (
         <BalAlertContent
-          title="Migrate to the new veBAL staking gauge for future BAL liquidity incentives"
+          title="Migrate to the new staking gauge for future liquidity incentives"
           tooltipLabel={migrateStakeTooltipLabel}
         >
           <BalAlertButton onClick={() => router.push(`${pathname}/migrate-stake`)}>
@@ -262,7 +182,6 @@ export function usePoolAlerts(pool: Pool) {
     const alerts: PoolAlert[] = []
 
     // alert for specific AutoRange pool
-    // https://balancer.fi/pools/plasma/v3/0xe14ba497a7c51f34896d327ec075f3f18210a270
     if (pool.id === '0xe14ba497a7c51f34896d327ec075f3f18210a270') {
       alerts.push({
         identifier: 'poolIsAutoRange',

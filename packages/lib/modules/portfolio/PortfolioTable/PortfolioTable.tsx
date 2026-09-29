@@ -31,8 +31,6 @@ import { usePortfolioSorting } from './usePortfolioSorting'
 import { usePoolMigrations } from '../../pool/migrations/PoolMigrationsProvider'
 import { getChainId } from '@repo/lib/config/app.config'
 import { MigrationAlert } from '../../pool/migrations/MigrationAlert'
-import { isChainDeprecated } from '../../chains/chain.utils'
-import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
 import { memo, useMemo } from 'react'
 
 const rowProps = (needsLastColumnWider: boolean) => ({
@@ -55,9 +53,7 @@ export function PortfolioTable() {
   const tableRowProps = useMemo(() => rowProps(hasStakingBoost), [hasStakingBoost])
 
   const {
-    selectedNetworks,
     selectedPoolTypes,
-    toggleNetwork,
     togglePoolType,
     toggleStakingType,
     selectedStakingTypes,
@@ -89,8 +85,6 @@ export function PortfolioTable() {
         .filter((item, pos, ary) => !pos || item.id !== ary[pos - 1]?.id), // deduplication
     [sortedPools, needsMigration]
   )
-
-  const deprecatedChainPools = sortedPools.filter(pool => isChainDeprecated(pool.chain)).length
 
   return (
     <FadeInOnView>
@@ -125,10 +119,8 @@ export function PortfolioTable() {
 
             {isFilterVisible && (
               <PortfolioFilterTags
-                networks={selectedNetworks}
                 poolTypes={selectedPoolTypes}
                 stakingTypes={selectedStakingTypes}
-                toggleNetwork={toggleNetwork}
                 togglePoolType={togglePoolType}
                 toggleStakingType={toggleStakingType}
               />
@@ -140,25 +132,13 @@ export function PortfolioTable() {
             direction="row"
             w={{ base: 'full', md: 'auto' }}
           >
-            <PortfolioFilters
-              selectedNetworks={selectedNetworks}
-              selectedPoolTypes={selectedPoolTypes}
-            />
+            <PortfolioFilters selectedPoolTypes={selectedPoolTypes} />
           </Stack>
         </Stack>
 
         {poolsThatNeedMigration.map(pool => (
           <MigrationAlert key={pool.id} pool={pool} />
         ))}
-
-        {deprecatedChainPools > 0 && (
-          <BalAlert
-            content={`You have ${deprecatedChainPools} affected ${deprecatedChainPools === 1 ? 'position' : 'positions'} on this chains.
-            Please remove your liquidity asap.`}
-            status="warning"
-            title="Mode and Fraxtal are being sunset on Balancer"
-          />
-        )}
 
         {isConnected ? (
           <Card

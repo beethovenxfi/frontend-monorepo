@@ -63,20 +63,3 @@ query SorGetSwapPaths(
     protocolVersion
   }
 }
-
-fragment GqlTokenDynamicData on GqlTokenDynamicData {
-  id
-  tokenAddress
-  ath
-  atl
-  marketCap
-  fdv
-  priceChange24h
-  priceChangePercent24h
-  priceChangePercent7d
-  priceChangePercent14d
-  priceChangePercent30d
-  high24h
-  low24h
-  updatedAt
-}

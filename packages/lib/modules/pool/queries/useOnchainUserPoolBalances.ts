@@ -5,7 +5,6 @@ import type {
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import { bn, safeSum, isBnParseable } from '@repo/lib/shared/utils/numbers'
-import { captureNonFatalError } from '@repo/lib/shared/utils/query-errors'
 import { HumanAmount } from '@balancer/sdk'
 import type BigNumber from 'bignumber.js'
 import { useEffect, useMemo, useCallback } from 'react'
@@ -54,11 +53,11 @@ export function useOnchainUserPoolBalances(pools: Pool[] = []) {
 
   useEffect(() => {
     if (stakedPoolBalancesError) {
-      captureStakedMulticallError(stakedPoolBalancesError)
+      logStakedMulticallError(stakedPoolBalancesError)
     }
 
     if (unstakedPoolBalancesError) {
-      captureUnstakedMulticallError(unstakedPoolBalancesError)
+      logUnstakedMulticallError(unstakedPoolBalancesError)
     }
   }, [unstakedPoolBalancesError, stakedPoolBalancesError])
 
@@ -76,30 +75,18 @@ export function useOnchainUserPoolBalances(pools: Pool[] = []) {
   }
 }
 
-function captureStakedMulticallError(stakedPoolBalancesError: ReadContractsErrorType) {
-  console.log(
+function logStakedMulticallError(stakedPoolBalancesError: ReadContractsErrorType) {
+  console.error(
     'Error in stake pool balances multicall in useOnchainUserPoolBalances',
     stakedPoolBalancesError
   )
-
-  captureNonFatalError({
-    error: stakedPoolBalancesError,
-    errorName: 'UseOnchainUserPoolBalancesError',
-    errorMessage: 'Error in staked pool balances multicall',
-  })
 }
 
-function captureUnstakedMulticallError(unstakedPoolBalancesError: ReadContractsErrorType) {
-  console.log(
+function logUnstakedMulticallError(unstakedPoolBalancesError: ReadContractsErrorType) {
+  console.error(
     'Error in  unstake pool balances multicall in useOnchainUserPoolBalances',
     unstakedPoolBalancesError
   )
-
-  captureNonFatalError({
-    error: unstakedPoolBalancesError,
-    errorName: 'UseOnchainUserPoolBalancesError',
-    errorMessage: 'Error in unstaked pool balances multicall',
-  })
 }
 
 /**

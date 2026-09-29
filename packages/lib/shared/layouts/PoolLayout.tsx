@@ -1,5 +1,11 @@
 import { Pool, PoolVariant } from '@repo/lib/modules/pool/pool.types'
-import { ChainSlug, getChainSlug, getPoolTypeLabel } from '@repo/lib/modules/pool/pool.utils'
+import {
+  assertSupportedPoolDetailRoute,
+  ChainSlug,
+  getChainSlug,
+  getPoolTypeLabel,
+  isChainSlug,
+} from '@repo/lib/modules/pool/pool.utils'
 import { PropsWithChildren, Suspense } from 'react'
 import { PoolDetailSkeleton } from '@repo/lib/modules/pool/PoolDetail/PoolDetailSkeleton'
 import { getApolloServerClient } from '@repo/lib/shared/services/api/apollo-server.client'
@@ -27,10 +33,18 @@ export async function generatePoolMetadata({
   chain,
   variant,
 }: PoolLayoutProps): Promise<PoolMetadata> {
+  if (!isChainSlug(chain)) return { metadata: {} }
+
   const { data } = await getPoolQuery(getApolloServerClient(), chain, id)
 
   const pool = data?.pool
   if (!pool) return { metadata: {} }
+
+  try {
+    assertSupportedPoolDetailRoute({ type: pool.type, variant })
+  } catch {
+    return { metadata: {} }
+  }
 
   const displayTokens = getUserReferenceTokens(pool)
   const poolTokenString = arrayToSentence(displayTokens.map(token => token.symbol))
@@ -48,6 +62,8 @@ export async function generatePoolMetadata({
 }
 
 export async function PoolLayout({ id, chain, variant, children }: PoolLayoutProps) {
+  if (!isChainSlug(chain)) notFound()
+
   const _chain = getChainSlug(chain)
 
   const { data, error } = await getPoolQuery(getApolloServerClient(), chain, id)
@@ -60,6 +76,12 @@ export async function PoolLayout({ id, chain, variant, children }: PoolLayoutPro
     throw new Error('Failed to fetch pool')
   } else if (!data) {
     throw new Error('Failed to fetch pool')
+  }
+
+  try {
+    assertSupportedPoolDetailRoute({ type: data.pool.type, variant })
+  } catch {
+    notFound()
   }
 
   return (

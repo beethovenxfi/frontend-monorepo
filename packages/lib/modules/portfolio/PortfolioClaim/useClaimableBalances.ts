@@ -80,7 +80,7 @@ export function useClaimableBalances(pools: ClaimablePool[]) {
     contracts: claimableRewardContractCalls,
     query: {
       enabled: isConnected,
-      // In chains like polygon, we don't want background refetches while waiting for min block confirmations
+      // Avoid background refetches while waiting for min block confirmations.
       ...onlyExplicitRefetch,
     },
   })

@@ -1,10 +1,4 @@
-import { captureException } from '@sentry/nextjs'
-/*
-  Types are deprecated but we are waiting for a guide for @sentry/nextjs
-  Context: https://github.com/getsentry/sentry-javascript/discussions/15042
-*/
-import { Extras, ScopeContext } from '@sentry/core'
-import { SentryError, ensureError } from './errors'
+import { ensureError } from './errors'
 import {
   isInvariantRatioPIErrorMessage,
   isInvariantRatioSimulationErrorMessage,
@@ -24,17 +18,23 @@ import { SwapState } from '@repo/lib/modules/swap/swap.types'
 import { SwapHandler } from '@repo/lib/modules/swap/handlers/Swap.handler'
 import { cannotCalculatePriceImpactError } from '@repo/lib/modules/price-impact/price-impact.utils'
 import { isDev } from '@repo/lib/config/app.config'
+import { isPoolSurgingError } from './error-filters'
 
 /**
- * Metadata to be added to the captured Sentry error
- * We use this type in react-query v5 "meta" property (exposed by wagmi v2)
+ * Context attached to React Query errors for local diagnostics.
+ * We use this type in React Query's "meta" property (exposed by wagmi).
  * More info: https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose#defining-on-demand-messages
  */
-export type SentryMetadata = {
+export type QueryErrorMetadata = {
   errorMessage: string
   errorName?: string
-  context?: Partial<ScopeContext>
+  context?: {
+    extra?: Record<string, unknown>
+    level?: 'fatal' | 'error'
+  }
 }
+
+type ErrorExtra = Record<string, unknown>
 
 type EdgeCasePoolMetaParams = {
   hasSurgeHook?: boolean
@@ -45,7 +45,7 @@ type AddMetaParams = AddLiquidityParams & {
   blockNumber?: bigint
 } & EdgeCasePoolMetaParams
 
-export function sentryMetaForAddLiquidityHandler(errorMessage: string, params: AddMetaParams) {
+export function queryErrorMetaForAddLiquidityHandler(errorMessage: string, params: AddMetaParams) {
   return createAddHandlerMetadata('HandlerQueryError', errorMessage, params)
 }
 
@@ -54,7 +54,7 @@ type RemoveMetaParams = RemoveLiquidityParams & {
   blockNumber?: bigint
 } & EdgeCasePoolMetaParams
 
-export function sentryMetaForRemoveLiquidityHandler(
+export function queryErrorMetaForRemoveLiquidityHandler(
   errorMessage: string,
   params: RemoveMetaParams
 ) {
@@ -76,7 +76,10 @@ export type CreatePoolMetaParams = CreatePoolInput & {
   blockNumber?: bigint
 }
 
-export function sentryMetaForCreatePoolHandler(errorMessage: string, params: CreatePoolMetaParams) {
+export function queryErrorMetaForCreatePoolHandler(
+  errorMessage: string,
+  params: CreatePoolMetaParams
+) {
   return createCreatePoolMetadata('HandlerQueryError', errorMessage, params)
 }
 
@@ -84,75 +87,48 @@ export type InitPoolMetaParams = InitPoolInputV3 & {
   blockNumber?: bigint
 }
 
-export function sentryMetaForInitializePoolHandler(
+export function queryErrorMetaForInitializePoolHandler(
   errorMessage: string,
   params: InitPoolMetaParams
 ) {
   return createCreatePoolMetadata('HandlerQueryError', errorMessage, params)
 }
 
-export function sentryMetaForSwapHandler(errorMessage: string, params: SwapMetaParams) {
+export function queryErrorMetaForSwapHandler(errorMessage: string, params: SwapMetaParams) {
   return createSwapHandlerMetadata('HandlerQueryError', errorMessage, params)
 }
 
 /**
- * Used by all wagmi managed queries to create sentry metadata for simulation errors
+ * Used by wagmi-managed queries to attach context for simulation errors.
  */
-export function sentryMetaForWagmiSimulation(errorMessage: string, extra: Extras) {
+export function queryErrorMetaForWagmiSimulation(errorMessage: string, extra: ErrorExtra) {
   return createFatalErrorMetadata('WagmiSimulationError', errorMessage, extra)
 }
 
 /**
- * Used by all wagmi managed queries to create sentry metadata for execution errors
+ * Used by wagmi-managed queries to attach context for execution errors.
  */
-export function sentryMetaForWagmiExecution(errorMessage: string, extra: Extras) {
+export function queryErrorMetaForWagmiExecution(errorMessage: string, extra: ErrorExtra) {
   return createFatalErrorMetadata('WagmiExecutionError', errorMessage, extra)
 }
 
-export function captureWagmiExecutionError(error: unknown, errorMessage: string, extra: Extras) {
-  captureSentryError(error, sentryMetaForWagmiExecution(errorMessage, extra))
+export function logWagmiExecutionError(error: unknown, errorMessage: string, extra: ErrorExtra) {
+  logError(error, queryErrorMetaForWagmiExecution(errorMessage, extra))
 }
 
 /**
- * Only used in edge-cases when we want to capture a fatal error outside the context of a react-query
+ * Builds metadata for fatal query errors.
  */
-export function captureFatalError(
-  error: unknown,
+export function createFatalErrorMetadata(
   errorName: string,
   errorMessage: string,
-  extra: Extras
+  extra: ErrorExtra
 ) {
-  captureSentryError(error, createFatalMetadata(errorName, errorMessage, extra))
-}
-
-/**
- * Only used in edge-cases when we want to capture a non-fatal error outside the context of a react-query
- */
-type NonFatalErrorParams = {
-  error: unknown
-  errorName: string
-  errorMessage?: string
-  extra?: Extras
-}
-
-export function captureNonFatalError({
-  error,
-  errorName,
-  extra = {},
-  errorMessage = '',
-}: NonFatalErrorParams) {
-  captureSentryError(error, createNonFatalMetadata(errorName, errorMessage, extra))
-}
-
-/**
- * Used by all queries to capture fatal sentry errors with metadata
- */
-export function createFatalErrorMetadata(errorName: string, errorMessage: string, extra: Extras) {
   return createFatalMetadata(errorName, errorMessage, extra)
 }
 
 /**
- * Creates sentry metadata for errors in add liquidity handlers
+ * Creates query error metadata for add-liquidity handlers.
  */
 function createAddHandlerMetadata(
   errorName: string,
@@ -161,7 +137,7 @@ function createAddHandlerMetadata(
 ) {
   const { pool, ...restParams } = params
 
-  const extra: Extras = {
+  const extra: ErrorExtra = {
     handler: params.handler.constructor.name,
     params: {
       ...restParams,
@@ -175,14 +151,14 @@ function createAddHandlerMetadata(
 }
 
 /**
- * Creates sentry metadata for errors in remove liquidity handlers
+ * Creates query error metadata for remove-liquidity handlers.
  */
 function createRemoveHandlerMetadata(
   errorName: string,
   errorMessage: string,
   params: RemoveMetaParams
 ) {
-  const extra: Extras = {
+  const extra: ErrorExtra = {
     handler: params.handler.constructor.name,
     params,
   }
@@ -191,7 +167,7 @@ function createRemoveHandlerMetadata(
 }
 
 /**
- * Creates sentry metadata for errors in swap handlers
+ * Creates query error metadata for swap handlers.
  */
 function createSwapHandlerMetadata(
   errorName: string,
@@ -200,7 +176,7 @@ function createSwapHandlerMetadata(
 ) {
   const { handler, ...rest } = params
 
-  const extra: Extras = {
+  const extra: ErrorExtra = {
     handler: handler.constructor.name,
     params: rest,
   }
@@ -209,14 +185,14 @@ function createSwapHandlerMetadata(
 }
 
 /**
- * Creates sentry metadata for errors in create/initialize pool handlers
+ * Creates query error metadata for create/initialize pool handlers.
  */
 function createCreatePoolMetadata(
   errorName: string,
   errorMessage: string,
   params: CreatePoolMetaParams | InitPoolMetaParams
 ) {
-  const extra: Extras = {
+  const extra: ErrorExtra = {
     params,
   }
 
@@ -226,9 +202,9 @@ function createCreatePoolMetadata(
 function createFatalMetadata(
   errorName: string,
   errorMessage: string,
-  extra: Extras
-): SentryMetadata {
-  const context: Partial<ScopeContext> = {
+  extra: ErrorExtra
+): QueryErrorMetadata {
+  const context: QueryErrorMetadata['context'] = {
     extra,
     level: 'fatal',
   }
@@ -240,62 +216,14 @@ function createFatalMetadata(
   }
 }
 
-function createNonFatalMetadata(
-  errorName: string,
-  errorMessage = '',
-  extra: Extras = {}
-): SentryMetadata {
-  const context: Partial<ScopeContext> = {
-    extra,
-    level: 'error',
-  }
-
-  return {
-    errorMessage,
-    errorName,
-    context,
-  }
-}
-
-export function createErrorMetadata(
-  errorName: string,
-  errorMessage: string,
-  extra: Extras
-): SentryMetadata {
-  const context: Partial<ScopeContext> = {
-    extra,
-    level: 'error',
-  }
-
-  return {
-    errorMessage,
-    errorName,
-    context,
-  }
-}
-
-/**
- * Creates a SentryError with metadata and sends it to sentry
- * Used by all queries from QueryCache onError in global queryClient
- * More info: https://tkdodo.eu/blog/breaking-react-querys-api-on-purpose#a-bad-api
- */
-export function captureSentryError(
-  e: unknown,
-  { context, errorMessage, errorName }: SentryMetadata
-) {
+function logError(e: unknown, { context, errorMessage, errorName }: QueryErrorMetadata) {
   const causeError = ensureError(e)
   if (isUserRejectedError(causeError)) return
 
-  // Adding the root cause message to the top level message makes slack alerts more useful
   const errorMessageWithCause = errorMessage + `\n\nCause: \n` + causeError.message
-
-  const sentryError = new SentryError(errorMessageWithCause, {
-    cause: causeError,
-    name: errorName,
-    context,
-  })
-
-  captureException(sentryError, context)
+  const error = new Error(errorMessageWithCause, { cause: causeError })
+  if (errorName) error.name = errorName
+  console.error(error, context)
 }
 
 export function shouldIgnore(message: string, stackTrace = ''): boolean {
@@ -305,7 +233,7 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
 
   /*
     There are some edge cases where price impact calculation is not possible so we display "Unknown price impact".
-    We don't want to capture those errors in sentry as they are not actual issues.
+    These are expected input states, not actionable application errors.
    */
   if (cannotCalculatePriceImpactError(new Error(message))) return true
 
@@ -322,7 +250,6 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
     It does not crash the app and it's not controlled by our app so the only thing we can do is ignore it.
 
     Context: https://github.com/wallet-standard/wallet-standard/issues/96
-    Examples: https://balancer-labs.sentry.io/issues/6241233852/?project=4506382607712256
    */
   if (
     message.includes(`Cannot destructure property 'register' of 'undefined' as it is undefined.`)
@@ -362,7 +289,6 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
 
   /*
     Some extensions cause this error
-    Examples: https://balancer-labs.sentry.io/issues/5623611453/
   */
   if (
     message.startsWith('Maximum call stack size exceeded') &&
@@ -380,7 +306,6 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
 
   /*
     com.okex.wallet injects code that causes this error
-    Examples: https://balancer-labs.sentry.io/issues/5687846148/
   */
   if (message.startsWith('Cannot redefine property:') && stackTrace.includes('inject.bundle.js')) {
     return true
@@ -402,7 +327,6 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
 
   /*
     Extension related error which does not crash.
-    Examples: https://balancer-labs.sentry.io/issues/5622743248/
   */
   if (
     message ===
@@ -431,10 +355,8 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
 
     We cannot reproduce but it looks like it does not crash the app.
 
-    First time seen in sentry: September 4th, 2024
     https://vercel.com/balancer/frontend-v3/deployments?range={%22start%22:%222024-09-02T22:00:00.000Z%22,%22end%22:%222024-09-03T21:59:59.999Z%22}
 
-    Examples: https://balancer-labs.sentry.io/issues/5796181794
   */
   if (
     message.includes('The source https://balancer.fi') &&
@@ -446,7 +368,7 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
   if (isPausedErrorMessage(message)) return true
 
   /*
-    When hitting Invariant Ratio Above max error (only in v3 pools) we enforce proportional UX so we don't need sentry logs
+    When hitting Invariant Ratio Above max error (only in v3 pools) we enforce proportional UX, so this is an expected flow.
     Context: https://github.com/balancer/balancer-maths/blob/8aaf871acd9e138ba855f03be723cdfd630f4246/typescript/src/weighted/weightedMath.ts#L10
     */
   if (isInvariantRatioSimulationErrorMessage(message) || isInvariantRatioPIErrorMessage(message)) {
@@ -480,7 +402,14 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
   return false
 }
 
-export function getTenderlyUrl(sentryMetadata?: SentryMetadata) {
-  if (!sentryMetadata) return
-  return sentryMetadata?.context?.extra?.tenderlyUrl as string | undefined
+export function shouldIgnoreQueryError(error: Error, errorMeta?: QueryErrorMetadata): boolean {
+  if (shouldIgnore(error.message, error.stack)) return true
+
+  const params = errorMeta?.context?.extra?.params as { hasSurgeHook?: boolean } | undefined
+  return isPoolSurgingError(error.message, params?.hasSurgeHook ?? false)
+}
+
+export function getTenderlyUrl(errorMetadata?: QueryErrorMetadata) {
+  if (!errorMetadata) return
+  return errorMetadata.context?.extra?.tenderlyUrl as string | undefined
 }

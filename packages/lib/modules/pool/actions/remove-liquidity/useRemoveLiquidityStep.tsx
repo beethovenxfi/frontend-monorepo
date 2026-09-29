@@ -4,7 +4,7 @@ import {
   TransactionLabels,
   TransactionStep,
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useEffect, useMemo, useState } from 'react'
 import { usePool } from '../../PoolProvider'
 import {
@@ -43,7 +43,7 @@ export function useRemoveLiquidityStep(params: RemoveLiquidityStepParams): Trans
     poolId: pool.id,
   }
 
-  const gasEstimationMeta = sentryMetaForWagmiSimulation(
+  const gasEstimationMeta = queryErrorMetaForWagmiSimulation(
     'Error in RemoveLiquidity gas estimation',
     {
       simulationQueryData: simulationQuery.data,

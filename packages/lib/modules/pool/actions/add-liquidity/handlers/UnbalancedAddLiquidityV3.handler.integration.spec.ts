@@ -13,8 +13,8 @@ import {
 /*
   TODO(beets-integration): re-enable with the rest of the unbalanced add specs.
 
-  The Sonic fixtures are low liquidity pools, so the absolute bptOut thresholds the
-  mainnet versions of these specs asserted no longer make sense here.
+  The Sonic fixtures are low liquidity pools, so the absolute bptOut thresholds from
+  the old fixtures no longer make sense here.
 */
 describe.skip('When adding unbalanced liquidity for a V3 pool', async () => {
   const v3Pool = getApiPoolMock(usdcFlyStS)

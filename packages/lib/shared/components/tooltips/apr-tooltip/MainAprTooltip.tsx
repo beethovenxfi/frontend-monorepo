@@ -23,10 +23,7 @@ import StarIcon from '../../icons/StarIcon'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { isPool } from '@repo/lib/modules/pool/pool-tokens.utils'
 
-interface Props extends Omit<
-  BaseAprTooltipProps,
-  'children' | 'totalBaseText' | 'totalBaseVeBalText' | 'maxVeBalText' | 'poolType'
-> {
+interface Props extends Omit<BaseAprTooltipProps, 'children' | 'totalBaseText' | 'poolType'> {
   textProps?: TextProps
   onlySparkles?: boolean
   aprLabel?: boolean
@@ -50,11 +47,7 @@ export function SparklesIcon({
   const hasRewardApr =
     pool.dynamicData.aprItems.filter(item =>
       (
-        [
-          GqlPoolAprItemTypeValues.Staking,
-          GqlPoolAprItemTypeValues.VeBalEmissions,
-          GqlPoolAprItemTypeValues.Merkl,
-        ] as GqlPoolAprItemType[]
+        [GqlPoolAprItemTypeValues.Staking, GqlPoolAprItemTypeValues.Merkl] as GqlPoolAprItemType[]
       ).includes(item.type)
     ).length > 0
 

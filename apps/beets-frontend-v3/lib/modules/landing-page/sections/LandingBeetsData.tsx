@@ -33,15 +33,15 @@ export function LandingBeetsData({
 }) {
   const { toCurrency } = useCurrency()
 
-  const protocolMetricsAggregated = protocolData.protocolMetricsAggregated
+  const protocolMetricsChain = protocolData.protocolMetricsChain
 
   const totalFees =
     isValidNumber(stakedSonicData.stsGetGqlStakedSonicData.rewardsClaimed24h) &&
-    isValidNumber(protocolMetricsAggregated.swapFee24h) &&
-    isValidNumber(protocolMetricsAggregated.yieldCapture24h)
+    isValidNumber(protocolMetricsChain.swapFee24h) &&
+    isValidNumber(protocolMetricsChain.yieldCapture24h)
       ? bn(stakedSonicData.stsGetGqlStakedSonicData.rewardsClaimed24h)
-          .plus(protocolMetricsAggregated.swapFee24h)
-          .plus(protocolMetricsAggregated.yieldCapture24h)
+          .plus(protocolMetricsChain.swapFee24h)
+          .plus(protocolMetricsChain.yieldCapture24h)
           .toString()
       : '0'
 
@@ -66,13 +66,13 @@ export function LandingBeetsData({
             <GridItem bg="rgba(0, 0, 0, 0.2)">
               <GlobalStatsCard
                 label="TVL"
-                value={toCurrency(protocolMetricsAggregated.totalLiquidity)}
+                value={toCurrency(protocolMetricsChain.totalLiquidity)}
               />
             </GridItem>
             <GridItem bg="rgba(0, 0, 0, 0.2)">
               <GlobalStatsCard
                 label="24h Volume"
-                value={toCurrency(protocolMetricsAggregated.swapVolume24h)}
+                value={toCurrency(protocolMetricsChain.swapVolume24h)}
               />
             </GridItem>
             <GridItem bg="rgba(0, 0, 0, 0.2)">

@@ -18,7 +18,7 @@ import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import { ApiToken, ApiOrCustomToken } from '@repo/lib/modules/tokens/token.types'
 import { Address, zeroAddress } from 'viem'
 import { useState } from 'react'
-import { TOKEN_BLACKLIST, WeightedPoolStructure } from '../../constants'
+import { WeightedPoolStructure } from '../../constants'
 import { AlertTriangle, ArrowUpRight, PlusCircle, Trash2 } from 'lucide-react'
 import { ConfigureTokenRateProvider } from './ConfigureTokenRateProvider'
 import { TotalWeightDisplay } from './TotalWeightDisplay'
@@ -38,7 +38,6 @@ import {
   isCustomWeightedPool,
   isAutoRangePool,
   isGyroEllipticPool,
-  isCowPool,
 } from '../../helpers'
 import { PoolType } from '@balancer/sdk'
 import { ChoosePoolTokensAlert } from './ChoosePoolTokensAlert'
@@ -61,7 +60,6 @@ export function ChoosePoolTokens() {
 
   const { getTokensByChain } = useTokens()
   const listedTokens = getTokensByChain(network)
-  const blacklistTokens = network ? TOKEN_BLACKLIST[network] : null
 
   const selectedTokenAddress =
     selectedTokenIndex !== null ? poolTokens[selectedTokenIndex]?.address : undefined
@@ -73,9 +71,7 @@ export function ChoosePoolTokens() {
     const listTokenAddress = listToken.address.toLowerCase()
     const isTokenAlreadyInPool = poolTokenAddresses.has(listTokenAddress)
     const isEditingPoolToken = listTokenAddress === selectedTokenAddress
-    const isBlacklisted = blacklistTokens?.has(listTokenAddress) ?? false
 
-    if (isBlacklisted) return false
     if (isEditingPoolToken) return true
     return !isTokenAlreadyInPool
   })
@@ -245,8 +241,7 @@ function ConfigureToken({
   const isInvalidWeight = !!token.weight && Number(token.weight) < 1
   const tokenWeightErrorMsg = formState.errors.poolTokens?.[index]?.weight?.message
 
-  const showWeightInputs = isWeightedPool(poolType) || isCowPool(poolType)
-  const showRateProvider = !isCowPool(poolType)
+  const showWeightInputs = isWeightedPool(poolType)
 
   return (
     <VStack align="start" key={index} spacing="sm" w="full">
@@ -260,7 +255,7 @@ function ConfigureToken({
         {showWeightInputs && (
           <TooltipWithTouch
             isDisabled={weightedPoolStructure === WeightedPoolStructure.Custom}
-            label={`Weight is set to ${weightedPoolStructure} based on your selection above. ${!isCowPool(poolType) ? 'Select "Custom" to set your own weights.' : ''}`}
+            label={`Weight is set to ${weightedPoolStructure} based on your selection above. Select "Custom" to set your own weights.`}
           >
             <Box>
               <NumberInput
@@ -316,7 +311,7 @@ function ConfigureToken({
         </VStack>
       )}
 
-      {showRateProvider && token.address && (
+      {token.address && (
         <ConfigureTokenRateProvider
           tokenIndex={index}
           verifiedRateProviderAddress={rateProviderAddress}

@@ -1,25 +1,10 @@
-query GetProtocolStats($chains: [GqlChain!]!) {
-  protocolMetricsAggregated(chains: $chains) {
-    totalLiquidity
-    numLiquidityProviders
-    swapVolume24h
-    swapFee24h
-    yieldCapture24h
-    poolCount
-    yieldCapture24h
-    surplus24h
-  }
-}
-
-query GetProtocolStatsPerChain($chain: GqlChain!) {
+query GetProtocolStats($chain: GqlChain!) {
   protocolMetricsChain(chain: $chain) {
-    chainId
-    numLiquidityProviders
-    poolCount
-    swapFee24h
-    swapVolume24h
     totalLiquidity
+    numLiquidityProviders
+    swapVolume24h
+    swapFee24h
     yieldCapture24h
-    surplus24h
+    poolCount
   }
 }

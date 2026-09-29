@@ -14,7 +14,6 @@ import { getPoolHelpers } from './pool.helpers'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { usePoolEnrichWithOnChainData } from './queries/usePoolEnrichWithOnChainData'
 import { useOnchainUserPoolBalances } from './queries/useOnchainUserPoolBalances'
-import { useInvalidVariantRedirect } from './pool.hooks'
 import { useTokens } from '../tokens/TokensProvider'
 import { getCompositionTokens } from './pool-tokens.utils'
 import { removeHookDataFromPoolIfNecessary } from './pool.utils'
@@ -35,8 +34,6 @@ export function usePoolLogic({
   const { priceFor, calcTotalUsdValue } = useTokens()
   const myLiquiditySectionRef = useRef<HTMLDivElement | null>(null)
   const myLbpTransactionsSectionRef = useRef<HTMLDivElement | null>(null)
-
-  useInvalidVariantRedirect(initialData.pool)
 
   const { data } = useQuery(GetPoolDocument, {
     variables: { id, chain, userAddress: userAddress.toLowerCase() },

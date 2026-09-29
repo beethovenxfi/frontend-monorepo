@@ -15,14 +15,9 @@ import {
   stepUrl,
   BASE_URL,
   BEETS_LBP_CONFIGS,
-} from '@/helpers/create-lbp.beets.helpers'
+} from '@/helpers/create-lbp.helpers'
 import { forkClient } from '@repo/lib/test/utils/wagmi/fork.helpers'
 
-/*
-  Ported from tests/dev/balancer/create-lbp.spec.ts. Balancer runs on a mainnet fork with BAL/AAVE/
-  TERM as sale tokens; Beets runs on the Sonic fork with BEETS as the sale token for all three sale
-  types (see helpers/create-lbp.beets.helpers.ts for why).
-*/
 test.describe('LBP creation page', () => {
   test.beforeEach(async ({ page }) => {
     await mockCreateLbpMetadata(page)

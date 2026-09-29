@@ -4,11 +4,8 @@ import { expect, test } from '@playwright/test'
 import { defaultAnvilAccount } from '@repo/lib/test/utils/wagmi/fork.helpers'
 
 /*
-  Ported from tests/dev/balancer/swap.spec.ts
-
-  Balancer swaps native ETH for GHO on the mainnet fork; Beets swaps native S for stS on the Sonic
-  fork. The token in is passed as the native address because, unlike mainnet's popularTokens, the
-  Sonic config has no entry for the native asset so a "S" slug would not resolve (see
+  Swaps native S for stS on the Sonic fork. The token in is passed as the native address because
+  the Sonic config has no entry for the native asset so a "S" slug would not resolve (see
   SwapProvider.setInitialTokenIn). stS is the output because it is a Sonic popularToken and the SOR
   finds a deep route for it on the pinned fork block; USDC.e quoted a route but reverted with
   Vault.NotEnoughLiquidity().

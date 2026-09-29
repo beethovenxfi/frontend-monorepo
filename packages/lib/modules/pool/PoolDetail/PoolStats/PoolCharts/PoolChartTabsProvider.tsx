@@ -12,7 +12,6 @@ export enum PoolChartTab {
   VOLUME = 'volume',
   TVL = 'tvl',
   FEES = 'fees',
-  SURPLUS = 'surplus',
   LIQUIDITY_PROFILE = 'liquidity_profile',
   AUTORANGE = 'autorange',
   PRICE = 'price',
@@ -41,7 +40,6 @@ const TABS_WITH_FEES: NonEmptyPoolChartTabs = [
 ]
 
 const POOL_SPECIFIC_TABS: PoolTabsMap = {
-  [GqlPoolTypeValues.CowAmm]: [...BASE_TABS, { value: PoolChartTab.SURPLUS, label: 'Surplus' }],
   [GqlPoolTypeValues.GyroE]: [
     { value: PoolChartTab.LIQUIDITY_PROFILE, label: 'Liquidity profile' },
     ...TABS_WITH_FEES,

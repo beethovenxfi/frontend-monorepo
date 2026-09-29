@@ -2,8 +2,7 @@ import { Address } from 'viem'
 import type { GqlChain } from '../shared/services/api/generated/graphql'
 import { chains } from '@repo/lib/modules/web3/ChainConfig'
 import { PoolIssue } from '../modules/pool/alerts/pool-issues/PoolIssue.type'
-import { SupportedWrapHandler } from '../modules/swap/swap.types'
-import { PartnerVariant, PoolDisplayType, PoolFilterType } from '../modules/pool/pool.types'
+import { PoolDisplayType, PoolFilterType } from '../modules/pool/pool.types'
 import { AppLink } from '../shared/components/navs/useNav'
 import { LinkSection } from '../shared/components/navs/footer.types'
 import { NetworkConfigs } from './networks'
@@ -16,21 +15,12 @@ type TokenInfo = {
 }
 export interface TokensConfig {
   addresses: {
-    bal: Address
     wNativeAsset: Address
-    auraBal?: Address
-    veBalBpt?: Address
     beets?: Address
   }
   nativeAsset: TokenInfo
   stakedAsset?: TokenInfo
   loopedAsset?: TokenInfo
-  supportedWrappers?: {
-    baseToken: Address
-    wrappedToken: Address
-    swapHandler: SupportedWrapHandler
-  }[]
-  doubleApprovalRequired?: string[]
   defaultSwapTokens?: {
     tokenIn?: Address
     tokenOut?: Address
@@ -53,17 +43,13 @@ export interface ContractsConfig {
     router?: Address
     batchRouter?: Address
     compositeLiquidityRouterBoosted?: Address
-    compositeLiquidityRouterNested?: Address
     relayerV6: Address
-    minter: Address
     WeightedPool2TokensFactory?: Address
-    bCoWFactory?: Address
     unbalancedAddViaSwapRouter?: Address
   }
   beets?: {
     lstStaking: Address
     lstStakingProxy: Address
-    // TODO: make it required when fantom is removed
     sfcProxy?: Address
     sfc?: Address
     lstWithdrawRequestHelper?: Address
@@ -71,17 +57,7 @@ export interface ContractsConfig {
     magpieLoopedSonicRouter?: Address
     loopedSonicVault?: Address
   }
-  merkl?: {
-    claims: Address
-  }
-  feeDistributor?: Address
-  veDelegationProxy?: Address
-  veBAL?: Address
   permit2?: Address
-  omniVotingEscrow?: Address
-  gaugeWorkingBalanceHelper?: Address
-  gaugeController?: Address
-  signatureRegistry?: Address
 }
 
 export interface PoolsConfig {
@@ -109,7 +85,6 @@ export interface NetworkConfig {
   minConfirmations?: number
   pools: PoolsConfig
   layerZeroChainId?: number
-  supportsVeBalSync?: boolean
   lbps?: {
     collateralTokens: string[]
   }
@@ -136,22 +111,10 @@ export interface Config {
   networks: NetworkConfigs
 }
 
-export interface Banners {
-  headerSrc: string
-  footerSrc: string
-}
-
-type VariantConfig = {
-  [key in PartnerVariant]: {
-    banners?: Banners
-  }
-}
-
 type OptionsConfig = {
   poolDisplayType: PoolDisplayType
   hidePoolTags: string[]
   hidePoolTypes: PoolFilterType[]
-  hideProtocolVersion: string[]
   showPoolName: boolean
   showMaBeets: boolean
   allowCreateWallet: boolean
@@ -176,27 +139,6 @@ type PartnerCard = {
   externalLink?: boolean
 }
 
-export type PromoItem = {
-  id: number
-  icon: string
-  label: string
-  title: string
-  description: string
-  buttonText?: string
-  buttonLink?: string
-  linkText?: string
-  linkURL?: string
-  linkExternal?: boolean
-  bgImageActive?: {
-    directory: string
-    imgName: string
-  }
-  bgImageInactive?: {
-    directory: string
-    imgName: string
-  }
-}
-
 export interface ProjectConfig {
   projectId: 'beets'
   projectUrl: string
@@ -205,16 +147,13 @@ export interface ProjectConfig {
   acceptedPoliciesVersion: number | undefined
   supportedNetworks: GqlChain[]
   corePoolId: string // this prop is used to adjust the color of the SparklesIcon
-  variantConfig?: VariantConfig
   defaultNetwork: GqlChain
   ensNetwork: GqlChain
   delegateOwner: Address
   options: OptionsConfig
   links: Links
   footer: { linkSections: LinkSection[] }
-  cowSupportedNetworks: GqlChain[]
   networksForProtocolStats?: GqlChain[]
   partnerCards?: PartnerCard[]
   merklRewardsChains: GqlChain[]
-  promoItems?: PromoItem[]
 }

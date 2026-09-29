@@ -16,7 +16,6 @@ import { useRemoveLiquidityPriceImpactQuery } from './queries/useRemoveLiquidity
 import { RemoveLiquidityType } from './remove-liquidity.types'
 import { Address, formatUnits, Hash } from 'viem'
 import { emptyTokenAmounts, toHumanAmountWithAddress } from '../LiquidityActionHelpers'
-import { isCowAmmPool } from '../../pool.helpers'
 import { getActionableTokenAddresses, getPoolActionableTokens } from '../../pool-tokens.utils'
 import { isWrappedNativeAsset } from '@repo/lib/modules/tokens/token.helpers'
 import { usePriceImpact } from '@repo/lib/modules/price-impact/PriceImpactProvider'
@@ -102,9 +101,6 @@ export function useRemoveLiquidityLogic(
   const isProportional = removalType === RemoveLiquidityType.Proportional
 
   function tokensToShow(): ApiToken[] {
-    // Cow AMM pools don't support wethIsEth
-    if (isCowAmmPool(pool.type)) return tokens
-
     // for single token we show both the native asset AND the wrapped native asset in the ui
     if (includesWrappedNativeAsset && isSingleToken && nativeAsset) return [...tokens, nativeAsset]
 

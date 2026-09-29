@@ -34,7 +34,7 @@ export type BuildRemoveLiquidityInput = {
   account: Address
   slippagePercent: string
   queryOutput: QueryRemoveLiquidityOutput
-  relayerApprovalSignature?: Address //only used by Nested Remove Liquidity in signRelayer mode
+  relayerApprovalSignature?: Address //only used in signRelayer mode
   wethIsEth?: boolean // only used by single token removal type
   permit?: Permit //only used by v3 remove liquidity
   tokenOut?: Address // only used by single token removal type
@@ -43,8 +43,7 @@ export type BuildRemoveLiquidityInput = {
 /*
   SDK interfaces:
   They extend the base QueryAddLiquidityOutput interface above.
-  Implemented by the default handlers (i.e. UnbalancedAddLiquidity or NestedAddLiquidityHandler)
-  which interact with the SDK to query and build the tx callData.
+  Implemented by the default handlers which interact with the SDK to query and build the tx callData.
 */
 export interface SdkQueryRemoveLiquidityOutput extends QueryRemoveLiquidityOutput {
   sdkQueryOutput: RemoveLiquidityQueryOutput

@@ -33,7 +33,7 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
   const { data: protocolData } = await client.query({
     query: GetProtocolStatsDocument,
     variables: {
-      chains: PROJECT_CONFIG.networksForProtocolStats || PROJECT_CONFIG.supportedNetworks,
+      chain: PROJECT_CONFIG.defaultNetwork,
     },
     context: {
       fetchOptions: {

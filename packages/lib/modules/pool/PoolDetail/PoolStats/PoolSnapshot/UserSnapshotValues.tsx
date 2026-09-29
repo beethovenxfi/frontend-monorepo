@@ -36,14 +36,12 @@ export function UserSnapshotValues() {
     isDisabled,
     previewModalDisclosure,
     isLoading: isLoadingClaiming,
-    balRewards,
-    nonBalRewards,
+    allClaimableRewards,
   } = useClaim()
 
   const { myClaimableRewards, tokens, rewardsByToken } = useGetUserPoolRewards({
     pool,
-    balRewards,
-    nonBalRewards,
+    rewards: allClaimableRewards,
   })
 
   const myAprRaw = getTotalAprRaw(pool.dynamicData.aprItems)
@@ -115,7 +113,6 @@ export function UserSnapshotValues() {
               chain={pool.chain}
               height="28px"
               pool={pool}
-              poolId={pool.id}
               textProps={{ fontWeight: 'bold', fontSize: '2xl', lineHeight: '28px' }}
             />
           ) : (

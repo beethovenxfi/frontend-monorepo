@@ -21,7 +21,7 @@ export function PoolMigrationModal() {
   const { addLiquidityTxHash, urlTxHash, lastTransaction: addLiquidityTx } = useAddLiquidity()
 
   const addLiquidityReceipt = useAddLiquidityReceipt({
-    chain: oldPool?.chain || GqlChainValues.Mainnet,
+    chain: oldPool?.chain || GqlChainValues.Sonic,
     txHash: addLiquidityTxHash,
     userAddress,
     protocolVersion: oldPool?.protocolVersion as ProtocolVersion,
@@ -42,14 +42,14 @@ export function PoolMigrationModal() {
       <ModalContent {...getStylesForModalContentWithStepTracker(isDesktop && hasQuoteContext)}>
         {isDesktop && hasQuoteContext && (
           <DesktopStepTracker
-            chain={oldPool?.chain || GqlChainValues.Mainnet}
+            chain={oldPool?.chain || GqlChainValues.Sonic}
             isTxBatch={false}
             transactionSteps={migrationSteps}
           />
         )}
 
         <TransactionModalHeader
-          chain={oldPool?.chain || GqlChainValues.Mainnet}
+          chain={oldPool?.chain || GqlChainValues.Sonic}
           isReceiptLoading={addLiquidityReceipt.isLoading}
           label="Migrate liquidity"
           txHash={addLiquidityTxHash}

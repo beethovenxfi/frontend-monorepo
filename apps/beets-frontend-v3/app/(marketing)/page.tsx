@@ -11,7 +11,7 @@ export default async function Home() {
   const client = getApolloServerClient()
 
   const variables = {
-    chains: PROJECT_CONFIG.supportedNetworks,
+    chain: PROJECT_CONFIG.defaultNetwork,
   }
 
   const { data: protocolData } = await client.query({

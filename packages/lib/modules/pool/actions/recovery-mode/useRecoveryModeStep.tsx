@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
 import { ManagedSendTransactionButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionButton'
 import { buildTenderlyUrl } from '@repo/lib/modules/web3/useTenderly'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { TransactionConfig } from '@repo/lib/modules/web3/contracts/contract.types'
 import { Address, encodeFunctionData, zeroAddress } from 'viem'
@@ -59,7 +59,7 @@ export function useRecoveryModeStep() {
     renderAction: () => {
       return (
         <ManagedSendTransactionButton
-          gasEstimationMeta={buildSentryMeta(txConfig)}
+          gasEstimationMeta={buildErrorMeta(txConfig)}
           id={STEP_ID}
           labels={labels}
           onTransactionChange={setTransaction}
@@ -70,8 +70,8 @@ export function useRecoveryModeStep() {
   } as TransactionStep
 }
 
-function buildSentryMeta(txConfig: TransactionConfig) {
-  return sentryMetaForWagmiSimulation('Error in Enable Recovery gas estimation', {
+function buildErrorMeta(txConfig: TransactionConfig) {
+  return queryErrorMetaForWagmiSimulation('Error in Enable Recovery gas estimation', {
     simulationQueryData: txConfig,
     buildCallQueryData: txConfig,
     tenderlyUrl: buildTenderlyUrl({ txConfig }),

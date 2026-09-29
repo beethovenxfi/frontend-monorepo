@@ -5,7 +5,7 @@ import { BaseProportionalAddLiquidityHandler } from './BaseProportionalAddLiquid
 
 /**
  * ProportionalAddLiquidityHandler is a handler that implements the
- * AddLiquidityHandler interface for strictly proportional adds for V2 and CowAmm pools(v1).
+ * AddLiquidityHandler interface for strictly proportional adds for V2 pools.
  */
 export class ProportionalAddLiquidityHandler extends BaseProportionalAddLiquidityHandler {
   public async buildCallData({

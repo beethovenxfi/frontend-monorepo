@@ -7,9 +7,9 @@ import type { GqlUserStakedBalance } from '@repo/lib/shared/services/api/graphql
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { getStakedBalance } from '../user-balance.helpers'
 
-export const migrateStakeTooltipLabel = `veBAL gauges are the mechanism to distribute BAL liquidity incentives following community voting.
+export const migrateStakeTooltipLabel = `Gauges are the mechanism to distribute liquidity incentives following community voting.
 The gauge where you have staked your LP tokens has been deprecated.
-So it's likely best for you to migrate to the new gauge in order to get future BAL liquidity incentives.`
+So it's likely best for you to migrate to the new gauge in order to get future liquidity incentives.`
 
 export type UnstakeQuote = {
   gaugeAddress: Address
@@ -89,7 +89,7 @@ export function findFirstNonPreferentialStaking(pool: Pool): StakingData {
 
   if (!nonPreferentialGauge) throw new Error('Non preferential gauge not found in other gauges')
 
-  const isClaimable = isClaimableGauge(nonPreferentialGauge, pool.chain)
+  const isClaimable = isClaimableGauge(nonPreferentialGauge)
 
   return {
     nonPreferentialGaugeAddress,

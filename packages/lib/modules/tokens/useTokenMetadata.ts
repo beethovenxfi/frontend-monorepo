@@ -13,11 +13,6 @@ export type TokenMetadata = {
   isLoading: boolean
 }
 
-export type TokenMetadataByChain = {
-  chain: GqlChain
-  metadata: TokenMetadata
-}
-
 type TokenMetadataResult = {
   result?: string | number | bigint
 }
@@ -118,42 +113,4 @@ export function useTokenMetadata(maybeAddress: string, chain: GqlChain): TokenMe
     tokenData ?? ([undefined, undefined, undefined, undefined] as const)
 
   return parseTokenMetadata(name, symbol, decimals, totalSupply, isLoading)
-}
-
-export function useTokenMetadataAcrossChains(
-  maybeAddress: string,
-  chains: GqlChain[]
-): { match?: TokenMetadataByChain; isLoading: boolean } {
-  const address = useMemo(() => {
-    return isAddress(maybeAddress) ? (maybeAddress as Address) : undefined
-  }, [maybeAddress])
-
-  const contracts = useMemo(() => {
-    if (!address) return []
-    return chains.flatMap(chain => buildTokenMetadataContracts(address, chain))
-  }, [address, chains])
-
-  const { data: tokenData, isLoading } = useReadContracts({
-    query: {
-      enabled: !!address,
-    },
-    contracts,
-  })
-
-  let match: TokenMetadataByChain | undefined
-
-  if (tokenData && chains.length) {
-    for (let index = 0; index < chains.length; index += 1) {
-      const offset = index * 4
-      const [name, symbol, decimals, totalSupply] = tokenData.slice(offset, offset + 4)
-      const metadata = parseTokenMetadata(name, symbol, decimals, totalSupply, isLoading)
-
-      if (metadata.symbol) {
-        match = { chain: chains[index]!, metadata }
-        break
-      }
-    }
-  }
-
-  return { match, isLoading }
 }

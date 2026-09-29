@@ -6,8 +6,8 @@ export function anAppGlobalData(options?: Partial<GetAppGlobalPollingDataQuery>)
   const defaultAppGlobalData: GetAppGlobalPollingDataQuery = {
     __typename: 'Query',
     tokenGetCurrentPrices: [
-      aGqlTokenPriceMock({ address: fakeTokenBySymbol('ETH').address }),
-      aGqlTokenPriceMock({ address: fakeTokenBySymbol('BAL').address }),
+      aGqlTokenPriceMock({ address: fakeTokenBySymbol('S').address }),
+      aGqlTokenPriceMock({ address: fakeTokenBySymbol('USDC').address }),
     ],
     protocolMetricsChain: {
       __typename: 'GqlProtocolMetricsChain',

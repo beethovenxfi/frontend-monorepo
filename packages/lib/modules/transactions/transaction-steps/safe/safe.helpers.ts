@@ -3,35 +3,19 @@ import {
   GatewayTransactionDetails,
   TransactionStatus as SafeTransactionStatus,
 } from '@safe-global/safe-apps-sdk'
-import {
-  arbitrum,
-  avalanche,
-  base,
-  gnosis,
-  mainnet,
-  optimism,
-  polygon,
-  sepolia,
-  sonic,
-} from 'viem/chains'
+import { sonic } from 'viem/chains'
 import { SafeAppTx, TransactionState, TxCall } from '../lib'
 import { Address } from 'viem'
 import { TransactionStatus as BalancerTransactionStatus } from '@repo/lib/modules/transactions/RecentTransactionsProvider'
 
 const SAFE_CHAIN_PREFIX: Record<SupportedChainId, string> = {
-  [mainnet.id]: 'eth',
-  [gnosis.id]: 'gno',
-  [sepolia.id]: 'sep',
-  [arbitrum.id]: 'arb',
-  [polygon.id]: 'matic',
-  [optimism.id]: 'oeth',
-  [base.id]: 'base',
   [sonic.id]: 'sonic',
-  [avalanche.id]: 'avax',
 }
 
 export function getSafeWebUrl(chainId: number, safeAddress: Address, safeTxId: string): string {
-  const chainShortName = SAFE_CHAIN_PREFIX[chainId]
+  const chainShortName = SAFE_CHAIN_PREFIX[chainId as SupportedChainId]
+  if (!chainShortName) throw new Error(`Unsupported Safe chain id ${chainId}`)
+
   const baseSafeUrl = 'https://app.safe.global/transactions/tx?safe='
 
   return `${baseSafeUrl}/${chainShortName}:${safeAddress}&id=${safeTxId}`

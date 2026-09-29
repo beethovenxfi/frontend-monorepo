@@ -8,7 +8,7 @@ https://pnpm.io/installation_
 To setup the development environment, first clone the repo:
 
 ```bash
-git clone https://github.com/balancer/frontend-monorepo.git && cd frontend-monorepo/apps/beets-frontend-v3
+git clone https://github.com/beethovenxfi/frontend-monorepo.git && cd frontend-monorepo/apps/beets-frontend-v3
 ```
 
 Copy the `.env.template` file to `.env.local`:
@@ -39,7 +39,7 @@ pnpm run graphql:gen
 Then, run the development server:
 
 ```bash
-pnpm dev:beets
+pnpm dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
@@ -49,7 +49,7 @@ Open [http://localhost:3001](http://localhost:3001) with your browser to see the
 By default, we use turbo mode for better DX with faster compile times and faster HMR:
 
 ```bash
-pnpm dev:beets
+pnpm dev
 ```
 
 ## Testing

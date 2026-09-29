@@ -240,7 +240,8 @@ export function NavBar({
   const opacity = useTransform(scrollYBoundedProgressDelayed, [0, 1], [1, 0])
 
   // Determine navbar height based on alerts
-  const hasAlerts = !apiOK
+  const apiDown = apiOK === false
+  const hasAlerts = apiDown
   const navbarHeight = hasAlerts ? '120px' : '72px'
 
   // Set CSS variable on document root
@@ -277,7 +278,7 @@ export function NavBar({
       zIndex={100}
       {...rest}
     >
-      {!apiOK && <ApiOutageAlert />}
+      {apiDown && <ApiOutageAlert />}
 
       <HStack as="nav" justify="space-between" padding={{ base: 'sm', md: 'md' }}>
         <HStack

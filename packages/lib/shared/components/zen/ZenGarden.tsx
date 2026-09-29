@@ -1,7 +1,6 @@
-import { Box, BoxProps, useColorModeValue } from '@chakra-ui/react'
+import { Box, BoxProps } from '@chakra-ui/react'
 import type { GqlPoolType } from '../../services/api/generated/graphql'
-import { isClp, isStable, isWeighted, isCowAmmPool } from '@repo/lib/modules/pool/pool.helpers'
-import { CowSandPattern } from '../imgs/CowSandPattern'
+import { isClp, isStable, isWeighted } from '@repo/lib/modules/pool/pool.helpers'
 
 type ZenGardenVariant = 'diamond' | 'circle' | 'square' | 'pill'
 
@@ -112,8 +111,6 @@ export function PoolZenGarden({
   subdued?: boolean
   repetitions?: number
 }) {
-  const strokeColor = useColorModeValue('hsla(88, 63%, 59%, 0.4)', 'hsla(83, 81%, 80%, 0.1)')
-
   if (!poolType) {
     return (
       <ZenGarden repetitions={repetitions} sizePx={sizePx} subdued={subdued} variant="circle" />
@@ -123,14 +120,6 @@ export function PoolZenGarden({
   if (isWeighted(poolType)) {
     return (
       <ZenGarden repetitions={repetitions} sizePx={sizePx} subdued={subdued} variant="circle" />
-    )
-  }
-
-  if (isCowAmmPool(poolType)) {
-    return (
-      <Box height="100%" position="absolute" top="0" width="100%" zIndex="0">
-        <CowSandPattern color={strokeColor} height="100%" width="100%" />
-      </Box>
     )
   }
 

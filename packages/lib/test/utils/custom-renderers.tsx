@@ -11,13 +11,13 @@ import { RecentTransactionsProvider } from '@repo/lib/modules/transactions/Recen
 import { TransactionStateProvider } from '@repo/lib/modules/transactions/transaction-steps/TransactionStateProvider'
 import { UserSettingsProvider } from '@repo/lib/modules/user/settings/UserSettingsProvider'
 import { UserAccountProvider } from '@repo/lib/modules/web3/UserAccountProvider'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { testWagmiConfig } from '@repo/test/anvil/testWagmiConfig'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { RenderHookOptions, act, renderHook, waitFor } from '@testing-library/react'
 import { PropsWithChildren, ReactNode } from 'react'
 import { WagmiProvider } from 'wagmi'
-import { aGqlPoolElementMock } from '../msw/builders/gqlPoolElement.builders'
+import { aPoolMock } from '../msw/builders/gqlPoolElement.builders'
 import { apolloTestClient } from '../../../test/utils/apollo-test-client'
 import { AppRouterContextProviderMock } from './app-router-context-provider-mock'
 import { testQueryClient } from './react-query'
@@ -127,7 +127,7 @@ export function DefaultRemoveLiquidityTestProvider({ children }: PropsWithChildr
 
 /* Builds a PoolProvider that injects the provided pool data*/
 export const buildDefaultPoolTestProvider = (
-  pool: GqlPoolElement = aGqlPoolElementMock(),
+  pool: Pool = aPoolMock(),
   LiquidityProviderWrapper: Wrapper = EmptyWrapper
 ) =>
   function ({ children }: PropsWithChildren) {
@@ -152,7 +152,7 @@ export const buildDefaultPoolTestProvider = (
     )
   }
 
-export const DefaultPoolTestProvider = buildDefaultPoolTestProvider(aGqlPoolElementMock())
+export const DefaultPoolTestProvider = buildDefaultPoolTestProvider(aPoolMock())
 
 // Awaits in the context of a react hook test
 export async function actSleep(ms: number) {

@@ -2,7 +2,6 @@
 
 import {
   getBoostedPoolStateWithBalancesV3,
-  getPoolStateWithBalancesCowAmm,
   getPoolStateWithBalancesV2,
   getPoolStateWithBalancesV3,
 } from '@balancer/sdk'
@@ -11,7 +10,7 @@ import { onlyExplicitRefetch } from '@repo/lib/shared/utils/queries'
 import { useQuery } from '@tanstack/react-query'
 import { useBlockNumber } from 'wagmi'
 import { LiquidityActionHelpers } from '../../LiquidityActionHelpers'
-import { isBoosted, isCowAmmPool, isV2Pool, isV3Pool } from '../../../pool.helpers'
+import { isBoosted, isV2Pool, isV3Pool } from '../../../pool.helpers'
 import { Pool } from '../../../pool.types'
 import { getChainId } from '@repo/lib/config/app.config'
 
@@ -36,10 +35,6 @@ export function usePoolStateWithBalancesQuery(pool: Pool) {
 
     if (isV2Pool(pool)) {
       return getPoolStateWithBalancesV2(helpers.poolState, chainId, rpcUrl)
-    }
-
-    if (isCowAmmPool(pool.type)) {
-      return getPoolStateWithBalancesCowAmm(helpers.poolState, chainId, rpcUrl)
     }
 
     throw new Error(`Unsupported pool : ${pool.id} for pool state with balances query`)

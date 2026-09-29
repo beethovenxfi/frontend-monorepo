@@ -1,5 +1,4 @@
 import type {
-  GqlNestedPool,
   QuantAmmWeightSnapshot,
   GqlPoolLiquidityBootstrappingV3,
   GqlPoolFixedPriceLbp,
@@ -24,25 +23,8 @@ export type PoolList = GetPoolsQuery['pools']
 export type PoolListItem = PoolList[0]
 export type LbpV3 = GqlPoolLiquidityBootstrappingV3 | GqlPoolFixedPriceLbp
 
-type ApiTokenWithNestedPool = ApiToken & { nestedPool?: GqlNestedPool }
-export type VotingPool = Pick<
-  PoolListItem,
-  | 'id'
-  | 'address'
-  | 'chain'
-  | 'type'
-  | 'symbol'
-  // We need these fields to display boosted underlying tokens in pool token pills (shared by voting, portfolio and standard pool list)
-  | 'protocolVersion'
-  | 'hasErc4626'
-  // We need tags to display erc4626Metadata in PoolListTableDetailsCell
-  | 'tags'
-  // We need hook to show when the pool has hooks in the voting list
-  | 'hook'
-> & { poolTokens: ApiTokenWithNestedPool[] }
-
 // PoolCore defines the shared fields between PoolListItem, Pool that are required for pool related shared logic
-export type PoolCore = VotingPool | Pool | PoolListItem
+export type PoolCore = Pool | PoolListItem
 
 export enum BaseVariant {
   v2 = 'v2',
@@ -51,12 +33,7 @@ export enum BaseVariant {
 
 export type ProtocolVersion = 1 | 2 | 3
 
-// these variants support extra features in project config
-export enum PartnerVariant {
-  cow = 'cow',
-}
-
-export type PoolVariant = BaseVariant | PartnerVariant
+export type PoolVariant = BaseVariant
 
 export type PoolAction = 'add-liquidity' | 'remove-liquidity' | 'stake' | 'unstake'
 
@@ -93,8 +70,6 @@ export const poolTypeFilters = [
   GqlPoolTypeValues.Stable,
   GqlPoolTypeValues.LiquidityBootstrapping,
   GqlPoolTypeValues.Gyro,
-  GqlPoolTypeValues.CowAmm,
-  GqlPoolTypeValues.Fx,
   GqlPoolTypeValues.QuantAmmWeighted,
   'AUTORANGE', // will be mapped to GqlPoolTypeValues.Reclamm
 ] as const
@@ -104,19 +79,13 @@ export type PoolFilterType = (typeof poolTypeFilters)[number]
 // We need to map toggalable pool types to their corresponding set of GqlPoolTypes.
 export const POOL_TYPE_MAP: { [key in PoolFilterType]: GqlPoolType[] } = {
   [GqlPoolTypeValues.Weighted]: [GqlPoolTypeValues.Weighted],
-  [GqlPoolTypeValues.Stable]: [
-    GqlPoolTypeValues.Stable,
-    GqlPoolTypeValues.ComposableStable,
-    GqlPoolTypeValues.MetaStable,
-  ],
+  [GqlPoolTypeValues.Stable]: [GqlPoolTypeValues.Stable, GqlPoolTypeValues.ComposableStable],
   [GqlPoolTypeValues.LiquidityBootstrapping]: [GqlPoolTypeValues.LiquidityBootstrapping],
   [GqlPoolTypeValues.Gyro]: [
     GqlPoolTypeValues.Gyro,
     GqlPoolTypeValues.Gyro3,
     GqlPoolTypeValues.GyroE,
   ],
-  [GqlPoolTypeValues.CowAmm]: [GqlPoolTypeValues.CowAmm],
-  [GqlPoolTypeValues.Fx]: [GqlPoolTypeValues.Fx],
   [GqlPoolTypeValues.QuantAmmWeighted]: [GqlPoolTypeValues.QuantAmmWeighted],
   AUTORANGE: [GqlPoolTypeValues.Reclamm],
 }
@@ -160,10 +129,7 @@ export type TokenCore = {
   index: number
 }
 
-export type PoolToken = ApiToken &
-  Pool['poolTokens'][0] & {
-    nestedPool?: GqlNestedPool
-  }
+export type PoolToken = ApiToken & Pool['poolTokens'][0]
 
 export enum PoolDisplayType {
   Name = 'name',

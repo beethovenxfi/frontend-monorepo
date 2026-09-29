@@ -4,7 +4,7 @@ import { usePoolCreationForm } from '../../PoolCreationFormProvider'
 import { PoolCreationRiskCheckboxes } from './PoolCreationRiskCheckboxes'
 import { SeedAmountProportions } from './SeedAmountProportions'
 import { useTokenInputsValidation } from '@repo/lib/modules/tokens/TokenInputsValidationProvider'
-import { isWeightedPool, isAutoRangePool, isCowPool } from '../../helpers'
+import { isWeightedPool, isAutoRangePool } from '../../helpers'
 import { useFormState, useWatch } from 'react-hook-form'
 import { SeedPoolAlert } from './SeedPoolAlert'
 import { SeedAmountInput } from './SeedAmountInput'
@@ -28,7 +28,7 @@ export function PoolFundStep() {
 
   const isTokenAmountsValid = !hasValidationErrors || (isAutoRangePool(poolType) && !poolAddress)
 
-  const isWeightRiskRequired = isWeightedPool(poolType) || isCowPool(poolType)
+  const isWeightRiskRequired = isWeightedPool(poolType)
 
   const hasAcceptedRisks = isWeightRiskRequired
     ? hasAcceptedTokenWeightsRisk && hasAcceptedPoolCreationRisk

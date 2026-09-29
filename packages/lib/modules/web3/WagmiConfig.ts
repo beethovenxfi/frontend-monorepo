@@ -92,7 +92,7 @@ export function impersonateWagmiConfig(impersonationAddress?: Address) {
 
   if (shouldUseAnvilFork) {
     /* All chains use the same RPC URL for the Anvil fork for local testing
-      For now, E2E dev tests will always run against MAINNET fork
+      For now, E2E dev tests run against the Sonic fork
       If needed, this could be easily extended to use different RPC URLs for different chains
      */
     chains.forEach(chain => (chain.rpcUrls.default.http = [defaultAnvilForkRpcUrl]))

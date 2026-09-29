@@ -4,7 +4,7 @@ import { usePoolCreationForm } from '../../PoolCreationFormProvider'
 import { ChooseWeightedPoolStructure } from './ChooseWeightedPoolStructure'
 import { ChoosePoolTokens } from './ChoosePoolTokens'
 import { validatePoolTokens } from '../../validatePoolCreationForm'
-import { isWeightedPool, isCowPool } from '../../helpers'
+import { isWeightedPool } from '../../helpers'
 import { useFormState, useWatch } from 'react-hook-form'
 
 export function PoolTokensStep() {
@@ -17,7 +17,7 @@ export function PoolTokensStep() {
     name: ['poolType', 'poolTokens'],
   })
 
-  const showWeightedPoolStructure = isWeightedPool(poolType) || isCowPool(poolType)
+  const showWeightedPoolStructure = isWeightedPool(poolType)
 
   const formState = useFormState({ control })
   const isFormStateValid = formState.isValid

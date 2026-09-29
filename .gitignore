@@ -45,10 +45,6 @@ next-env.d.ts
 .idea
 .aider*
 
-# entry config file
-.sentryclirc
-.env.sentry-build-plugin
-
 # for packages/lib
 generated/
 .eslintcache

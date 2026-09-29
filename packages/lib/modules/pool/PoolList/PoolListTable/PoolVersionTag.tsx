@@ -1,15 +1,11 @@
 import { Center, Text } from '@chakra-ui/react'
 import { BalBadge } from '@repo/lib/shared/components/badges/BalBadge'
-import { CowIcon } from '@repo/lib/shared/components/icons/logos/CowIcon'
-import { isCowAmmPool } from '../../pool.helpers'
 import { PoolListItem } from '../../pool.types'
 import { Pool } from '../../pool.types'
 import { TooltipWithTouch } from '@repo/lib/shared/components/tooltips/TooltipWithTouch'
 
 function getPoolVersionLabel(pool: Pick<PoolListItem | Pool, 'type' | 'protocolVersion'>) {
-  if (isCowAmmPool(pool.type)) {
-    return <CowIcon size={18} />
-  } else if (pool.protocolVersion === 3) {
+  if (pool.protocolVersion === 3) {
     return 'v3'
   } else if (pool.protocolVersion === 2) {
     return 'v2'
@@ -72,10 +68,9 @@ export function PoolVersionTag({
 
   const size = isSmall ? '6' : '7'
   const isV3 = pool.protocolVersion === 3
-  const isCow = isCowAmmPool(pool.type)
 
   return (
-    <TooltipWithTouch label={isCow ? 'CoW AMM' : isV3 ? 'Balancer v3' : 'Balancer v2'}>
+    <TooltipWithTouch label={isV3 ? 'Balancer v3' : 'Balancer v2'}>
       <BalBadge
         color="font.secondary"
         cursor="default"
@@ -90,12 +85,12 @@ export function PoolVersionTag({
           <Text
             _groupHover={{
               fontWeight: isV3 ? 'bold' : 'medium',
-              background: isCow ? 'auto' : isV3 ? 'background.special' : 'font.maxContrast',
-              color: isCow ? 'font.maxContrast' : 'auto',
-              backgroundClip: isCow ? 'unset' : 'text',
+              background: isV3 ? 'background.special' : 'font.maxContrast',
+              color: 'auto',
+              backgroundClip: 'text',
             }}
-            background={isCow ? 'auto' : isV3 ? 'font.special' : 'font.secondary'}
-            backgroundClip={isCow ? 'unset' : 'text'}
+            background={isV3 ? 'font.special' : 'font.secondary'}
+            backgroundClip="text"
             fontSize="xs"
             fontWeight="medium"
             transition="all 0.2s var(--ease-out-cubic)"

@@ -23,11 +23,7 @@ import { useAddLiquidity } from '../AddLiquidityProvider'
 import { bn, fNum, formatFalsyValueAsDash } from '@repo/lib/shared/utils/numbers'
 import { TransactionSettings } from '@repo/lib/modules/user/settings/TransactionSettings'
 import { usePool } from '../../../PoolProvider'
-import {
-  hasNoLiquidity,
-  requiresProportionalInput,
-  supportsNestedActions,
-} from '../../LiquidityActionHelpers'
+import { hasNoLiquidity, requiresProportionalInput } from '../../LiquidityActionHelpers'
 import { PriceImpactAccordion } from '@repo/lib/modules/price-impact/PriceImpactAccordion'
 import { PoolActionsPriceImpactDetails } from '../../PoolActionsPriceImpactDetails'
 import { usePriceImpact } from '@repo/lib/modules/price-impact/PriceImpactProvider'
@@ -45,7 +41,6 @@ import { AddLiquidityFormTabs } from './AddLiquidityFormTabs'
 import { UnbalancedAddError } from '@repo/lib/shared/components/errors/UnbalancedAddError'
 import { isUnbalancedAddError } from '@repo/lib/shared/utils/error-filters'
 import { isAutoRange, supportsWethIsEth } from '../../../pool.helpers'
-import { UnbalancedNestedAddError } from '@repo/lib/shared/components/errors/UnbalancedNestedAddError'
 import { usePoolMetadata } from '../../../metadata/usePoolMetadata'
 import { useGetPoolRewards } from '../../../useGetPoolRewards'
 import { SettingsAlert } from '../../../../user/settings/SettingsAlert'
@@ -126,14 +121,12 @@ function AddLiquidityMainForm() {
   const hasPriceImpact = priceImpact !== undefined && priceImpact !== null
   const priceImpactLabel = hasPriceImpact ? fNum('priceImpact', priceImpact) : '-'
 
-  const nestedAddLiquidityEnabled = supportsNestedActions(pool) // TODO && !userToggledEscapeHatch
-
   const isUnbalancedError = isUnbalancedAddError(
     simulationQuery.error || priceImpactQuery.error,
     pool
   )
 
-  const shouldShowUnbalancedError = isUnbalancedError && !nestedAddLiquidityEnabled
+  const shouldShowUnbalancedError = isUnbalancedError
 
   const isLoading = simulationQuery.isLoading || priceImpactQuery.isLoading
   const isFetching = simulationQuery.isFetching || priceImpactQuery.isFetching
@@ -212,7 +205,6 @@ function AddLiquidityMainForm() {
           )}
 
           <AddLiquidityFormTabs
-            nestedAddLiquidityEnabled={nestedAddLiquidityEnabled}
             setFlexibleTab={setFlexibleTab}
             setProportionalTab={setProportionalTab}
             setUnbalancedTab={setUnbalancedTab}
@@ -224,7 +216,7 @@ function AddLiquidityMainForm() {
             <UnbalancedAddError
               error={(simulationQuery.error || priceImpactQuery.error) as Error}
               goToProportionalAdds={setProportionalTab}
-              isProportionalSupported={!nestedAddLiquidityEnabled}
+              isProportionalSupported
               pool={pool}
             />
           )}
@@ -288,10 +280,7 @@ function AddLiquidityMainForm() {
           {!simulationQuery.isError && priceImpactQuery.isError && (
             <PriceImpactError priceImpactQuery={priceImpactQuery} />
           )}
-          {simulationQuery.isError && nestedAddLiquidityEnabled && (
-            <UnbalancedNestedAddError error={simulationQuery.error} />
-          )}
-          {simulationQuery.isError && !nestedAddLiquidityEnabled && (
+          {simulationQuery.isError && (
             <GenericError
               customErrorName="Error in query simulation"
               error={simulationQuery.error}

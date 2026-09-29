@@ -24,7 +24,6 @@ import { useBreakpoints } from '@repo/lib/shared/hooks/useBreakpoints'
 import { PoolDetailsContent } from '../preview/PreviewPoolDetails'
 import { isAutoRangePool } from '../helpers'
 import { useWatch } from 'react-hook-form'
-import { isCowPool } from '../helpers'
 
 export function PoolSummary({ transactionSteps }: { transactionSteps: TransactionStepsResponse }) {
   const { isMobile } = useBreakpoints()
@@ -141,14 +140,11 @@ function PoolTokenAmountsCard() {
 function PoolDetailsCard() {
   const { poolCreationForm } = usePoolCreationForm()
 
-  const [swapFeePercentage, poolType] = poolCreationForm.getValues([
-    'swapFeePercentage',
-    'poolType',
-  ])
+  const [swapFeePercentage] = poolCreationForm.getValues(['swapFeePercentage'])
 
   const { isOpen, onToggle } = useDisclosure()
 
-  const showSwapFee = !isCowPool(poolType) && !isOpen
+  const showSwapFee = !isOpen
 
   return (
     <Accordion allowToggle variant="button" w="full">

@@ -1,4 +1,5 @@
-import { wETHAddress, wjAuraAddress } from '@repo/lib/debug-helpers'
+const WS_ADDRESS = '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38'
+const STS_ADDRESS = '0xe5da20f15420ad15de0fa650600afc998bbe3955'
 import type {
   GqlPoolTokenDetail,
   GqlTokenPrice,
@@ -48,7 +49,7 @@ export function aTokenAmountMock(options?: Partial<TokenAmount>): TokenAmount {
   const defaultTokenAmount: TokenAmount = {
     address: '0xc67b12049c2d0cf6e476bc64c7f82fc6c63cffc5',
     amount: 0n,
-    chainId: 1,
+    chainId: 146,
     decimals: 8,
     formatted: '0',
   }
@@ -61,14 +62,14 @@ export function someTokenAmountsMock(addresses: string[]) {
 }
 
 export function aTokenMock(...options: Partial<TokenBase>[]): TokenBase {
-  const defaultToken: TokenBase = fakeTokenBySymbol('BAL')
+  const defaultToken: TokenBase = fakeTokenBySymbol('wS')
   return Object.assign({}, defaultToken, ...options)
 }
 
 export function someMinimalTokensMock(addresses?: Address[]): MinimalToken[] {
   const defaultTokens: MinimalToken[] = [
     {
-      address: wETHAddress,
+      address: WS_ADDRESS,
       decimals: 18,
       index: 0,
     },
@@ -80,7 +81,7 @@ export function someMinimalTokensMock(addresses?: Address[]): MinimalToken[] {
 
 export function aGqlTokenMock(...options: Partial<GqlPoolTokenDetail>[]): GqlPoolTokenDetail {
   const symbol = options[0]?.symbol
-  const defaultToken: TokenBase = fakeTokenBySymbol((symbol as FakeTokenSymbol) || 'BAL')
+  const defaultToken: TokenBase = fakeTokenBySymbol((symbol as FakeTokenSymbol) || 'wS')
 
   const defaultOptions: GqlPoolTokenDetail = mock<GqlPoolTokenDetail>({
     ...defaultToken,
@@ -96,7 +97,7 @@ export function someGqlTokenMocks(symbols: string[]): GqlPoolTokenDetail[] {
 }
 
 export function aTokenExpandedMock(...options: Partial<GqlPoolTokenDetail>[]): GqlPoolTokenDetail {
-  const symbol = (options[0]?.symbol as FakeTokenSymbol) || 'BAL'
+  const symbol = (options[0]?.symbol as FakeTokenSymbol) || 'wS'
   const defaultToken: TokenBase = fakeTokenBySymbol(symbol)
   return Object.assign({}, defaultToken, ...options)
 }
@@ -105,7 +106,7 @@ export function aTokenPriceMock(...options: Partial<GqlTokenPrice>[]): GqlTokenP
   const defaultPrice: GqlTokenPrice = {
     __typename: 'GqlTokenPrice',
     address: emptyAddress,
-    chain: GqlChainValues.Mainnet,
+    chain: GqlChainValues.Sonic,
     price: 2,
     updatedAt: 1,
   }
@@ -114,6 +115,6 @@ export function aTokenPriceMock(...options: Partial<GqlTokenPrice>[]): GqlTokenP
 }
 
 export const someTokenAllowancesMock: TokenAllowances = {
-  [wETHAddress]: MAX_BIGINT,
-  [wjAuraAddress]: MAX_BIGINT,
+  [WS_ADDRESS]: MAX_BIGINT,
+  [STS_ADDRESS]: MAX_BIGINT,
 }

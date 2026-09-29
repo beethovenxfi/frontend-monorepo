@@ -25,7 +25,7 @@ export function MigrateLiquiditySummary() {
     <AnimateHeightChange spacing="sm">
       {isMobile && hasQuoteContext && (
         <MobileStepTracker
-          chain={oldPool?.chain || GqlChainValues.Mainnet}
+          chain={oldPool?.chain || GqlChainValues.Sonic}
           transactionSteps={migrationSteps}
         />
       )}
@@ -104,7 +104,6 @@ function PoolCard({ title, pool }: PoolCardProps) {
               chain={pool.chain}
               height="28px"
               pool={pool}
-              poolId={pool.id}
               textProps={{
                 fontSize: ['md', 'md', 'lg'],
                 lineHeight: '28px',

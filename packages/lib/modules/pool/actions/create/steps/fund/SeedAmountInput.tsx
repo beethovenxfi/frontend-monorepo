@@ -40,7 +40,7 @@ export function SeedAmountInput({ token, idx, poolType, poolTokens }: TokenAmoun
   useEffect(() => {
     if (!token.address) return
 
-    const { error, possibleErrors } = validatePoolTokens.hasAmountError(token, poolType)
+    const { error, possibleErrors } = validatePoolTokens.hasAmountError(token)
     removeValidationErrors(token.address, possibleErrors)
     if (error) setValidationError(token.address, error)
   }, [token, poolType, setValidationError])

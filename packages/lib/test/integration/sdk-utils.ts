@@ -1,4 +1,4 @@
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '@repo/lib/modules/pool/pool.types'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import {
   VAULT_V2,
@@ -30,7 +30,7 @@ import {
   trim,
 } from 'viem'
 import { erc20Abi } from 'viem'
-import { aWjAuraWethPoolElementMock } from '../msw/builders/gqlPoolElement.builders'
+import { aTwoTokenPoolMock } from '../msw/builders/gqlPoolElement.builders'
 import { sonic } from 'viem/chains'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { sonicTestPublicClient } from '@repo/test/utils/wagmi/wagmi-test-clients'
@@ -46,12 +46,12 @@ export async function getSdkTestUtils({
   client = sonicTestPublicClient,
   chainId = sonic.id as ChainId,
   account = defaultTestUserAccount,
-  pool = aWjAuraWethPoolElementMock(),
+  pool = aTwoTokenPoolMock(),
 }: {
   client?: Client & PublicActions & WalletActions & TestActions
   account?: Address
   chainId?: ChainId
-  pool: GqlPoolElement
+  pool: Pool
 }) {
   return {
     approveToken,

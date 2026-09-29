@@ -1,5 +1,5 @@
 import { PoolType, STABLE_POOL_CONSTRAINTS } from '@balancer/sdk'
-import { zeroAddress, Address } from 'viem'
+import { zeroAddress } from 'viem'
 import {
   SupportedPoolTypes,
   PoolTypeDetails,
@@ -10,9 +10,6 @@ import {
 } from './types'
 import { getSwapFeePercentageOptions } from './helpers'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
-import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { parseUnits } from 'viem'
 import { FormStep } from '@repo/lib/shared/hooks/useFormSteps'
 import { PoolTokensStep } from './steps/tokens/PoolTokensStep'
 import { PoolDetailsStep } from './steps/details/PoolDetailsStep'
@@ -26,16 +23,6 @@ export const POOL_CREATION_FORM_STEPS: FormStep[] = [
   { id: 'step-4-fund', title: 'Fund', Component: PoolFundStep },
 ]
 
-const GNOSIS_BLACKLIST: Address[] = [
-  '0xcB444e90D8198415266c6a2724b7900fb12FC56E', // Monerium EUR emoney (EURe)
-  '0x417bc5b940475203A18C2f320a5ba470D6c5E463', // Wrapped Aave Gnosis EURe (waGnoEURe)
-  '0x420CA0f9B9b604cE0fd9C18EF134C705e5Fa3430', //Monerium EURe (EURe)
-]
-
-export const TOKEN_BLACKLIST: Partial<Record<GqlChain, Set<string>>> = {
-  [GqlChainValues.Gnosis]: new Set(GNOSIS_BLACKLIST.map(addr => addr.toLowerCase())),
-}
-
 export const NUM_FORMAT = '0.00000000' // up to 8 decimals?
 export const PERCENTAGE_DECIMALS = 16
 export const DEFAULT_DECIMALS = 18
@@ -46,9 +33,6 @@ export const REQUIRED_TOTAL_WEIGHT = 100
 export const MIN_AMPLIFICATION_PARAMETER = Number(STABLE_POOL_CONSTRAINTS.MIN_AMP)
 export const MAX_AMPLIFICATION_PARAMETER = Number(STABLE_POOL_CONSTRAINTS.MAX_AMP)
 export const MAX_LAMBDA = 100000000
-export const COW_AMM_RAW_WEIGHT_50 = parseUnits('1', DEFAULT_DECIMALS) // quirk for 50/50 pool, weight must be 1e18 for both tokens
-export const COW_AMM_RAW_WEIGHT_80 = parseUnits('8', DEFAULT_DECIMALS)
-export const COW_AMM_RAW_WEIGHT_20 = parseUnits('2', DEFAULT_DECIMALS)
 
 export const POOL_TYPES: Record<SupportedPoolTypes, PoolTypeDetails> = {
   [PoolType.Stable]: {
@@ -81,15 +65,7 @@ export const POOL_TYPES: Record<SupportedPoolTypes, PoolTypeDetails> = {
     description:
       'A concentrated liquidity pool with self-adjusting parameters. A "fire-and-forget" solution to maintenance-free concentrated liquidity provision.',
   },
-  [PoolType.CowAmm]: {
-    label: 'CoW AMM',
-    maxTokens: 2,
-    description:
-      'CoW AMM protects LPs from LVR so they can provide liquidity with less risk and more return',
-  },
 }
-
-export const COW_PROTOCOL_ID = 'CoW'
 
 export enum WeightedPoolStructure {
   FiftyFifty = '50/50',

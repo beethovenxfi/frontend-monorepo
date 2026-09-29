@@ -11,9 +11,8 @@ import { selectStakingService } from '@repo/lib/modules/staking/selectStakingSer
 import { useBuildUnstakeCallData } from './useBuildUnstakeCallData'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { ManagedTransactionInput } from '@repo/lib/modules/web3/contracts/useManagedTransaction'
-import { useBalTokenRewards } from '@repo/lib/modules/portfolio/PortfolioClaim/useBalRewards'
 import { useClaimableBalances } from '@repo/lib/modules/portfolio/PortfolioClaim/useClaimableBalances'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo, useState } from 'react'
 import { ManagedTransactionButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionButton'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
@@ -41,12 +40,10 @@ export function useClaimAndUnstakeStep({
 }: UnstakeParams): {
   isLoading: boolean
   step: TransactionStep
-  hasUnclaimedBalRewards: boolean
 } {
   const { userAddress } = useUserAccount()
   const [transaction, setTransaction] = useState<ManagedResult | undefined>()
-  const { claimableRewards: nonBalrewards } = useClaimableBalances([pool])
-  const { balRewardsData: balRewards } = useBalTokenRewards([pool])
+  const { claimableRewards } = useClaimableBalances([pool])
   const relayerMode = useRelayerMode()
 
   const { contracts, chainId } = getNetworkConfig(pool.chain)
@@ -69,18 +66,15 @@ export function useClaimAndUnstakeStep({
     ? selectStakingService(pool.chain, pool.staking?.type)
     : undefined
 
-  const hasUnclaimedBalRewards = balRewards.length > 0
-
   const data = useBuildUnstakeCallData({
     amount: parseUnits(bn(amountOut).toFixed(), BPT_DECIMALS),
     gaugeService: stakingService,
     gauges: [gaugeAddress],
-    hasUnclaimedNonBalRewards: nonBalrewards.length > 0,
-    hasUnclaimedBalRewards,
+    hasUnclaimedRewards: claimableRewards.length > 0,
     userAddress,
   })
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Claim and unstake transaction)',
     {
       poolId: pool.id,
@@ -122,7 +116,7 @@ export function useClaimAndUnstakeStep({
           onTransactionChange={setTransaction}
         />
       ),
-      // Last step in the batch: the multicall is preceded by the minter/relayer approvals
+      // Last step in the batch: the multicall is preceded by the relayer approval
       isBatchEnd: true,
       batchableTxCall:
         data.length > 0
@@ -137,6 +131,5 @@ export function useClaimAndUnstakeStep({
   return {
     isLoading: isLoadingRelayerApproval,
     step,
-    hasUnclaimedBalRewards,
   }
 }

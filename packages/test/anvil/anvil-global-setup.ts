@@ -4,7 +4,6 @@ import { Instance, Server } from 'prool'
 import { fileURLToPath } from 'url'
 
 import { ANVIL_NETWORKS, forkedChainIds, getForkUrl } from './anvil-setup'
-import { polygon } from 'viem/chains'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 
@@ -73,11 +72,6 @@ export async function setup() {
         forkUrl,
         forkBlockNumber: chain.forkBlockNumber,
         mnemonic: process.env.TEST_ACCOUNT_MNEMONIC,
-        // anvil >= 1.8.0 fails every eth_call on Polygon forks with
-        // "Excess blob gas not set" (Polygon headers have no excessBlobGas
-        // field). Pinning the EVM spec below Cancun avoids the blob-gas
-        // code path. See https://github.com/balancer/frontend-monorepo/issues/2717
-        ...(chain.chainId === polygon.id ? { hardfork: 'Shanghai' as const } : {}),
       }),
     })
 

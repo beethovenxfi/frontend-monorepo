@@ -18,16 +18,12 @@ import {
   swapFeesTooltipText,
   useAprTooltip,
   inherentTokenYieldTooltipText,
-  lockingIncentivesTooltipText,
-  votingIncentivesTooltipText,
   merklIncentivesTooltipText,
-  surplusIncentivesTooltipText,
   SupportedHookType,
 } from '@repo/lib/shared/hooks/useAprTooltip'
 import { TooltipAprItem } from './TooltipAprItem'
 import type BigNumber from 'bignumber.js'
 import { bn, fNum } from '@repo/lib/shared/utils/numbers'
-import { isCowAmmPool, isVebalPool } from '@repo/lib/modules/pool/pool.helpers'
 import { ReactNode } from 'react'
 
 interface Props {
@@ -35,7 +31,6 @@ interface Props {
   numberFormatter?: (value: string) => BigNumber
   displayValueFormatter?: (value: BigNumber) => string
   placement?: PlacementWithLogical
-  poolId: string
   poolType: GqlPoolType
   totalBaseText: string
   customPopoverContent?: ReactNode
@@ -46,7 +41,7 @@ interface Props {
   hookType?: GqlHookType
 }
 
-const balRewardGradient =
+const maxAprGradient =
   'linear-gradient(90deg, rgba(179, 174, 245, 0.5) 0%, rgba(215, 203, 231, 0.5) 25%, rgba(229, 200, 200, 0.5) 50%, rgba(234, 168, 121, 0.5) 100%)'
 
 const basePopoverAprItemProps = {
@@ -76,7 +71,6 @@ function getDynamicSwapFeesLabel(hookType: GqlHookType) {
 
 function BaseAprTooltip({
   aprItems,
-  poolId,
   numberFormatter,
   displayValueFormatter,
   placement,
@@ -84,13 +78,10 @@ function BaseAprTooltip({
   totalBaseText,
   shouldDisplayBaseTooltip,
   children,
-  poolType,
   chain,
   usePortal = true,
   hookType,
 }: Props) {
-  const isVebal = isVebalPool(poolId)
-
   const usedDisplayValueFormatter =
     displayValueFormatter || defaultDisplayValueFormatterWithCanBeNegative
 
@@ -103,7 +94,6 @@ function BaseAprTooltip({
     merklIncentivesAprDisplayed,
     merklTokensDisplayed,
     hasMerklIncentives,
-    surplusIncentivesAprDisplayed,
     swapFeesDisplayed,
     isSwapFeePresent,
     isYieldPresent,
@@ -112,11 +102,6 @@ function BaseAprTooltip({
     stakingIncentivesDisplayed,
     subitemPopoverAprItemProps,
     totalBase,
-    lockingAprDisplayed,
-    votingAprDisplayed,
-    isVotingPresent,
-    isLockingAprPresent,
-    totalCombinedDisplayed,
     isMaBeetsPresent,
     maBeetsRewardsDisplayed,
     maxMaBeetsRewardDisplayed,
@@ -126,8 +111,6 @@ function BaseAprTooltip({
     maBeetsRewardTooltipText,
     dynamicSwapFeesDisplayed,
     dynamicSwapFeesTooltipText,
-    fuulIncentivesDisplayed,
-    fuulTooltipText,
   } = useAprTooltip({
     aprItems,
     numberFormatter: usedNumberFormatter,
@@ -239,24 +222,6 @@ function BaseAprTooltip({
             ))}
         </TooltipAprItem>
       ) : null}
-      {!fuulIncentivesDisplayed.isZero() && (
-        <TooltipAprItem
-          {...basePopoverAprItemProps}
-          apr={fuulIncentivesDisplayed}
-          displayValueFormatter={usedDisplayValueFormatter}
-          title="Hypurr Fuul APR"
-          tooltipText={fuulTooltipText}
-        />
-      )}
-      {isCowAmmPool(poolType) && (
-        <TooltipAprItem
-          {...basePopoverAprItemProps}
-          apr={surplusIncentivesAprDisplayed}
-          displayValueFormatter={usedDisplayValueFormatter}
-          title="Prevented LVR"
-          tooltipText={surplusIncentivesTooltipText}
-        />
-      )}
       <Divider />
       <TooltipAprItem
         {...basePopoverAprItemProps}
@@ -273,45 +238,6 @@ function BaseAprTooltip({
             : ''
         }
       />
-      {isVebal ? (
-        <>
-          <Divider />
-          <Stack gap={0} roundedBottom="md">
-            <TooltipAprItem
-              pt={3}
-              {...basePopoverAprItemProps}
-              apr={lockingAprDisplayed}
-              aprOpacity={isLockingAprPresent ? 1 : 0.5}
-              displayValueFormatter={usedDisplayValueFormatter}
-              title="Protocol revenue share (max)"
-              tooltipText={lockingIncentivesTooltipText}
-            />
-            <TooltipAprItem
-              {...basePopoverAprItemProps}
-              apr={votingAprDisplayed}
-              aprOpacity={isVotingPresent ? 1 : 0.5}
-              displayValueFormatter={usedDisplayValueFormatter}
-              title="Voting incentives (average)"
-              tooltipText={votingIncentivesTooltipText}
-            />
-            <Divider />
-            <TooltipAprItem
-              {...basePopoverAprItemProps}
-              apr={totalCombinedDisplayed}
-              backgroundColor={balRewardGradient}
-              displayValueFormatter={usedDisplayValueFormatter}
-              fontColor="font.special"
-              pt={3}
-              px={2}
-              roundedBottom="md"
-              textBackground="background.special"
-              textBackgroundClip="text"
-              title="Total APR"
-            />
-          </Stack>
-        </>
-      ) : null}
-
       {isMaBeetsPresent && (
         <>
           <Divider />
@@ -345,7 +271,7 @@ function BaseAprTooltip({
               {...basePopoverAprItemProps}
               apr={maBeetsTotalAprDisplayed}
               backgroundColor="background.level3"
-              boxBackground={balRewardGradient}
+              boxBackground={maxAprGradient}
               displayValueFormatter={usedDisplayValueFormatter}
               fontColor="font.special"
               pl={2}

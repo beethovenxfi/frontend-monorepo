@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import type { GqlChain } from '../services/api/generated/graphql'
-import { GqlChainValues } from '../services/api/graphql-enums'
 import { getViemClient } from '../services/viem/viem.client'
 import { formatUnits } from 'viem'
 import { bn, fNum } from '../utils/numbers'
@@ -18,10 +17,7 @@ function formatGasPrice(gasPrice: bigint): string {
   return fNum('integer', formatUnits(gasPrice, 9))
 }
 
-function highGasPriceFor(chain: GqlChain) {
-  if (chain === GqlChainValues.Mainnet) return 50
-  return 500
-}
+const HIGH_GAS_PRICE_GWEI = 500
 
 export function GasPriceCard({ chain }: { chain: GqlChain }) {
   const { gasPrice, isHighGasPrice } = useGasPriceQuery(chain)
@@ -52,7 +48,7 @@ export function useGasPriceQuery(chain: GqlChain) {
 
   const gasPrice = query.data ? formatGasPrice(query.data) : undefined
 
-  const isHighGasPrice = gasPrice ? bn(gasPrice).gte(highGasPriceFor(chain)) : false
+  const isHighGasPrice = gasPrice ? bn(gasPrice).gte(HIGH_GAS_PRICE_GWEI) : false
 
   return { ...query, gasPrice, isHighGasPrice }
 }

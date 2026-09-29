@@ -13,18 +13,15 @@ import {
 
 vi.mock('@repo/lib/config/app.config', () => {
   const mockNetworkConfig = {
-    chainId: 1,
-    chain: GqlChainValues.Mainnet,
+    chainId: 146,
+    chain: GqlChainValues.Sonic,
     tokens: {
       addresses: {
         wNativeAsset: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-        auraBal: '0x616e8bfa43f920657b3497dbf40d6b1a02d4608d',
-        bal: '0xba100000625a3754423978a60c9317c58a424e3d',
       },
       nativeAsset: {
         address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
       },
-      supportedWrappers: [],
     },
     contracts: {
       balancer: {
@@ -35,7 +32,7 @@ vi.mock('@repo/lib/config/app.config', () => {
 
   return {
     getNetworkConfig: vi.fn(() => mockNetworkConfig),
-    getChainId: vi.fn(() => 1),
+    getChainId: vi.fn(() => 146),
     getNativeAssetAddress: vi.fn(() => '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
     getWrappedNativeAssetAddress: vi.fn(() => '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'),
   }
@@ -121,7 +118,7 @@ vi.mock('@repo/lib/shared/services/viem/viem.client', () => ({
 }))
 
 vi.mock('@repo/lib/modules/web3/transports', () => ({
-  getRpcUrl: vi.fn(() => 'https://mainnet.infura.io/v3/test'),
+  getRpcUrl: vi.fn(() => 'https://rpc.soniclabs.com'),
 }))
 
 class TestableBaseDefaultSwapHandler extends BaseDefaultSwapHandler {
@@ -148,14 +145,14 @@ describe('BaseDefaultSwapHandler', () => {
   describe('build', () => {
     it('builds a standard v2 swap transaction', () => {
       const inputs = createSdkBuildSwapInputs({
-        tokenInAddress: TEST_ADDRESSES.weth,
-        tokenOutAddress: TEST_ADDRESSES.dai,
+        tokenInAddress: TEST_ADDRESSES.ws,
+        tokenOutAddress: TEST_ADDRESSES.usdc,
       })
 
       const tx = handler.build(inputs)
 
       expect(tx.account).toBe(inputs.account)
-      expect(tx.chainId).toBe(1)
+      expect(tx.chainId).toBe(146)
       expect(tx.to).toBe(TEST_ADDRESSES.vaultV2)
       expect(tx.data).toBe('0xdefault_tx_data')
     })
@@ -166,7 +163,7 @@ describe('BaseDefaultSwapHandler', () => {
       const tx = handler.build(v3Inputs)
 
       expect(tx.account).toBe(v3Inputs.account)
-      expect(tx.chainId).toBe(1)
+      expect(tx.chainId).toBe(146)
       expect(tx.to).toBe(TEST_ADDRESSES.vaultV2)
     })
 
@@ -195,7 +192,7 @@ describe('BaseDefaultSwapHandler', () => {
         batch: {
           details: [
             {
-              token: TEST_ADDRESSES.weth,
+              token: TEST_ADDRESSES.ws,
               amount: BigInt(1e18),
               expiration: Math.floor(Date.now() / 1000) + 3600,
               nonce: 0,

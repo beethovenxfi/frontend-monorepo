@@ -115,7 +115,6 @@ function OutOfRangeWarning() {
 
 export function AddLiquidityFormTabs({
   totalUSDValue,
-  nestedAddLiquidityEnabled,
   tabIndex,
   setFlexibleTab,
   setProportionalTab,
@@ -123,7 +122,6 @@ export function AddLiquidityFormTabs({
   wantsUnbalanced,
 }: {
   totalUSDValue: string
-  nestedAddLiquidityEnabled: boolean
   tabIndex: number
   setFlexibleTab: () => void
   setProportionalTab: () => void
@@ -136,8 +134,7 @@ export function AddLiquidityFormTabs({
   const { poolIsInRange } = useGetECLPLiquidityProfile()
   const { surging } = useStableSurgeMetrics(pool)
 
-  const isDisabledProportionalTab =
-    nestedAddLiquidityEnabled || !supportsProportionalAddLiquidityKind(pool)
+  const isDisabledProportionalTab = !supportsProportionalAddLiquidityKind(pool)
 
   const isBelowMinTvlThreshold =
     isV3Pool(pool) &&

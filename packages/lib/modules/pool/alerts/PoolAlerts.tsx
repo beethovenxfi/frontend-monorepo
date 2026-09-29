@@ -6,10 +6,8 @@ import { usePoolAlerts } from './usePoolAlerts'
 import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
 import { isComposableStablePool } from '../pool.utils'
 import { usePoolMigrations } from '../migrations/PoolMigrationsProvider'
-import { getChainId, getChainName } from '@repo/lib/config/app.config'
+import { getChainId } from '@repo/lib/config/app.config'
 import { MigrationAlert } from '../migrations/MigrationAlert'
-import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { isChainDeprecated } from '../../chains/chain.utils'
 import { useStableSurgeMetrics } from '../../hooks/stable-surge/useStableSurgeMetrics'
 import { ArrowUpRight } from 'lucide-react'
 import { isEmpty } from '@repo/lib/shared/utils/array'
@@ -21,15 +19,8 @@ export function PoolAlerts() {
   const { surging } = useStableSurgeMetrics(pool)
 
   const affectedByV2Exploit = pool.protocolVersion === 2 && isComposableStablePool(pool)
-  const chainDeprecated = isChainDeprecated(pool.chain)
 
-  if (
-    isEmpty(poolAlerts) &&
-    !needsMigration &&
-    !affectedByV2Exploit &&
-    !chainDeprecated &&
-    !surging
-  ) {
+  if (isEmpty(poolAlerts) && !needsMigration && !affectedByV2Exploit && !surging) {
     return null
   }
 
@@ -48,10 +39,6 @@ export function PoolAlerts() {
 
       {affectedByV2Exploit && <BalAlert content={<V2ExploitContentWarning />} status="warning" />}
 
-      {chainDeprecated && (
-        <BalAlert content={<DeprecatedChainWarningContent chain={pool.chain} />} status="warning" />
-      )}
-
       {needsMigration(pool.protocolVersion, getChainId(pool.chain), pool.id) && (
         <MigrationAlert pool={pool} />
       )}
@@ -67,47 +54,6 @@ function V2ExploitContentWarning() {
       <Text color="#000">
         This pool was part of an exploit on some v2 Composable Stable pools (v3 pools not affected).
       </Text>
-      <Link
-        _hover={{
-          color: '#555',
-        }}
-        color="#000"
-        fontWeight="bold"
-        href="https://x.com/Balancer/status/1990856260988670132"
-        isExternal
-        textDecoration="underline"
-      >
-        Read the Post-Mortem
-      </Link>
-    </HStack>
-  )
-}
-
-function DeprecatedChainWarningContent({ chain }: { chain: GqlChain }) {
-  const chainName = getChainName(chain)
-  const problem = `The ${chainName} network is being sunset on Balancer.`
-
-  const learnMoreLink =
-    'https://forum.balancer.fi/t/bip-906-deprecation-of-polygon-zkevm-fraxtal-and-mode/6951'
-
-  return (
-    <HStack>
-      <Text color="#000" fontWeight="bold">
-        {problem}
-      </Text>
-      <Text color="#000">{`Remove any liquidity you have in ${chainName} pools.`}</Text>
-      <Link
-        _hover={{
-          color: '#555',
-        }}
-        color="#000"
-        fontWeight="bold"
-        href={learnMoreLink}
-        isExternal
-        textDecoration="underline"
-      >
-        Learn more
-      </Link>
     </HStack>
   )
 }

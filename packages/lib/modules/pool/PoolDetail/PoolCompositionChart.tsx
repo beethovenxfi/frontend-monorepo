@@ -1,4 +1,4 @@
-import { getCompositionTokens, getFlatCompositionTokens } from '../pool-tokens.utils'
+import { getCompositionTokens } from '../pool-tokens.utils'
 import { usePool } from '../PoolProvider'
 import { PoolWeightChart } from './PoolWeightCharts/PoolWeightChart'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
@@ -135,7 +135,7 @@ function CompositionView({ chain, pool, totalLiquidity, hasTabs }: CompositionVi
       <Flex h="full">
         <PoolWeightChart
           chain={chain}
-          displayTokens={getFlatCompositionTokens(pool)}
+          displayTokens={getCompositionTokens(pool)}
           hasLegend
           totalLiquidity={totalLiquidity}
         />
