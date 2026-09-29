@@ -139,13 +139,14 @@ for (const [pool, boosted] of [
         await clickButton(page, 'Next')
 
         const removeLiquidity = button(page, 'Remove liquidity')
-        await signRelayerIfNeeded(page)
-
         if (boosted) {
           const signApproval = button(page, `Sign approval: ${pool.symbol}`)
-          await expect(signApproval.or(removeLiquidity).first()).toBeVisible()
+          const signRelayer = button(page, 'Sign relayer')
+          await expect(signApproval.or(signRelayer).or(removeLiquidity).first()).toBeVisible()
           if (await signApproval.isVisible()) await signApproval.click()
         }
+
+        await signRelayerIfNeeded(page)
         await clickButton(page, 'Remove liquidity')
         await expect(page.getByText('Transaction confirmed')).toBeVisible()
 
