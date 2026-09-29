@@ -72,7 +72,7 @@ describe('getDisplayTokens for flat pools', () => {
 
     expect(getUserReferenceTokensURIs(scUsdStS)).toEqual([
       'https://i.ibb.co/PFw2zkx/scUSD64.png',
-      'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0xe5da20f15420ad15de0fa650600afc998bbe3955.png',
+      'https://raw.githubusercontent.com/beethovenxfi/tokenlists/main/src/assets/images/tokens/0xe5da20f15420ad15de0fa650600afc998bbe3955.png',
     ])
 
     expect(getPoolActionableTokenSymbols(scUsdStS)).toEqual(['scUSD', 'stS'])

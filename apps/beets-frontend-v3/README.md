@@ -8,7 +8,7 @@ https://pnpm.io/installation_
 To setup the development environment, first clone the repo:
 
 ```bash
-git clone https://github.com/balancer/frontend-monorepo.git && cd frontend-monorepo/apps/beets-frontend-v3
+git clone https://github.com/beethovenxfi/frontend-monorepo.git && cd frontend-monorepo/apps/beets-frontend-v3
 ```
 
 Copy the `.env.template` file to `.env.local`:

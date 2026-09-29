@@ -1272,7 +1272,7 @@ export default function Risks() {
                 building a safer and more inclusive environment for all. Please feel free to reach
                 out with any questions or suggestions, or to propose changes for this page directly
                 via the{' '}
-                <a href="https://github.com/balancer/frontend-monorepo/blob/main/apps/beets-frontend-v3/app/(marketing)/risks/page.tsx">
+                <a href="https://github.com/beethovenxfi/frontend-monorepo/blob/main/apps/beets-frontend-v3/app/(marketing)/risks/page.tsx">
                   GitHub
                 </a>
                 .

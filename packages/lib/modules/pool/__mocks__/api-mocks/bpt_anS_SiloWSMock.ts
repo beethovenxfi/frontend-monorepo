@@ -58,7 +58,7 @@ export const bpt_anS_SiloWSMock = {
       isAllowed: true,
       priceRateProvider: '0xb86e2517caab8e7aecc7472f29c0cbdaaf28e5e5',
       logoURI:
-        'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0x016C306e103FbF48EC24810D078C65aD13c5f11B.png',
+        'https://raw.githubusercontent.com/beethovenxfi/tokenlists/main/src/assets/images/tokens/0x016C306e103FbF48EC24810D078C65aD13c5f11B.png',
       priceRateProviderData: {
         address: '0xb86e2517caab8e7aecc7472f29c0cbdaaf28e5e5',
         name: 'Silo wS-25 Rateprovider',
@@ -81,7 +81,7 @@ export const bpt_anS_SiloWSMock = {
         symbol: 'wS',
         isErc4626: false,
         logoURI:
-          'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38.png',
+          'https://raw.githubusercontent.com/beethovenxfi/tokenlists/main/src/assets/images/tokens/0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38.png',
       },
       erc4626ReviewData: {
         reviewFile: './SiloV2Review.md',
@@ -108,7 +108,7 @@ export const bpt_anS_SiloWSMock = {
       isAllowed: true,
       priceRateProvider: '0x0000000000000000000000000000000000000000',
       logoURI:
-        'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/anS.png',
+        'https://raw.githubusercontent.com/beethovenxfi/tokenlists/main/src/assets/images/tokens/anS.png',
       priceRateProviderData: null,
       isErc4626: false,
       maxDeposit: null,

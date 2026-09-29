@@ -85,7 +85,7 @@ export const ProjectConfigBeets: ProjectConfig = {
           { label: 'Docs', href: 'https://docs.beets.fi', isExternal: true },
           {
             label: 'Prototype on v3',
-            href: 'https://github.com/balancer/scaffold-balancer-v3',
+            href: 'https://github.com/beethovenxfi/scaffold-balancer-v3',
             isExternal: true,
           },
         ],

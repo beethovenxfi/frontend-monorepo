@@ -91,7 +91,7 @@ export const bpt_scUSD_stSMock = {
       isAllowed: true,
       priceRateProvider: '0xe5da20f15420ad15de0fa650600afc998bbe3955',
       logoURI:
-        'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0xe5da20f15420ad15de0fa650600afc998bbe3955.png',
+        'https://raw.githubusercontent.com/beethovenxfi/tokenlists/main/src/assets/images/tokens/0xe5da20f15420ad15de0fa650600afc998bbe3955.png',
       priceRateProviderData: {
         address: '0xe5da20f15420ad15de0fa650600afc998bbe3955',
         name: 'stS Rateprovider',
