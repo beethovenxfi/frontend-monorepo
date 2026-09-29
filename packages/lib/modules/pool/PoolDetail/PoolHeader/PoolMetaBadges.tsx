@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { PoolVersionTag } from '../../PoolList/PoolListTable/PoolVersionTag'
 import { PoolListTokenPills } from '../../PoolList/PoolListTokenPills'
 import { usePool } from '../../PoolProvider'
-import { shouldHideSwapFee } from '../../pool.utils'
 import { PoolHookTag } from '../PoolHookTag'
 import { PoolTypeTag } from '../PoolTypeTag'
 import { PoolSwapFees } from './PoolSwapFees'
@@ -34,7 +33,7 @@ export default function PoolMetaBadges() {
 
       <PoolTypeTag pool={pool} />
       <PoolHookTag pool={pool} />
-      {!shouldHideSwapFee(pool.type) && <PoolSwapFees pool={pool} />}
+      <PoolSwapFees pool={pool} />
     </Flex>
   )
 }

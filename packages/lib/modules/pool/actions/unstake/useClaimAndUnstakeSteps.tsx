@@ -3,7 +3,6 @@ import { getChainId } from '@repo/lib/config/app.config'
 import { TransactionStep } from '@repo/lib/modules/transactions/transaction-steps/lib'
 import { UnstakeParams, useClaimAndUnstakeStep } from './useClaimAndUnstakeStep'
 import { useMemo } from 'react'
-import { useApproveMinterStep } from '@repo/lib/modules/staking/gauge/useMinterApprovalStep'
 import { useShouldBatchTransactions } from '@repo/lib/modules/transactions/transaction-steps/tx-batch.hooks'
 
 export function useClaimAndUnstakeSteps(unstakeParams: UnstakeParams): {
@@ -13,19 +12,11 @@ export function useClaimAndUnstakeSteps(unstakeParams: UnstakeParams): {
   const pool = unstakeParams.pool
   const chainId = getChainId(pool.chain)
 
-  const {
-    step: claimAndUnstakeStep,
-    isLoading: isLoadingClaimAndUnstakeStep,
-    hasUnclaimedBalRewards,
-  } = useClaimAndUnstakeStep(unstakeParams)
+  const { step: claimAndUnstakeStep, isLoading: isLoadingClaimAndUnstakeStep } =
+    useClaimAndUnstakeStep(unstakeParams)
 
   const { step: relayerApprovalStep, isLoading: isLoadingRelayerApprovalStep } =
     useApproveRelayerStep(chainId)
-
-  const { step: minterApprovalStep, isLoading: isLoadingMinterApprovalStep } = useApproveMinterStep(
-    pool.chain,
-    hasUnclaimedBalRewards
-  )
 
   const shouldBatchTransactions = useShouldBatchTransactions()
 
@@ -35,47 +26,28 @@ export function useClaimAndUnstakeSteps(unstakeParams: UnstakeParams): {
     () =>
       getApprovalAndUnstakeSteps({
         claimAndUnstakeStep,
-        minterApprovalStep,
         relayerApprovalStep,
-        hasUnclaimedBalRewards,
         shouldBatchTransactions,
       }),
-    [
-      claimAndUnstakeStep,
-      minterApprovalStep,
-      relayerApprovalStep,
-      hasUnclaimedBalRewards,
-      shouldBatchTransactions,
-    ]
+    [claimAndUnstakeStep, relayerApprovalStep, shouldBatchTransactions]
   )
 
   return {
-    isLoading:
-      isLoadingMinterApprovalStep || isLoadingRelayerApprovalStep || isLoadingClaimAndUnstakeStep,
+    isLoading: isLoadingRelayerApprovalStep || isLoadingClaimAndUnstakeStep,
     steps,
   }
 }
 
 export function getApprovalAndUnstakeSteps({
   claimAndUnstakeStep,
-  minterApprovalStep,
   relayerApprovalStep,
-  hasUnclaimedBalRewards,
   shouldBatchTransactions,
 }: {
   claimAndUnstakeStep: TransactionStep
-  minterApprovalStep: TransactionStep
   relayerApprovalStep: TransactionStep
-  hasUnclaimedBalRewards: boolean
   shouldBatchTransactions: boolean
 }): TransactionStep[] {
-  const approvalSteps: TransactionStep[] = []
-
-  if (hasUnclaimedBalRewards) {
-    approvalSteps.push(minterApprovalStep)
-  }
-
-  approvalSteps.push(relayerApprovalStep)
+  const approvalSteps = [relayerApprovalStep]
 
   // Approvals that can be batched with the multicall are attached as nested steps
   claimAndUnstakeStep.nestedSteps = approvalSteps

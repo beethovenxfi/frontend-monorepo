@@ -67,7 +67,7 @@ test('User balance helpers', () => {
   expect(calcNonOnChainFetchedStakedBalance(pool)).toBe('0')
 
   expect(hasBalancerStakedBalance(pool)).toBeTruthy()
-  expect(hasStakedBalanceFor(pool, GqlPoolStakingTypeValues.FreshBeets)).toBeFalsy()
+  expect(hasStakedBalanceFor(pool, GqlPoolStakingTypeValues.Reliquary)).toBeFalsy()
   expect(hasTinyBalance(pool)).toBeFalsy()
 })
 

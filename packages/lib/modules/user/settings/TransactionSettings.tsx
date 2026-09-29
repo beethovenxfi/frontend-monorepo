@@ -17,7 +17,6 @@ import {
 import { useUserSettings } from './UserSettingsProvider'
 import { fNum } from '@repo/lib/shared/utils/numbers'
 import { Settings } from 'lucide-react'
-import { CurrencySelect } from './CurrencySelect'
 import { EnableSignaturesSelect, SlippageInput } from './UserSettings'
 import { EnableTxBundleSetting } from './EnableTxBundlesSetting'
 
@@ -44,10 +43,6 @@ export function TransactionSettings(props: ButtonProps) {
         </PopoverHeader>
         <PopoverBody p="md">
           <VStack align="start" spacing="lg" w="full">
-            <VStack align="start" w="full">
-              <Heading size="sm">Currency</Heading>
-              <CurrencySelect id="transaction-settings-currency-select" />
-            </VStack>
             <VStack align="start" w="full">
               <Heading size="sm">Slippage</Heading>
               <SlippageInput setSlippage={setSlippage} slippage={slippage} />

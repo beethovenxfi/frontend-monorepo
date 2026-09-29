@@ -25,17 +25,11 @@ export function useClaimLogic(pools: ClaimablePool[]) {
 
   const claimsData = useClaimsData(pools)
 
-  const {
-    claimableBalancesQuery,
-    balTokenRewardsQuery,
-    isLoading: isLoadingData,
-    ...claimsState
-  } = claimsData
+  const { claimableBalancesQuery, isLoading: isLoadingData, ...claimsState } = claimsData
 
   const { steps, isLoading: isLoadingSteps } = useClaimAllRewardsSteps({
     pools,
     claimableBalancesQuery,
-    balTokenRewardsQuery,
   })
 
   const transactionSteps = useTransactionSteps(steps, isLoadingSteps)

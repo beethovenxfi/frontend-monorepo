@@ -10,10 +10,9 @@ Before any Next.js work, find and read the relevant doc in `apps/beets-frontend-
 
 ### Never hardcode project-specific values in `packages/lib`
 
-The app shares `packages/lib`; the active project is resolved from `NEXT_PUBLIC_PROJECT_ID` in `config/getProjectConfig.ts`, which exposes `PROJECT_CONFIG` and `isBeets`.
+The app shares `packages/lib`; the active project is resolved from `NEXT_PUBLIC_PROJECT_ID` in `config/getProjectConfig.ts`, which exposes `PROJECT_CONFIG`.
 
 - Use `PROJECT_CONFIG.projectName`, `projectUrl`, `projectLogo` instead of literal `"Beets"` / domain strings.
-- Gate project-only features (maBEETS, relics, etc.) with `isBeets`.
 - New config fields go in `config.types.ts` and must be populated in `projects/beets.ts`.
 
 ## Architecture
@@ -45,7 +44,6 @@ Use `gh pr create --title ... --body ...` with a fully populated body. Do not re
 ### Rules
 
 - Verify each claim against the actual diff — do not invent test steps, flags, or risks. If you did not change it, do not describe it.
-- If the PR touches `packages/lib`, note in **Risks** whether the change affects the other app (Balancer ↔ Beets) via `NEXT_PUBLIC_PROJECT_ID`.
 - Always write test steps you could actually run — no generic filler.
 
 ## Testing

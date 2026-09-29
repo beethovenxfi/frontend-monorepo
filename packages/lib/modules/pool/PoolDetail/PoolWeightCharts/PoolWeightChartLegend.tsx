@@ -16,7 +16,7 @@ export default function PoolWeightChartLegend({ displayTokens }: { displayTokens
           >
             <HStack spacing="1">
               <Box
-                bg={getTokenColor(token.chain, token.address as Address, i).from}
+                bg={getTokenColor(token.address as Address, i).from}
                 height="8px"
                 rounded="full"
                 width="8px"

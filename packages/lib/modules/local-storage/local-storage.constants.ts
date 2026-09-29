@@ -3,7 +3,6 @@ export const LS_KEYS = {
   HasV1Pools: 'hasV1Pools',
   UserSettings: {
     ColorMode: 'chakra-ui-color-mode', // Has to be this string to match Chakra's default
-    Currency: 'userSettings.Currency',
     Slippage: 'userSettings.Slippage',
     EnableSignatures: 'userSettings.EnableSignatures',
     PoolListView: 'userSettings.PoolListView',

@@ -1,4 +1,3 @@
-import { gyroPoolMock } from '../../../__mocks__/gyroPoolMock'
 import { Pool } from '../../../pool.types'
 import { addLiquidityKeys } from './add-liquidity-keys'
 import { defaultTestUserAccount } from '@repo/test/anvil/anvil-setup'
@@ -42,16 +41,4 @@ describe('Generates expected query keys', () => {
   })
 
   // TODO: Add a Beets/Sonic Gyro/ECLP pool fixture for proportional add query keys.
-  test.skip('For a gyro pool (with proportional adds)', () => {
-    const result = testGenerateLiquidityKeys(gyroPoolMock)
-
-    // Only stringifies the first humanAmount in the humanAmountsIn array
-    expect(result).toMatchInlineSnapshot(`
-      [
-        "add-liquidity",
-        "price-impact",
-        "UnbalancedAddLiquidityV2Handler:0x3B7D260597A3e3f90274563a9e481618C6B951Eb:0xdac42eeb17758daa38caf9a3540c808247527ae3000200000000000000000a2b:0.2:{"tokenAddress":"0x198d7387Fa97A73F05b8578CdEFf8F2A1f34Cd1F","humanAmount":"0","symbol":"wjAura"}no-permit2",
-      ]
-    `)
-  })
 })

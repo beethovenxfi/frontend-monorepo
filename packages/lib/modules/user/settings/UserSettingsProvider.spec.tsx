@@ -1,11 +1,9 @@
 import { LS_KEYS } from '@repo/lib/modules/local-storage/local-storage.constants'
-import { SupportedCurrency } from '@repo/lib/shared/utils/currencies'
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { useUserSettingsLogic } from './UserSettingsProvider'
 
 const initialSettings = {
-  initCurrency: SupportedCurrency.USD,
   initSlippage: '0.5',
   initEnableSignatures: 'yes' as const,
   initAcceptedPolicies: [],

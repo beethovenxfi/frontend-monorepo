@@ -9,7 +9,7 @@ import { AddLiquidityHandler } from '../handlers/AddLiquidity.handler'
 import { AddLiquidityParams, addLiquidityKeys } from './add-liquidity-keys'
 import { useQuery } from '@tanstack/react-query'
 import { usePool } from '../../../PoolProvider'
-import { sentryMetaForAddLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForAddLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
 import { HumanTokenAmountWithSymbol } from '@repo/lib/modules/tokens/token.types'
 import { useBlockNumber } from 'wagmi'
 import { isInvariantRatioPIErrorMessage } from '@repo/lib/shared/utils/error-filters'
@@ -55,7 +55,7 @@ export function useAddLiquidityPriceImpactQuery({ handler, humanAmountsIn, enabl
       return failureCount < 2
     },
     gcTime: 0,
-    meta: sentryMetaForAddLiquidityHandler('Error in add liquidity priceImpact query', {
+    meta: queryErrorMetaForAddLiquidityHandler('Error in add liquidity priceImpact query', {
       ...params,
       chainId,
       blockNumber,

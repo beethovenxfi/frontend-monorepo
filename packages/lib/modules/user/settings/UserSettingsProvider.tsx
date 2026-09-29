@@ -1,7 +1,6 @@
 'use client'
 
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
-import { SupportedCurrency } from '@repo/lib/shared/utils/currencies'
 import { PropsWithChildren, createContext, useCallback, useEffect } from 'react'
 import { bn, isBnParseable } from '@repo/lib/shared/utils/numbers'
 import { useLocalStorage } from 'usehooks-ts'
@@ -17,7 +16,6 @@ import {
 
 export type YesNo = 'yes' | 'no'
 
-const DEFAULT_CURRENCY = SupportedCurrency.USD
 const DEFAULT_SLIPPAGE = '0.5' // 0.5%
 const DEFAULT_ENABLE_SIGNATURES: YesNo = 'yes'
 const DEFAULT_ACCEPTED_POLICIES: string[] = []
@@ -32,14 +30,12 @@ export type UseUserSettingsResult = ReturnType<typeof useUserSettingsLogic>
 export const UserSettingsContext = createContext<UseUserSettingsResult | null>(null)
 
 export function useUserSettingsLogic({
-  initCurrency,
   initSlippage,
   initEnableSignatures,
   initAcceptedPolicies,
   initAllowSounds,
   initEnableTxBundling,
 }: {
-  initCurrency: SupportedCurrency
   initSlippage: string
   initEnableSignatures: YesNo
   initAcceptedPolicies: string[]
@@ -47,13 +43,6 @@ export function useUserSettingsLogic({
   initEnableTxBundling: YesNo
 }) {
   const isMounted = useIsMounted()
-
-  const [_currency, setCurrency] = useLocalStorage<SupportedCurrency>(
-    LS_KEYS.UserSettings.Currency,
-    initCurrency
-  )
-
-  const currency = isMounted ? _currency : initCurrency
 
   const [_slippage, setStoredSlippage] = useLocalStorage<string>(
     LS_KEYS.UserSettings.Slippage,
@@ -130,7 +119,6 @@ export function useUserSettingsLogic({
   const shouldUseTxBundling = enableTxBundling === 'yes'
 
   return {
-    currency,
     slippage,
     slippageDecimal,
     slippageBps,
@@ -140,7 +128,6 @@ export function useUserSettingsLogic({
     allowSounds,
     enableTxBundling,
     shouldUseTxBundling,
-    setCurrency,
     setSlippage,
     setEnableSignatures,
     setAcceptedPolicies,
@@ -150,7 +137,6 @@ export function useUserSettingsLogic({
 }
 
 type ProviderProps = PropsWithChildren<{
-  initCurrency?: string
   initSlippage?: string
   initPoolListView?: string
   initEnableSignatures?: string
@@ -160,7 +146,6 @@ type ProviderProps = PropsWithChildren<{
 }>
 
 export function UserSettingsProvider({
-  initCurrency,
   initSlippage,
   initEnableSignatures,
   initAcceptedPolicies,
@@ -168,7 +153,6 @@ export function UserSettingsProvider({
   initEnableTxBundling,
   children,
 }: ProviderProps) {
-  const _initCurrency = (initCurrency as SupportedCurrency) || DEFAULT_CURRENCY
   const _initSlippage = (initSlippage as string) || DEFAULT_SLIPPAGE
   const _initEnableSignatures = (initEnableSignatures as YesNo) || DEFAULT_ENABLE_SIGNATURES
   const _initAcceptedPolicies = initAcceptedPolicies || DEFAULT_ACCEPTED_POLICIES
@@ -176,7 +160,6 @@ export function UserSettingsProvider({
   const _initEnableTxBundling = (initEnableTxBundling as YesNo) || DEFAULT_ENABLE_TX_BUNDLING
 
   const hook = useUserSettingsLogic({
-    initCurrency: _initCurrency,
     initSlippage: _initSlippage,
     initEnableSignatures: _initEnableSignatures,
     initAcceptedPolicies: _initAcceptedPolicies,

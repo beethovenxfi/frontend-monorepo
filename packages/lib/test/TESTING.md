@@ -83,7 +83,7 @@ From [react hooks testing library](https://react-hooks-testing-library.com/#the-
 
 ### Integration tests
 
-- Extend anvil setup to use other chains than mainnet
+- Keep Anvil setup and integration tests aligned with the supported Sonic network
 - Push anvil cache to use in CI
 - Add automatic retries to Test-Integration GHA to avoid false positives due to connectivity
   problems (see )

@@ -10,13 +10,12 @@ permissions:
 
 env:
   NEXT_PUBLIC_PROJECT_ID: beets
-  NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+  NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
   NEXT_PUBLIC_WALLET_CONNECT_ID: ${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_ID }}
   NEXT_PRIVATE_ALCHEMY_KEY: ${{ secrets.PRIVATE_ALCHEMY_KEY }}
   NEXT_PRIVATE_DRPC_KEY: ${{ secrets.PRIVATE_DRPC_KEY }}
   TEST_ACCOUNT_MNEMONIC: ${{ secrets.TEST_ACCOUNT_MNEMONIC }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-  SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
 
 jobs:
   Lint:
@@ -85,7 +84,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
     env:
       NEXT_PUBLIC_PROJECT_ID: beets
-      NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+      NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -96,7 +95,7 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
       - name: Run Playwright smoke tests (Beets)
-        run: pnpm test:e2e:build:beets
+        run: pnpm test:e2e:build
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: ${{ !cancelled() }}
         with:
@@ -127,7 +126,7 @@ jobs:
             shard: 3/3
     env:
       NEXT_PUBLIC_PROJECT_ID: beets
-      NEXT_PUBLIC_BALANCER_API_URL: https://backend-v3.beets-ftm-node.com/
+      NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       E2E_SHARD: ${{ matrix.shard }}
       E2E_FORK_BLOCK_NUMBER: 78800000
@@ -144,7 +143,7 @@ jobs:
       - name: Start anvil fork in sonic
         run: anvil --mnemonic "${{ env.TEST_ACCOUNT_MNEMONIC }}" --fork-url "https://lb.drpc.live/sonic/${{ env.NEXT_PRIVATE_DRPC_KEY }}" --fork-block-number ${{ env.E2E_FORK_BLOCK_NUMBER }} --fork-retry-backoff 1000 --no-rate-limit --port 8545 &
       - name: Run Playwright dev tests (Beets shard ${{ matrix.shard }})
-        run: pnpm test:e2e:dev:beets
+        run: pnpm test:e2e:dev
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: ${{ !cancelled() }}
         with:

@@ -15,18 +15,16 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { ChainSelect } from '../../chains/ChainSelect'
 import { SaleStructureForm, SeedType, UserActions, WeightAdjustmentType } from '../lbp.types'
 import { Control, Controller, SubmitHandler, UseFormSetValue } from 'react-hook-form'
 import { InputWithError } from '@repo/lib/shared/components/inputs/InputWithError'
 import { TokenSelectInput } from '../../tokens/TokenSelectInput'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { Percent } from 'lucide-react'
-import { useTokenMetadata, useTokenMetadataAcrossChains } from '../../tokens/useTokenMetadata'
+import { useTokenMetadata } from '../../tokens/useTokenMetadata'
 import { useEffect, useState } from 'react'
 import { useTokens } from '../../tokens/TokensProvider'
 import { useLbpForm } from '../LbpFormProvider'
-import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { addHours, differenceInDays, differenceInHours, format, parseISO } from 'date-fns'
 import { WeightAdjustmentTypeInput } from './WeightAdjustmentTypeInput'
 import { LbpFormAction } from '../LbpFormAction'
@@ -79,25 +77,9 @@ export function SaleStructureStep() {
     clearErrors()
   }, [saleType, clearErrors])
 
-  const supportedChains = PROJECT_CONFIG.supportedNetworks.filter(chain => {
-    const chainConfig = getNetworkConfig(chain)
-    return typeof chainConfig?.lbps !== 'undefined'
-  })
-
   const collateralToken = getToken(collateralTokenAddress, selectedChain)
 
-  const { match: launchTokenMatch } = useTokenMetadataAcrossChains(
-    launchTokenAddress,
-    supportedChains
-  )
-
   const launchTokenMetadata = useTokenMetadata(launchTokenAddress, selectedChain)
-
-  useEffect(() => {
-    if (launchTokenMatch?.chain && launchTokenMatch.chain !== selectedChain) {
-      setValue('selectedChain', launchTokenMatch.chain, { shouldDirty: true })
-    }
-  }, [launchTokenMatch?.chain, selectedChain, setValue])
 
   useEffect(() => {
     const chainConfig = getNetworkConfig(selectedChain)
@@ -137,9 +119,6 @@ export function SaleStructureStep() {
                 control={control}
                 setFormValue={setValue}
               />
-              {supportedChains.length > 1 && (
-                <NetworkSelectInput chains={supportedChains} control={control} />
-              )}
             </VStack>
             <Divider />
 
@@ -196,33 +175,6 @@ export function SaleStructureStep() {
         <LbpFormAction />
       </VStack>
     </form>
-  )
-}
-
-function NetworkSelectInput({
-  control,
-  chains,
-}: {
-  control: Control<SaleStructureForm>
-  chains: GqlChain[]
-}) {
-  return (
-    <VStack align="start" w="full">
-      <Text color="font.primary">Network / L2</Text>
-      <Controller
-        control={control}
-        name="selectedChain"
-        render={({ field }) => (
-          <ChainSelect
-            chains={chains}
-            onChange={newValue => {
-              field.onChange(newValue as GqlChain)
-            }}
-            value={field.value}
-          />
-        )}
-      />
-    </VStack>
   )
 }
 

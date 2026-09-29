@@ -27,17 +27,16 @@ type PoolPageStatsProps = {
 export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
   const { protocolData } = useProtocolStats()
 
-  const surplus24h = protocolData?.protocolMetricsAggregated.surplus24h
   const feeLabel = 'Fees (24h)'
 
   const fees: Fee[] = [
     {
       label: 'Swap fees',
-      value: protocolData?.protocolMetricsAggregated.swapFee24h,
+      value: protocolData?.protocolMetricsChain.swapFee24h,
     },
     {
       label: 'Yield-bearing tokens',
-      value: protocolData?.protocolMetricsAggregated.yieldCapture24h,
+      value: protocolData?.protocolMetricsChain.yieldCapture24h,
     },
   ]
 
@@ -45,13 +44,6 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
     fees.push({
       label: 'stS rewards',
       value: rewardsClaimed24h,
-    })
-  }
-
-  if (surplus24h && surplus24h !== '0') {
-    fees.push({
-      label: 'CoW AMM LVR surplus',
-      value: surplus24h,
     })
   }
 
@@ -82,7 +74,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
             popover
             value={
               <AnimatedNumber
-                value={safeToNumber(protocolData?.protocolMetricsAggregated.totalLiquidity)}
+                value={safeToNumber(protocolData?.protocolMetricsChain.totalLiquidity)}
               />
             }
           />
@@ -101,7 +93,7 @@ export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {
             popover
             value={
               <AnimatedNumber
-                value={safeToNumber(protocolData?.protocolMetricsAggregated.swapVolume24h)}
+                value={safeToNumber(protocolData?.protocolMetricsChain.swapVolume24h)}
               />
             }
           />

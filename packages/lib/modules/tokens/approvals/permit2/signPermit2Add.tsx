@@ -17,7 +17,7 @@ import { NoncesByTokenAddress } from './usePermit2Allowance'
 import { constructBaseBuildCallInput } from '@repo/lib/modules/pool/actions/add-liquidity/handlers/add-liquidity.utils'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { isWrappedNativeAsset } from '../../token.helpers'
-import { isBoosted, isV3WithNestedActionsPool } from '@repo/lib/modules/pool/pool.helpers'
+import { isBoosted } from '@repo/lib/modules/pool/pool.helpers'
 import { maximizeAmountsInForPermit2 } from './permit2.helpers'
 
 type SignPermit2AddParams = {
@@ -67,7 +67,7 @@ async function sign({
     pool,
   })
 
-  let filteredAmountsIn = filterWrappedNativeAsset({
+  const filteredAmountsIn = filterWrappedNativeAsset({
     wethIsEth,
     chain: pool.chain,
     amountsIn: sdkQueryOutput.amountsIn,
@@ -94,12 +94,6 @@ async function sign({
   }
 
   function getSignFn() {
-    if (isV3WithNestedActionsPool(pool)) {
-      // this edge case fails if you provide an amountIn with zero amount
-      filteredAmountsIn = filteredAmountsIn.filter(a => a.amount > 0n)
-      return Permit2Helper.signAddLiquidityNestedApproval
-    }
-
     if (isBoosted(pool)) {
       return Permit2Helper.signAddLiquidityBoostedApproval
     }

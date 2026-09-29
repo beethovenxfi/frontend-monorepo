@@ -17,7 +17,6 @@ import {
   CardFooter,
   CardBody,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react'
 import { usePriceImpact } from '@repo/lib/modules/price-impact/PriceImpactProvider'
 import { fNum } from '@repo/lib/shared/utils/numbers'
@@ -34,7 +33,6 @@ interface PriceImpactAccordionProps {
   cannotCalculatePriceImpact?: boolean
   avoidPriceImpactAlert?: boolean
   action: 'swap' | 'add' | 'remove'
-  cowLink?: string
 }
 
 export function PriceImpactAccordion({
@@ -44,7 +42,6 @@ export function PriceImpactAccordion({
   cannotCalculatePriceImpact = false,
   avoidPriceImpactAlert = false,
   action,
-  cowLink,
 }: PriceImpactAccordionProps) {
   const acceptHighImpactDisclosure = useDisclosure()
 
@@ -131,7 +128,7 @@ export function PriceImpactAccordion({
                         if you know exactly what you are doing.'
                       </Text>
                     ) : (
-                      <PriceImpactMessage action={action} cowLink={cowLink} />
+                      <PriceImpactMessage action={action} />
                     )}
                   </AlertDescription>
                 </Box>
@@ -201,13 +198,7 @@ export function PriceImpactAccordion({
   )
 }
 
-function PriceImpactMessage({
-  action,
-  cowLink,
-}: {
-  action: 'swap' | 'add' | 'remove'
-  cowLink: string | undefined
-}) {
+function PriceImpactMessage({ action }: { action: 'swap' | 'add' | 'remove' }) {
   switch (action) {
     case 'swap':
       return (
@@ -219,28 +210,7 @@ function PriceImpactMessage({
             shifting the exchange rate.
           </Text>
           <Text color="#000" fontSize="sm">
-            To reduce price impact, lower your swap size
-            {cowLink ? (
-              <>
-                {' '}
-                or try{' '}
-                <Link
-                  _hover={{
-                    color: '#fff',
-                  }}
-                  color="#000"
-                  fontSize="sm"
-                  href={cowLink}
-                  isExternal
-                  textDecor="underline"
-                >
-                  CoW Swap
-                </Link>
-                .
-              </>
-            ) : (
-              ' or try another exchange.'
-            )}
+            To reduce price impact, lower your swap size or try another exchange.
           </Text>
         </>
       )

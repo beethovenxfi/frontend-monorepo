@@ -15,7 +15,6 @@ import {
   injectNativeAsset,
   replaceWrappedWithNativeAsset,
   requiresProportionalInput,
-  supportsNestedActions,
 } from '../LiquidityActionHelpers'
 import { isDisabledWithReason } from '@repo/lib/shared/utils/functions/isDisabledWithReason'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
@@ -223,10 +222,7 @@ export function useAddLiquidityLogic(
       needsToAcceptHighPI,
       'To continue, accept high potential losses from this add transaction above',
     ],
-    [
-      isUnbalancedAddErrorMessage(priceImpactQuery.error) && !supportsNestedActions(pool),
-      'Unbalanced join',
-    ],
+    [isUnbalancedAddErrorMessage(priceImpactQuery.error), 'Unbalanced join'],
     [simulationQuery.isLoading, 'Fetching quote...'],
     [simulationQuery.isError, 'Error fetching quote'],
     [priceImpactQuery.isLoading, 'Fetching price impact...'],

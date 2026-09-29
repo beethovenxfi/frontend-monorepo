@@ -8,7 +8,7 @@ import type { GqlStakedSonicData } from '@repo/lib/shared/services/api/graphql-d
 import { useGetRate } from './useGetRate'
 import { useGetStakedSonicData } from './useGetStakedSonicData'
 import { useMemo } from 'react'
-import { sfcAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { sfcAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { zeroAddress } from 'viem'
 import { ValidatorUnstakeData } from '@/lib/modules/lst/hooks/useGetUnstakeValidators'
 

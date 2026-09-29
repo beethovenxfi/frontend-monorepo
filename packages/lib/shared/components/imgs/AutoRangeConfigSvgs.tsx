@@ -88,7 +88,7 @@ function computeArcs(
     const dashOffset = -cumulativeLen
     cumulativeLen += fullLen
 
-    const { from, to } = getTokenColor(chain, address, i)
+    const { from, to } = getTokenColor(address, i)
     const gradientId = `token-grad-${chain}-${address}`
 
     return {

@@ -1,6 +1,6 @@
 import { decodeFunctionData } from 'viem'
 import { BeetsBatchRelayerService } from './beets-batch-relayer.service'
-import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 
 // Real Sonic contract addresses
 const batchRelayerAddress = '0x1498437067d7bdDc4C9427964F073eE1AB4f50fC' // batch relayer

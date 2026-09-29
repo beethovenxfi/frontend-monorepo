@@ -1,5 +1,5 @@
 import { getNetworkConfig, getChainId } from '@repo/lib/config/app.config'
-import { reliquaryAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { reliquaryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { useReadContract } from '@repo/lib/shared/utils/wagmi'
 import { formatUnits } from 'viem'

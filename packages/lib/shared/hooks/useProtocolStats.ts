@@ -5,7 +5,7 @@ import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 export function useProtocolStats() {
   const statQuery = useQuery(GetProtocolStatsDocument, {
     variables: {
-      chains: PROJECT_CONFIG.supportedNetworks,
+      chain: PROJECT_CONFIG.defaultNetwork,
     },
   })
 

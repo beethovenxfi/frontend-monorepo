@@ -8,7 +8,7 @@ import { useDebounce } from 'use-debounce'
 import { useQuery } from '@tanstack/react-query'
 import { RemoveLiquidityHandler } from '../handlers/RemoveLiquidity.handler'
 import { RemoveLiquidityParams, removeLiquidityKeys } from './remove-liquidity-keys'
-import { sentryMetaForRemoveLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForRemoveLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
 import { Address } from 'viem'
 import { hasSurgeHook } from '../../../pool.helpers'
 import { usePool } from '../../../PoolProvider'
@@ -64,7 +64,7 @@ export function useRemoveLiquiditySimulationQuery({
     queryFn,
     enabled: enabled && isConnected && Number(debouncedHumanBptIn) > 0,
     gcTime: 0,
-    meta: sentryMetaForRemoveLiquidityHandler('Error in remove liquidity simulation query', {
+    meta: queryErrorMetaForRemoveLiquidityHandler('Error in remove liquidity simulation query', {
       ...params,
       chainId,
       hasSurgeHook: hasSurgeHook(pool),

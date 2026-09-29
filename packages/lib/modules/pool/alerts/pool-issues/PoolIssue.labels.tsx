@@ -11,7 +11,6 @@ const eulerTitle =
 const emergencyMultisigLink = 'https://docs.balancer.fi/concepts/governance/emergency.html'
 
 const vulnerabilityDisclosure = `This pool is affected by a disclosed vulnerability.`
-const vulnerabilityDisclosureLink = 'https://forum.balancer.fi/t/vulnerability-disclosure/3179'
 
 type VunerabilityData = {
   jsxTitle: ReactNode
@@ -21,34 +20,15 @@ type VunerabilityData = {
 export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
   [PoolIssue.PoolProtocolFeeVulnWarning]: {
     jsxTitle: <>{vulnerabilityTitle}</>,
-    learnMoreLink: 'https://x.com/Balancer/status/1611363559685898247',
   },
   [PoolIssue.PoolOwnerVulnWarningGovernanceMigrate]: {
     jsxTitle: <>{vulnerabilityDisclosure}. You're advised to migrate your liquidity.</>,
-    learnMoreLink: vulnerabilityDisclosureLink,
   },
   [PoolIssue.PoolOwnerVulnWarningGovernanceWithdraw]: {
     jsxTitle: (
       <>
-        This pool was deprecated due to a{' '}
-        <Link
-          _hover={{ color: 'font.maxContrast' }}
-          color="font.dark"
-          href="https://forum.balancer.fi/t/vulnerability-disclosure/3179"
-          isExternal
-        >
-          vulnerability
-        </Link>
-        . You're advised to withdraw your liquidity asap. Add it to the{' '}
-        <Link
-          _hover={{ color: 'font.maxContrast' }}
-          color="font.dark"
-          href="https://app.balancer.fi/#/ethereum/pool/0xa13a9247ea42d743238089903570127dda72fe4400000000000000000000035d"
-          isExternal
-        >
-          upgraded pool{' '}
-        </Link>
-        to participate in liquidity incentives.
+        This pool was deprecated due to a vulnerability. You're advised to withdraw your liquidity
+        asap. Add it to the upgraded pool to participate in liquidity incentives.
       </>
     ),
   },
@@ -59,7 +39,6 @@ export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
         same composition.
       </>
     ),
-    learnMoreLink: vulnerabilityDisclosureLink,
   },
   [PoolIssue.PoolOwnerVulnWarningEcosystem]: {
     jsxTitle: (
@@ -68,11 +47,9 @@ export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
         the same composition.
       </>
     ),
-    learnMoreLink: vulnerabilityDisclosureLink,
   },
   [PoolIssue.PoolOwnerVulnWarningEcosystemMigrate]: {
     jsxTitle: <>{vulnerabilityDisclosure}. You're advised to migrate your liquidity.</>,
-    learnMoreLink: vulnerabilityDisclosureLink,
   },
   [PoolIssue.RenBTCWarning]: {
     jsxTitle: (
@@ -105,7 +82,6 @@ export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
   },
   [PoolIssue.CspPoolVulnWarning]: {
     jsxTitle: <>{vulnerabilityTitle}</>,
-    learnMoreLink: 'https://forum.balancer.fi/t/vulnerability-found-in-some-pools/5102/1',
   },
   [PoolIssue.EulerBoostedWarning]: {
     jsxTitle: (
@@ -124,14 +100,5 @@ export const VulnerabilityDataMap: Record<PoolIssue, VunerabilityData> = {
       </>
     ),
     learnMoreLink: emergencyMultisigLink,
-  },
-  [PoolIssue.FxPoolVulnWarning]: {
-    jsxTitle: (
-      <>
-        Xave's FXPools are potentially affected by a bug. Xave recommends that LPs temporarily
-        remove remove liquidity from this pool.
-      </>
-    ),
-    learnMoreLink: 'https://x.com/XaveFinance/status/1725089131330756628',
   },
 }

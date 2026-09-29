@@ -7,7 +7,7 @@ import {
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
 import { ManagedSendTransactionButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionButton'
 import { useTenderly } from '@repo/lib/modules/web3/useTenderly'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { DisabledTransactionButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionStepButton'
 import { useInitializePoolBuildCall } from '@repo/lib/modules/pool/actions/initialize/useInitializePoolBuildCall'
 import { type Address } from 'viem'
@@ -47,7 +47,6 @@ export function useInitializePoolStep({
   const { isPoolInitialized, refetchIsPoolInitialized } = useIsPoolInitialized({
     chainId,
     poolAddress,
-    poolType,
   })
 
   const buildCallDataQuery = useInitializePoolBuildCall({
@@ -58,7 +57,7 @@ export function useInitializePoolStep({
     initPoolInput,
   })
 
-  const gasEstimationMeta = sentryMetaForWagmiSimulation(
+  const gasEstimationMeta = queryErrorMetaForWagmiSimulation(
     'Error in initialize pool gas estimation',
     {
       buildCallQueryData: buildCallDataQuery.data,

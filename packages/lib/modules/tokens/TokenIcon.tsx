@@ -42,9 +42,7 @@ export function TokenIcon({
   const token = address && chain ? getToken(address, chain) : undefined
 
   const tokenColor =
-    chain && address
-      ? { rowColor: [getTokenColor(chain, address as Address).from.replace('#', '')] }
-      : {}
+    chain && address ? { rowColor: [getTokenColor(address as Address).from.replace('#', '')] } : {}
 
   const fallbackSVG = new Avatar(identiconStyle, {
     seed: address || 'unknown',

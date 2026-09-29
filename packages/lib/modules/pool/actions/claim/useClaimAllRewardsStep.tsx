@@ -9,15 +9,13 @@ import {
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo, useState } from 'react'
 import { ManagedTransactionInput } from '../../../web3/contracts/useManagedTransaction'
 import { useUserAccount } from '../../../web3/UserAccountProvider'
 import { useClaimCallDataQuery } from './useClaimCallDataQuery'
-import { BalTokenRewardsResult } from '@repo/lib/modules/portfolio/PortfolioClaim/useBalRewards'
 import { ClaimableBalancesResult } from '@repo/lib/modules/portfolio/PortfolioClaim/useClaimableBalances'
 import { ClaimablePool } from './ClaimProvider'
-import { Address } from 'viem'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
 import { TransactionBatchButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionBatchButton'
 import { buildBatchableTxCall } from '@repo/lib/modules/transactions/transaction-steps/tx-batch.helpers'
@@ -27,20 +25,17 @@ const claimAllRewardsStepId = 'claim-all-rewards'
 export type ClaimAllRewardsStepParams = {
   pools: ClaimablePool[]
   claimableBalancesQuery: ClaimableBalancesResult
-  balTokenRewardsQuery: BalTokenRewardsResult
 }
 
 export function useClaimAllRewardsStep({
   pools,
   claimableBalancesQuery,
-  balTokenRewardsQuery,
 }: ClaimAllRewardsStepParams) {
   const [isClaimQueryEnabled, setIsClaimQueryEnabled] = useState(false)
   const { isConnected } = useUserAccount()
   const [transaction, setTransaction] = useState<ManagedResult | undefined>()
 
-  const { claimableRewards: nonBalRewards, refetchClaimableRewards } = claimableBalancesQuery
-  const { balRewardsData: balRewards, refetchBalRewards } = balTokenRewardsQuery
+  const { claimableRewards, refetchClaimableRewards } = claimableBalancesQuery
 
   const pool = pools[0]
 
@@ -52,15 +47,12 @@ export function useClaimAllRewardsStep({
   const chainId = getChainId(chain)
   const stakingType = pool.staking?.type || GqlPoolStakingTypeValues.Gauge
 
-  const claimRewardGauges = nonBalRewards.map(r => r.gaugeAddress)
-  const mintBalRewardGauges = balRewards.map(r => r.gaugeAddress as Address)
-  const allRewardGauges = [...claimRewardGauges, ...mintBalRewardGauges]
-  const shouldClaimMany = allRewardGauges.length > 1
+  const claimRewardGauges = claimableRewards.map(r => r.gaugeAddress)
+  const shouldClaimMany = claimRewardGauges.length > 1
   const stakingService = selectStakingService(chain, stakingType)
 
   const { data: claimData, isLoading } = useClaimCallDataQuery({
     claimRewardGauges,
-    mintBalRewardGauges,
     gaugeService: stakingService,
     enabled: isClaimQueryEnabled,
   })
@@ -75,14 +67,14 @@ export function useClaimAllRewardsStep({
       : 'Claim all rewards from your gauge',
   }
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Claim all rewards transaction)',
     {
       poolId: pool.id,
       chain,
       claimData,
       stakingType,
-      allRewardGauges,
+      claimRewardGauges,
     }
   )
 
@@ -93,7 +85,7 @@ export function useClaimAllRewardsStep({
     contractAddress: getNetworkConfig(chain).contracts.balancer.relayerV6,
     functionName: 'multicall',
     args: [claimData],
-    enabled: allRewardGauges.length > 0 && !!claimData && claimData.length > 0,
+    enabled: claimRewardGauges.length > 0 && claimData.length > 0,
     txSimulationMeta,
     onTransactionChange: setTransaction,
   }
@@ -109,7 +101,6 @@ export function useClaimAllRewardsStep({
       onDeactivated: () => setIsClaimQueryEnabled(false),
       onSuccess: () => {
         refetchClaimableRewards()
-        refetchBalRewards()
       },
       renderAction: () => <ManagedTransactionButton id={claimAllRewardsStepId} {...props} />,
       renderBatchAction: (currentStep: TransactionStep) => (
@@ -120,7 +111,7 @@ export function useClaimAllRewardsStep({
           onTransactionChange={setTransaction}
         />
       ),
-      // Last step in the batch: the multicall is preceded by the minter/relayer approvals
+      // Last step in the batch: the multicall is preceded by the relayer approval
       isBatchEnd: true,
       batchableTxCall: claimData?.length
         ? buildBatchableTxCall(
@@ -131,17 +122,7 @@ export function useClaimAllRewardsStep({
           )
         : undefined,
     }),
-    [
-      transaction,
-      labels,
-      refetchClaimableRewards,
-      refetchBalRewards,
-      isConnected,
-      props,
-      claimData,
-      chainId,
-      chain,
-    ]
+    [transaction, labels, refetchClaimableRewards, isConnected, props, claimData, chainId, chain]
   )
 
   return { step, isLoading }

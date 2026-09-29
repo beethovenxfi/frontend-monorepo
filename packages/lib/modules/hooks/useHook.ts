@@ -5,12 +5,8 @@ import { PoolCore } from '../pool/pool.types'
 export function useHook(pool: PoolCore) {
   const { metadata: hooksMetadata } = useHooks()
   const hasHook = !!pool.hook?.address
-  const hasNestedHook = pool.poolTokens.map(token => token.nestedPool?.hook).some(Boolean)
 
-  const hookAddresses = [
-    ...(hasHook ? [pool.hook?.address] : []),
-    ...pool.poolTokens.map(token => token.nestedPool?.hook?.address),
-  ]
+  const hookAddresses = hasHook ? [pool.hook?.address] : []
 
   const chainId = getChainId(pool.chain)
 
@@ -32,7 +28,6 @@ export function useHook(pool: PoolCore) {
 
   return {
     hasHook,
-    hasNestedHook,
     hookAddresses,
     hasHookData,
     hooks,

@@ -7,7 +7,7 @@ import {
 import { TransactionBatchButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionBatchButton'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
 import { useTenderly } from '@repo/lib/modules/web3/useTenderly'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useCallback, useMemo, useState } from 'react'
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
@@ -103,7 +103,7 @@ export function useReliquaryRemoveLiquidityStep(
     poolId: pool.id,
   }
 
-  const gasEstimationMeta = sentryMetaForWagmiSimulation(
+  const gasEstimationMeta = queryErrorMetaForWagmiSimulation(
     'Error in Reliquary remove liquidity gas estimation',
     {
       simulationQueryData: simulationQuery.data,

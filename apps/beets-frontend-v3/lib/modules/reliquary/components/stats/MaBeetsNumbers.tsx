@@ -3,7 +3,7 @@ import { InfoIconPopover } from '@repo/lib/modules/pool/actions/create/InfoIconP
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import MainAprTooltip from '@repo/lib/shared/components/tooltips/apr-tooltip/MainAprTooltip'
-import { bn, fNumCustom, isValidNumber } from '@repo/lib/shared/utils/numbers'
+import { bn, fNumCustom } from '@repo/lib/shared/utils/numbers'
 import { zeroAddress } from 'viem'
 import { useReliquaryGlobalStats } from '../../hooks/useReliquaryGlobalStats'
 import RelicStat, { StatLabel, StatValueText } from './RelicStat'
@@ -33,34 +33,16 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
 
   const totalBalance = bn(globalStats?.totalBalance || '0')
 
-  const relicMaturityLevels = globalStats?.levelBalances.map((balance: any) => ({
-    level: isValidNumber(balance.level) ? bn(balance.level).plus(1) : bn(0),
-    percentageOfTotal:
-      totalBalance.isZero() || !isValidNumber(balance.balance)
-        ? bn(0)
-        : bn(balance.balance).div(totalBalance),
-  }))
-
-  const avgRelicMaturity = fNumCustom(
-    relicMaturityLevels?.reduce(
-      (total: number, obj: any) => total + obj.level * obj.percentageOfTotal,
-      0
-    ) || 0,
-    '0.00'
-  )
-
   const totalShares = bn(data.totalShares || '0')
   const totalRelics = bn(globalStats?.relicCount || '0')
   const reliquaryPoolRatio = totalShares.isZero() ? bn(0) : totalBalance.div(totalShares)
   const tvl = reliquaryPoolRatio.times(data.totalLiquidity)
   const avgValuePerRelic = totalRelics.isZero() ? bn(0) : tvl.div(totalRelics)
 
-  const baseApr = pool.dynamicData.aprItems.find(
-    item => item.title === 'BEETS reward APR' && item.type === 'MABEETS_EMISSIONS'
-  )
+  const baseApr = pool.dynamicData.aprItems.find(item => item.type === 'MABEETS_EMISSIONS')
 
   const dynamicDataAprItems = pool.dynamicData.aprItems.map(item => {
-    if (item.title === 'BEETS reward APR' && item.type === 'STAKING_BOOST') {
+    if (item.type === 'STAKING_BOOST' && item.rewardTokenSymbol === 'BEETS') {
       return {
         ...item,
         apr: item.apr - (baseApr?.apr || 0),
@@ -88,7 +70,6 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
               aprItems={dynamicDataAprItems}
               chain={networkConfig.chain}
               pool={pool}
-              poolId={pool.id}
               textProps={{ fontWeight: '700' }}
             />
           </Skeleton>
@@ -109,9 +90,9 @@ export function MaBeetsNumbers({ onToggleShowMore, chartsVisible }: Props) {
           </Skeleton>
         </RelicStat>
         <RelicStat>
-          <StatLabel label="Avg Maturity Level" />
+          <StatLabel label="User Count" />
           <Skeleton isLoaded={!loading}>
-            <StatValueText>{avgRelicMaturity}</StatValueText>
+            <StatValueText>{fNumCustom(globalStats?.userCount || 0, '0,0')}</StatValueText>
           </Skeleton>
         </RelicStat>
         <RelicStat>

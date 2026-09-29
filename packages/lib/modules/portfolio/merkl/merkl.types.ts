@@ -1,5 +1,5 @@
 /* Types manually extracted from this api call example:
- https://api.merkl.xyz/v4/users/0x1B72Bac3772050FDCaF468CcE7e20deb3cB02d89/rewards?chainId=8453
+ https://api.merkl.xyz/v4/users/0x1B72Bac3772050FDCaF468CcE7e20deb3cB02d89/rewards?chainId=146
  */
 
 export type MerklRewardsResponse = Array<{

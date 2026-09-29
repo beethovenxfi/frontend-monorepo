@@ -44,7 +44,7 @@ describe('_calculateProportionalHumanAmountsIn', () => {
       },
       {
         tokenAddress: anSAddress,
-        humanAmount: '0.009554310547792584',
+        humanAmount: '0.009557768164873631',
       },
     ])
   })
@@ -66,7 +66,7 @@ describe('_calculateProportionalHumanAmountsIn', () => {
       },
       {
         tokenAddress: anSAddress,
-        humanAmount: '0.009554310547792584',
+        humanAmount: '0.009557768164873631',
       },
     ])
   })
@@ -89,7 +89,7 @@ describe('_calculateProportionalHumanAmountsIn', () => {
       },
       {
         tokenAddress: wrappedSonicAddress,
-        humanAmount: '26166.199931181512589915',
+        humanAmount: '26156.734049897960967767',
       },
     ])
   })
@@ -112,7 +112,7 @@ describe('_calculateProportionalHumanAmountsIn', () => {
       },
       {
         tokenAddress: siloWsAddress,
-        humanAmount: '26166.199931181512589915',
+        humanAmount: '26156.734049897960967767',
       },
     ])
   })

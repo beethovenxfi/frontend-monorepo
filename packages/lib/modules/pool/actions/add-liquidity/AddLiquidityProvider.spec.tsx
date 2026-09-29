@@ -1,5 +1,4 @@
-import { daiAddress, usdcAddress, usdtAddress, wETHAddress } from '@repo/lib/debug-helpers'
-import type { GqlPoolElement } from '@repo/lib/shared/services/api/graphql-derived-types'
+import type { Pool } from '../../pool.types'
 import {
   DefaultAddLiquidityTestProvider,
   buildDefaultPoolTestProvider,
@@ -8,13 +7,12 @@ import {
 import { AddLiquidityHandler } from './handlers/AddLiquidity.handler'
 import { PropsWithChildren } from 'react'
 import { useAddLiquidityLogic } from './AddLiquidityProvider'
-import { nestedPoolMock } from '../../__mocks__/nestedPoolMock'
 import {} from '@repo/lib/test/msw/builders/gqlPoolElement.builders'
 import { getApiPoolMock } from '../../__mocks__/api-mocks/api-mocks'
 import { scUsdStS } from '../../__mocks__/pool-examples/flat'
-const sonicPoolMock = getApiPoolMock(scUsdStS) as unknown as GqlPoolElement
+const sonicPoolMock = getApiPoolMock(scUsdStS)
 
-async function testUseAddLiquidity(pool: GqlPoolElement = sonicPoolMock) {
+async function testUseAddLiquidity(pool: Pool = sonicPoolMock) {
   const PoolProvider = buildDefaultPoolTestProvider(pool)
 
   function Providers({ children }: PropsWithChildren) {
@@ -83,17 +81,4 @@ test('uses custom add liquidity handler selector and forwards handler to custom 
       handler: customHandler,
     })
   )
-})
-
-// TODO: Drop this Balancer-only nested pool case or add a Beets/Sonic nested fixture.
-test.skip('returns valid tokens for a nested pool', async () => {
-  const result = await testUseAddLiquidity(nestedPoolMock as GqlPoolElement)
-
-  const validAddresses = result.current.validTokens.map(t => t.address)
-
-  expect(validAddresses).toEqual(
-    expect.arrayContaining([wETHAddress, daiAddress, usdtAddress, usdcAddress])
-  )
-
-  expect(validAddresses).toHaveLength(4)
 })

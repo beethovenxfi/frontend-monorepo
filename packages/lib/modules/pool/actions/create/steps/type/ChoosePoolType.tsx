@@ -5,21 +5,17 @@ import { POOL_TYPES, INITIAL_POOL_CREATION_FORM } from '../../constants'
 import { getSwapFeePercentageOptions } from '../../helpers'
 import { InfoIconPopover } from '../../InfoIconPopover'
 import { usePoolCreationForm } from '../../PoolCreationFormProvider'
-import { isCowProtocol } from '../../helpers'
 import { PoolType } from '@balancer/sdk'
 import { useWatch } from 'react-hook-form'
 import { isProd } from '@repo/lib/config/app.config'
 
 export function ChoosePoolType({ control }: { control: Control<PoolCreationForm> }) {
-  const protocol = useWatch({ control, name: 'protocol' })
-
   const poolTypesKeys = Object.keys(POOL_TYPES).filter(poolType => {
     if (isProd && poolType === PoolType.ReClamm) {
       return false
     }
 
-    // only show cow amm type for cow protocol selection
-    return isCowProtocol(protocol) === (poolType === PoolType.CowAmm)
+    return true
   }) as SupportedPoolTypes[]
 
   const { poolCreationForm } = usePoolCreationForm()

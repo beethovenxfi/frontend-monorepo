@@ -1,22 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { PoolType } from '@balancer/sdk'
 import { GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
-import {
-  COW_AMM_RAW_WEIGHT_20,
-  COW_AMM_RAW_WEIGHT_50,
-  COW_AMM_RAW_WEIGHT_80,
-  WeightedPoolStructure,
-} from './constants'
+import { WeightedPoolStructure } from './constants'
 import {
   formatNumber,
-  getCowRawWeight,
   getGqlPoolType,
   getMinSwapFeePercentage,
   getPercentFromPrice,
   getSwapFeePercentageOptions,
   isAutoRangePool,
-  isCowPool,
-  isCowProtocol,
   isCustomWeightedPool,
   isGyroEllipticPool,
   isPoolCreatorEnabled,
@@ -32,11 +24,11 @@ describe('getGqlPoolType', () => {
     expect(getGqlPoolType(PoolType.StableSurge)).toBe(GqlPoolTypeValues.Stable)
     expect(getGqlPoolType(PoolType.GyroE)).toBe(GqlPoolTypeValues.GyroE)
     expect(getGqlPoolType(PoolType.ReClamm)).toBe(GqlPoolTypeValues.Reclamm)
-    expect(getGqlPoolType(PoolType.CowAmm)).toBe(GqlPoolTypeValues.CowAmm)
   })
 
   it('throws for unmapped pool types', () => {
     expect(() => getGqlPoolType(undefined as unknown as PoolType)).toThrow(/Invalid pool type/)
+    expect(() => getGqlPoolType(PoolType.CowAmm)).toThrow(/Invalid pool type/)
   })
 })
 
@@ -70,11 +62,6 @@ describe('getSwapFeePercentageOptions', () => {
       { value: '0.30', tip: 'Best for most AutoRange pairs' },
       { value: '1.00', tip: 'Best for exotic pairs' },
     ])
-
-    expect(getSwapFeePercentageOptions(PoolType.CowAmm)).toEqual([
-      { value: '0.30', tip: 'Best for most AutoRange pairs' },
-      { value: '1.00', tip: 'Best for exotic pairs' },
-    ])
   })
 })
 
@@ -100,19 +87,6 @@ describe('getPercentFromPrice', () => {
     expect(getPercentFromPrice('110', '')).toBe('0.00')
     expect(getPercentFromPrice('abc', '100')).toBe('0.00')
     expect(getPercentFromPrice('110', '0')).toBe('0.00')
-  })
-})
-
-describe('getCowRawWeight', () => {
-  it('maps supported weight strings to their raw bigint values', () => {
-    expect(getCowRawWeight('50')).toBe(COW_AMM_RAW_WEIGHT_50)
-    expect(getCowRawWeight('80')).toBe(COW_AMM_RAW_WEIGHT_80)
-    expect(getCowRawWeight('20')).toBe(COW_AMM_RAW_WEIGHT_20)
-  })
-
-  it('throws for unsupported weights', () => {
-    expect(() => getCowRawWeight('30')).toThrow(/Invalid weight for cow amm/)
-    expect(() => getCowRawWeight(undefined)).toThrow(/Invalid weight for cow amm/)
   })
 })
 
@@ -162,20 +136,6 @@ describe('pool type predicates', () => {
     expect(isGyroEllipticPool(PoolType.GyroE)).toBe(true)
     expect(isGyroEllipticPool(PoolType.Stable)).toBe(false)
   })
-
-  it('detects cow pools', () => {
-    expect(isCowPool(PoolType.CowAmm)).toBe(true)
-    expect(isCowPool(undefined)).toBe(false)
-    expect(isCowPool(PoolType.Weighted)).toBe(false)
-  })
-})
-
-describe('protocol predicates', () => {
-  it('detects CoW protocol case-insensitively', () => {
-    expect(isCowProtocol('CoW')).toBe(true)
-    expect(isCowProtocol('cow')).toBe(true)
-    expect(isCowProtocol('Balancer v3')).toBe(false)
-  })
 })
 
 describe('isPoolCreatorEnabled', () => {
@@ -185,6 +145,5 @@ describe('isPoolCreatorEnabled', () => {
     expect(isPoolCreatorEnabled(PoolType.StableSurge)).toBe(false)
     expect(isPoolCreatorEnabled(PoolType.GyroE)).toBe(false)
     expect(isPoolCreatorEnabled(PoolType.ReClamm)).toBe(false)
-    expect(isPoolCreatorEnabled(PoolType.CowAmm)).toBe(false)
   })
 })

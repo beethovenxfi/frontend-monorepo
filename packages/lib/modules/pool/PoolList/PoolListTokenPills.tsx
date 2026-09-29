@@ -1,4 +1,4 @@
-import { Badge, BadgeProps, Box, Heading, HStack, Text, Wrap } from '@chakra-ui/react'
+import { Badge, BadgeProps, Heading, HStack, Text, Wrap } from '@chakra-ui/react'
 import type { GqlChain, GqlPoolType } from '@repo/lib/shared/services/api/generated/graphql'
 import { fNum } from '@repo/lib/shared/utils/numbers'
 import { TokenIcon } from '../../tokens/TokenIcon'
@@ -49,41 +49,6 @@ function formatTokenWeight(weight: string | null | undefined, preciseWeight: boo
     : fNum('weight', weight)
 }
 
-function NestedTokenPill({
-  nestedTokens,
-  chain,
-  iconSize = 24,
-}: {
-  nestedTokens: any[]
-  chain: GqlChain
-  iconSize?: number
-}) {
-  const isFirstToken = (index: number) => index === 0
-
-  return nestedTokens.map((nestedToken, i) => {
-    const nestedZIndices = Array.from(
-      { length: nestedTokens?.length || 0 },
-      (_, index) => index + 1
-    ).reverse()
-
-    const token = nestedToken.underlyingToken ?? nestedToken
-
-    return (
-      token && (
-        <Box key={token.address} ml={isFirstToken(i) ? 0 : -3} zIndex={nestedZIndices[i]}>
-          <TokenIcon
-            address={token.address}
-            alt={token.symbol}
-            chain={chain}
-            logoURI={token.logoURI}
-            size={iconSize}
-          />
-        </Box>
-      )
-    )
-  })
-}
-
 function WeightedTokenPills({
   tokens,
   chain,
@@ -103,7 +68,6 @@ function WeightedTokenPills({
   return (
     <Wrap spacing="xs">
       {tokens.map((token, index) => {
-        const nestedPool = 'nestedPool' in token ? token.nestedPool : undefined
         const hasWalletBalance = Boolean(isTokenInWallet?.(token.address))
         const tokenWeight = formatTokenWeight(token.weight, preciseWeight)
 
@@ -123,68 +87,35 @@ function WeightedTokenPills({
             textTransform="none"
           >
             <HStack gap={['xs', 'sm']} position="relative" zIndex={2}>
-              {!nestedPool && (
-                <>
-                  <TokenIcon
-                    address={token.address}
-                    alt={token.symbol}
-                    chain={chain}
-                    logoURI={token.logoURI}
-                    size={iconSize}
-                  />
-                  <HStack gap={['xs', '1.5']}>
-                    {tokens.length < 5 && (
-                      <Text
-                        _groupHover={{ color: 'font.maxContrast' }}
-                        fontWeight="bold"
-                        noOfLines={1}
-                        size={nameSize}
-                        transition="color 0.2s var(--ease-out-cubic)"
-                      >
-                        {token.symbol}
-                      </Text>
-                    )}
-                    {tokenWeight && (
-                      <Text
-                        _groupHover={{ color: 'font.maxContrast' }}
-                        fontSize="xs"
-                        transition="color 0.2s var(--ease-out-cubic)"
-                      >
-                        {tokenWeight}
-                      </Text>
-                    )}
-                  </HStack>
-                </>
-              )}
-              {nestedPool && (
-                <>
-                  <NestedTokenPill
-                    chain={chain}
-                    iconSize={iconSize}
-                    nestedTokens={nestedPool.tokens}
-                  />
-                  <HStack gap={['xs', '1.5']}>
-                    <Text
-                      _groupHover={{ color: 'font.maxContrast' }}
-                      fontWeight="bold"
-                      noOfLines={1}
-                      size={nameSize}
-                      transition="color 0.2s var(--ease-out-cubic)"
-                    >
-                      {token.name}
-                    </Text>
-                    {tokenWeight && (
-                      <Text
-                        _groupHover={{ color: 'font.maxContrast' }}
-                        fontSize="xs"
-                        transition="color 0.2s var(--ease-out-cubic)"
-                      >
-                        {tokenWeight}
-                      </Text>
-                    )}
-                  </HStack>
-                </>
-              )}
+              <TokenIcon
+                address={token.address}
+                alt={token.symbol}
+                chain={chain}
+                logoURI={token.logoURI}
+                size={iconSize}
+              />
+              <HStack gap={['xs', '1.5']}>
+                {tokens.length < 5 && (
+                  <Text
+                    _groupHover={{ color: 'font.maxContrast' }}
+                    fontWeight="bold"
+                    noOfLines={1}
+                    size={nameSize}
+                    transition="color 0.2s var(--ease-out-cubic)"
+                  >
+                    {token.symbol}
+                  </Text>
+                )}
+                {tokenWeight && (
+                  <Text
+                    _groupHover={{ color: 'font.maxContrast' }}
+                    fontSize="xs"
+                    transition="color 0.2s var(--ease-out-cubic)"
+                  >
+                    {tokenWeight}
+                  </Text>
+                )}
+              </HStack>
             </HStack>
           </Badge>
         )
@@ -213,7 +144,6 @@ function StableTokenPills({
   return (
     <HStack spacing={0}>
       {tokens.map((token, i) => {
-        const nestedPool = 'nestedPool' in token ? token.nestedPool : undefined
         const hasWalletBalance = Boolean(isTokenInWallet?.(token.address))
 
         return (
@@ -235,45 +165,23 @@ function StableTokenPills({
             zIndex={zIndices[i]}
           >
             <HStack gap={['xs', '1.5']} position="relative" zIndex={2}>
-              {!nestedPool && (
-                <>
-                  <TokenIcon
-                    address={token.address}
-                    alt={token.symbol}
-                    chain={chain}
-                    logoURI={token.logoURI}
-                    size={iconSize}
-                  />
-                  {tokens.length < 5 && (
-                    <Text
-                      _groupHover={{ color: 'font.maxContrast' }}
-                      fontWeight="bold"
-                      noOfLines={1}
-                      size={nameSize}
-                      transition="color 0.2s var(--ease-out-cubic)"
-                    >
-                      {token.symbol}
-                    </Text>
-                  )}
-                </>
-              )}
-              {nestedPool && (
-                <>
-                  <NestedTokenPill
-                    chain={chain}
-                    iconSize={iconSize}
-                    nestedTokens={nestedPool.tokens}
-                  />
-                  <Text
-                    _groupHover={{ color: 'font.maxContrast' }}
-                    fontWeight="bold"
-                    noOfLines={1}
-                    size={nameSize}
-                    transition="color 0.2s var(--ease-out-cubic)"
-                  >
-                    {token.name}
-                  </Text>
-                </>
+              <TokenIcon
+                address={token.address}
+                alt={token.symbol}
+                chain={chain}
+                logoURI={token.logoURI}
+                size={iconSize}
+              />
+              {tokens.length < 5 && (
+                <Text
+                  _groupHover={{ color: 'font.maxContrast' }}
+                  fontWeight="bold"
+                  noOfLines={1}
+                  size={nameSize}
+                  transition="color 0.2s var(--ease-out-cubic)"
+                >
+                  {token.symbol}
+                </Text>
               )}
             </HStack>
           </Badge>

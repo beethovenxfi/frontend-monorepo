@@ -1,7 +1,7 @@
 'use client'
 
 import { getChainId, getNetworkConfig } from '@repo/lib/config/app.config'
-import { sonicStakingAbi } from '@repo/lib/modules/web3/contracts/abi/beets/generated'
+import { sonicStakingAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { useReadContract } from '@repo/lib/shared/utils/wagmi'
 

@@ -1,18 +1,12 @@
-import { PropsWithChildren } from 'react'
 import { act } from '@testing-library/react'
 import { testHook } from '@repo/lib/test/utils/custom-renderers'
-import { FiatFxRatesProvider } from '@repo/lib/shared/hooks/FxRatesProvider'
 import { clearLocalStorageMock, mockLocalStorage } from '@repo/lib/test/utils/localstorage-mock'
 import { LbpFormProvider, useLbpForm } from './LbpFormProvider'
 import { useLbpWeights } from './useLbpWeights'
 import { WeightAdjustmentType } from './lbp.types'
 
-function LbpTestWrapper({ children }: PropsWithChildren) {
-  return (
-    <FiatFxRatesProvider data={undefined}>
-      <LbpFormProvider>{children}</LbpFormProvider>
-    </FiatFxRatesProvider>
-  )
+function LbpTestWrapper({ children }: { children: React.ReactNode }) {
+  return <LbpFormProvider>{children}</LbpFormProvider>
 }
 
 function useWeightsTestHarness() {

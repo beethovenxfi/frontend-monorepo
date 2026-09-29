@@ -39,7 +39,6 @@ function StakeAprTooltip({ pool, totalUsdValue, weeklyRewards }: Props) {
       displayValueFormatter={displayValueFormatter}
       numberFormatter={numberFormatter}
       placement="top-start"
-      poolId={pool.id}
       poolType={pool.type}
       shouldDisplayBaseTooltip
       totalBaseText="Total weekly base"

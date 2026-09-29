@@ -7,7 +7,7 @@ import {
 import { TransactionBatchButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionBatchButton'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
 import { useTenderly } from '@repo/lib/modules/web3/useTenderly'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useEffect, useMemo, useState } from 'react'
 import { usePool } from '../../PoolProvider'
 import {
@@ -43,11 +43,14 @@ export function useAddLiquidityStep(params: AddLiquidityStepParams): Transaction
     poolId: pool.id,
   }
 
-  const gasEstimationMeta = sentryMetaForWagmiSimulation('Error in AddLiquidity gas estimation', {
-    simulationQueryData: simulationQuery.data,
-    buildCallQueryData: buildCallDataQuery.data,
-    tenderlyUrl: buildTenderlyUrl(buildCallDataQuery.data),
-  })
+  const gasEstimationMeta = queryErrorMetaForWagmiSimulation(
+    'Error in AddLiquidity gas estimation',
+    {
+      simulationQueryData: simulationQuery.data,
+      buildCallQueryData: buildCallDataQuery.data,
+      tenderlyUrl: buildTenderlyUrl(buildCallDataQuery.data),
+    }
+  )
 
   useEffect(() => {
     // simulationQuery is refetched every 30 seconds by AddLiquidityTimeout

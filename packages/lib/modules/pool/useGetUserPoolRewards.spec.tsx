@@ -3,11 +3,10 @@ import { anSSiloWSBoosted } from '@repo/lib/modules/pool/__mocks__/pool-examples
 import type { GqlPoolStakingGaugeReward } from '@repo/lib/shared/services/api/graphql-derived-types'
 import { testHook } from '@repo/lib/test/utils/custom-renderers'
 import { GetUserPoolRewardsParams, useGetUserPoolRewards } from './useGetUserPoolRewards'
-import { BalTokenReward } from '../portfolio/PortfolioClaim/useBalRewards'
+import { ClaimableReward } from '../portfolio/PortfolioClaim/useClaimableBalances'
 import { formatUnits } from 'viem'
 import { bn } from '@repo/lib/shared/utils/numbers'
 import { BPT_DECIMALS } from './pool.constants'
-import {} from '@repo/lib/debug-helpers'
 import { sonicTokens } from '@repo/lib/test/integration/sonic-fixtures'
 
 function getPoolWithStakingGaugeRewards() {
@@ -34,22 +33,22 @@ describe('useGetPoolRewards', () => {
   test('when pool has stS rewards', () => {
     const pool = getPoolWithStakingGaugeRewards()
 
-    const rewardsMock: BalTokenReward[] = [
+    const rewardsMock: ClaimableReward[] = [
       {
         gaugeAddress: '0x1',
+        chain: pool.chain,
+        poolId: pool.id,
         balance: 1500000000000000000n,
         decimals: BPT_DECIMALS,
         fiatBalance: bn(formatUnits(1500000000000000000n, BPT_DECIMALS)),
         humanBalance: '1.5',
         tokenAddress: sonicTokens.sts,
-        pool: pool,
       },
     ]
 
     const result = testUseGetUserPoolRewards({
       pool,
-      balRewards: rewardsMock,
-      nonBalRewards: [],
+      rewards: rewardsMock,
     })
 
     expect(result.current.rewardsByToken).toEqual({

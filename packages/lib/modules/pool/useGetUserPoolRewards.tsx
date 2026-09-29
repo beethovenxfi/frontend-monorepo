@@ -5,30 +5,19 @@ import { sumBy } from 'lodash'
 import { Pool } from './pool.types'
 import { formatUnits } from 'viem'
 import { useGetPoolRewards } from './useGetPoolRewards'
-import { BalTokenReward } from '../portfolio/PortfolioClaim/useBalRewards'
 import { ClaimableReward } from '../portfolio/PortfolioClaim/useClaimableBalances'
 
 export type GetUserPoolRewardsParams = {
   pool: Pool
-  balRewards: BalTokenReward[]
-  nonBalRewards: ClaimableReward[]
+  rewards: ClaimableReward[]
 }
 
-export function useGetUserPoolRewards({
-  pool,
-  balRewards,
-  nonBalRewards,
-}: GetUserPoolRewardsParams) {
+export function useGetUserPoolRewards({ pool, rewards }: GetUserPoolRewardsParams) {
   const { tokens } = useGetPoolRewards(pool)
 
-  const claimableRewards = useMemo(
-    () => [...balRewards, ...nonBalRewards],
-    [balRewards, nonBalRewards]
-  )
-
   const myClaimableRewards = useMemo(
-    () => sumBy(claimableRewards, reward => reward.fiatBalance.toNumber()),
-    [claimableRewards]
+    () => sumBy(rewards, reward => reward.fiatBalance.toNumber()),
+    [rewards]
   )
 
   const rewardsByToken = useMemo(() => {
@@ -36,7 +25,7 @@ export function useGetUserPoolRewards({
 
     const balanceMap: Record<string, string> = {}
 
-    claimableRewards.forEach(reward => {
+    rewards.forEach(reward => {
       if (reward.tokenAddress) {
         const token = tokens.find(t => t?.address === reward.tokenAddress)
         const decimals = token?.decimals || 18
@@ -46,10 +35,10 @@ export function useGetUserPoolRewards({
     })
 
     return balanceMap
-  }, [claimableRewards, tokens])
+  }, [rewards, tokens])
 
   return {
-    claimableRewards,
+    claimableRewards: rewards,
     myClaimableRewards,
     tokens,
     rewardsByToken,

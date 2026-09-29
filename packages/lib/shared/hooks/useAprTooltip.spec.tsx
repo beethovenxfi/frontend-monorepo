@@ -5,8 +5,6 @@ import { aprTooltipDataMock } from './_mocks_/aprTooltipDataMock'
 import BigNumber from 'bignumber.js'
 import type { GqlPoolAprItem } from '../services/api/graphql-derived-types'
 import { GqlChainValues } from '../services/api/graphql-enums'
-import { getApiPoolMock } from '@repo/lib/modules/pool/__mocks__/api-mocks/api-mocks'
-import { boostedCoinshiftUsdcUsdl } from '@repo/lib/modules/pool/__mocks__/pool-examples/boosted'
 
 const defaultNumberFormatter = (value: string) => bn(bn(value).toFixed(4, BigNumber.ROUND_HALF_UP))
 
@@ -15,7 +13,7 @@ function testUseAprTooltip({ aprItems }: { aprItems: GqlPoolAprItem[] }) {
     useAprTooltip({
       aprItems,
       numberFormatter: defaultNumberFormatter,
-      chain: GqlChainValues.Mainnet,
+      chain: GqlChainValues.Sonic,
     })
   )
 
@@ -39,51 +37,10 @@ describe('useAprTooltip', () => {
   })
 })
 
-// TODO: Add a Beets/Sonic pool with two yield-bearing ERC4626 token APRs.
-it.skip('When the pool has multiple Yield bearing token APRs', () => {
-  const pool = getApiPoolMock(boostedCoinshiftUsdcUsdl)
+// TODO: Add a Beets/Sonic pool with two yield-bearing ERC4626 token APRs,
+// expecting yieldBearingTokensAprDisplayed to aggregate them and
+// yieldBearingTokensDisplayed to list each token APR.
 
-  const result = testUseAprTooltip({ aprItems: pool.dynamicData.aprItems })
-
-  /* APR should tooltip should display:
-    - Yield bearing tokens 3.72%
-                    csUSDL 1.72%
-                    csUSDC 2%
-  */
-  expect(result.current.yieldBearingTokensAprDisplayed).toMatchInlineSnapshot(`"0.0372"`)
-
-  expect(result.current.yieldBearingTokensDisplayed).toMatchInlineSnapshot(`
-    [
-      {
-        "apr": "0.0172",
-        "title": "csUSDL",
-      },
-      {
-        "apr": "0.02",
-        "title": "csUSDC",
-      },
-    ]
-  `)
-})
-
-// TODO: Add a Beets/Sonic pool with multiple Merkl token incentives.
-it.skip('When the pool has multiple MERKL token incentives', () => {
-  const pool = getApiPoolMock(boostedCoinshiftUsdcUsdl)
-
-  const result = testUseAprTooltip({ aprItems: pool.dynamicData.aprItems })
-
-  /* APR should tooltip should display
-    - Merkl.xyz incentives: 1.80%
-                     MORPHO 1.80%
-  */
-  expect(result.current.merklIncentivesAprDisplayed).toMatchInlineSnapshot(`"0.01778366853303084"`)
-
-  expect(result.current.merklTokensDisplayed).toMatchInlineSnapshot(`
-    [
-      {
-        "apr": "0.0178",
-        "title": "MORPHO",
-      },
-    ]
-  `)
-})
+// TODO: Add a Beets/Sonic pool with multiple Merkl token incentives, expecting
+// merklIncentivesAprDisplayed to aggregate them and merklTokensDisplayed to
+// list each token APR.

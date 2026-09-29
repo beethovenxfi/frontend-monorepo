@@ -23,12 +23,7 @@ export type ExtendedInitPoolInput = Omit<InitPoolInputV3, 'amountsIn'> & {
 }
 
 export type SupportedPoolTypes =
-  | PoolType.Stable
-  | PoolType.Weighted
-  | PoolType.StableSurge
-  | PoolType.ReClamm
-  | PoolType.GyroE
-  | PoolType.CowAmm
+  PoolType.Stable | PoolType.Weighted | PoolType.StableSurge | PoolType.ReClamm | PoolType.GyroE
 
 export type PoolTypeDetails = {
   label: string
@@ -47,7 +42,7 @@ export type PoolCreationToken = {
 }
 
 export type PoolCreationForm = {
-  protocol: ProjectConfig['projectName'] | 'CoW'
+  protocol: ProjectConfig['projectName']
   network: GqlChain
   weightedPoolStructure: WeightedPoolStructure
   poolType: SupportedPoolTypes
@@ -83,21 +78,11 @@ export type EclpConfigForm = {
   peakPrice: string
 }
 
-type CreateCowAmmInput = {
-  symbol: string
-  name: string
-  poolType: PoolType.CowAmm
-  chainId: number
-  protocolVersion: 1
-  poolTokens: PoolCreationToken[]
-}
-
 export type CreatePoolInput =
   | CreatePoolV3WeightedInput
   | CreatePoolV3StableInput
   | CreatePoolStableSurgeInput
   | CreatePoolAutoRangeInput
   | CreatePoolGyroECLPInput
-  | CreateCowAmmInput
   | CreatePoolLiquidityBootstrappingInput
   | CreatePoolLiquidityBootstrappingFixedPriceInput

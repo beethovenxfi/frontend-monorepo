@@ -122,6 +122,6 @@ export function getApprovalAndRemoveSteps({
     return [signPermitStep, removeLiquidityStep]
   }
 
-  // V2 and V1 (CoW AMM) pools use the Vault relayer so they do not require permit signatures
+  // V2 pools use the Vault relayer, so they do not require permit signatures.
   return [removeLiquidityStep]
 }

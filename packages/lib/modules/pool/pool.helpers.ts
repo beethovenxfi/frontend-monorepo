@@ -1,4 +1,4 @@
-import { getChainId, getChainName, getNetworkConfig } from '@repo/lib/config/app.config'
+import { getChainId, getNetworkConfig } from '@repo/lib/config/app.config'
 import type {
   GqlPoolBase,
   GqlPoolFixedPriceLbp,
@@ -14,19 +14,13 @@ import type {
   GqlHookType,
   GqlPoolType,
 } from '@repo/lib/shared/services/api/generated/graphql'
-import {
-  GqlChainValues,
-  GqlHookTypeValues,
-  GqlPoolTypeValues,
-} from '@repo/lib/shared/services/api/graphql-enums'
+import { GqlHookTypeValues, GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import { bn, isTooSmallToRemoveUsd } from '@repo/lib/shared/utils/numbers'
 import BigNumber from 'bignumber.js'
 import { isEmpty, isNil } from 'lodash'
 import { Address, getAddress, parseUnits, zeroAddress } from 'viem'
 import { BPT_DECIMALS } from './pool.constants'
-import { isChainDeprecated, isNotMainnet } from '../chains/chain.utils'
-import { ClaimablePool } from './actions/claim/ClaimProvider'
 import { PoolIssue } from './alerts/pool-issues/PoolIssue.type'
 import {
   getUserTotalBalanceInt,
@@ -36,14 +30,12 @@ import {
 import { differenceInCalendarDays, secondsToMilliseconds } from 'date-fns'
 import { dateToUnixTimestamp } from '@repo/lib/shared/utils/time'
 import { balancerV2VaultAbi } from '../web3/contracts/abi/generated'
-import { supportsNestedActions } from './actions/LiquidityActionHelpers'
 import { vaultAbi_V3 } from '@balancer/sdk'
 import { LbpV3, Pool, PoolCore, PoolFilterType } from './pool.types'
 import { getBlockExplorerAddressUrl } from '@repo/lib/shared/utils/blockExplorer'
-import { allPoolTokens, isStandardOrUnderlyingRootToken } from './pool-tokens.utils'
+import { allPoolTokens } from './pool-tokens.utils'
 import { PoolMetadata } from './metadata/getPoolsMetadata'
 import { getPoolTypeLabel } from '@repo/lib/modules/pool/pool.utils'
-import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 
 /**
  * METHODS
@@ -53,19 +45,7 @@ export function addressFor(poolId: string): string {
 }
 
 export function isStable(poolType: GqlPoolType): boolean {
-  return (
-    poolType === GqlPoolTypeValues.Stable ||
-    poolType === GqlPoolTypeValues.MetaStable ||
-    poolType === GqlPoolTypeValues.ComposableStable
-  )
-}
-
-export function isNonComposableStable(poolType: GqlPoolType): boolean {
-  return poolType === GqlPoolTypeValues.Stable || poolType === GqlPoolTypeValues.MetaStable
-}
-
-export function isMetaStable(poolType: GqlPoolType): boolean {
-  return poolType === GqlPoolTypeValues.MetaStable
+  return poolType === GqlPoolTypeValues.Stable || poolType === GqlPoolTypeValues.ComposableStable
 }
 
 export function isComposableStable(poolType: GqlPoolType): boolean {
@@ -74,10 +54,6 @@ export function isComposableStable(poolType: GqlPoolType): boolean {
 
 export function isComposableStableV1(pool: Pool): boolean {
   return isComposableStable(pool.type) && pool.version === 1
-}
-
-export function isFx(poolType: GqlPoolType | string): boolean {
-  return poolType === GqlPoolTypeValues.Fx
 }
 
 export function isBoosted(pool: Pick<PoolCore, 'protocolVersion' | 'tags'>) {
@@ -139,44 +115,14 @@ export function isWeightedV1(pool: Pool): boolean {
   return pool.version === 1 && isWeighted(pool.type)
 }
 
-export function isManaged(poolType: GqlPoolType): boolean {
-  // Correct terminology is managed pools but subgraph still returns poolType = "Investment"
-  return poolType === GqlPoolTypeValues.Investment
-}
-
-export function isWeightedLike(poolType: GqlPoolType): boolean {
-  return isWeighted(poolType) || isManaged(poolType) || isLiquidityBootstrapping(poolType)
-}
-
 export function isStableLike(poolType: GqlPoolType): boolean {
-  return (
-    isStable(poolType) ||
-    isMetaStable(poolType) ||
-    isComposableStable(poolType) ||
-    isFx(poolType) ||
-    isGyro(poolType) ||
-    isAutoRange(poolType)
-  )
-}
-
-export function isSwappingHaltable(poolType: GqlPoolType): boolean {
-  return isManaged(poolType) || isLiquidityBootstrapping(poolType)
-}
-
-export function isVebalPool(poolId: string): boolean {
-  return (
-    poolId.toLowerCase() === '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014'
-  )
+  return isStable(poolType) || isGyro(poolType) || isAutoRange(poolType)
 }
 
 export function isMaBeetsPool(poolId: string): boolean {
   return (
     poolId.toLowerCase() === '0x10ac2f9dae6539e77e372adb14b1bf8fbd16b3e8000200000000000000000005'
   )
-}
-
-export function isCowAmmPool(poolType: GqlPoolType): boolean {
-  return poolType === GqlPoolTypeValues.CowAmm
 }
 
 export function isQuantAmmPool(poolType: GqlPoolType): boolean {
@@ -274,57 +220,12 @@ export function getPoolHelpers(pool: Pool, chain: GqlChain) {
   }
 }
 
-export function hasNestedPools(pool: Pool) {
-  if (!pool.poolTokens) return false
-
-  return pool.poolTokens.some(token => token.hasNestedPool)
-}
-
-export function isNotSupported(pool: Pool) {
-  if (!hasNestedPools(pool) || !pool.poolTokens) return false
-
-  const tokens = pool.poolTokens.filter(token => !isSameAddress(token.address, pool.address))
-  const numTokensWithNestedPool = tokens.filter(token => !!token.nestedPool).length
-
-  // replacement for 'nestingType' in pool && pool.nestingType === 'HAS_ONLY_PHANTOM_BPT'
-  return numTokensWithNestedPool === tokens.length && tokens.length > 0
-}
-
 /**
- * Returns true if the gauge is claimable within this UI. We don't support
- * claiming for v1 gauges on child-chains because they are deprecated and don't
- * conform to the the same interface as v1 gauges on mainnet and v2 gauges on child-chains.
+ * Returns true if the gauge is claimable within this UI. Deprecated v1 gauges
+ * don't conform to the same interface as v2 gauges, so they are not claimable.
  */
-export function isClaimableGauge(
-  gauge: GqlPoolStakingGauge | GqlPoolStakingOtherGauge,
-  chain: GqlChain | number
-): boolean {
-  return !(gauge.version === 1 && isNotMainnet(chain))
-}
-
-/**
- * Returns all gauge addresses for a pool that are claimable. See
- * `isClaimableGauge()` for info about why some gauges are not claimable.
- */
-export function allClaimableGaugeAddressesFor(pool: ClaimablePool) {
-  const addresses: Address[] = []
-  const staking = pool.staking
-
-  if (!staking?.gauge) return addresses
-
-  if (isClaimableGauge(staking.gauge, pool.chain)) {
-    addresses.push(staking.gauge.gaugeAddress as Address)
-  }
-
-  const otherGauges = staking.gauge?.otherGauges || []
-
-  const otherClaimableGaugeAddresses = otherGauges
-    .filter(gauge => isClaimableGauge(gauge, pool.chain))
-    .map(g => g.gaugeAddress as Address)
-
-  addresses.push(...otherClaimableGaugeAddresses)
-
-  return addresses
+export function isClaimableGauge(gauge: GqlPoolStakingGauge | GqlPoolStakingOtherGauge): boolean {
+  return gauge.version !== 1
 }
 
 export function hasReviewedRateProvider(token: GqlPoolTokenDetail | any): boolean {
@@ -334,8 +235,7 @@ export function hasReviewedRateProvider(token: GqlPoolTokenDetail | any): boolea
 export function hasRateProvider(token: GqlPoolTokenDetail | any): boolean {
   const hasNoPriceRateProvider =
     isNil(token.priceRateProvider) || // if null, we consider rate provider as zero address
-    token.priceRateProvider === zeroAddress ||
-    token.priceRateProvider === token.nestedPool?.address
+    token.priceRateProvider === zeroAddress
 
   return !hasNoPriceRateProvider && !isNil(token.priceRateProviderData)
 }
@@ -345,11 +245,7 @@ export function hasReviewedHook(hook: HookFragment): boolean {
 }
 
 export function hasHooks(pool: Pool): boolean {
-  const nestedHooks = pool.poolTokens
-    .filter(token => token.hasNestedPool)
-    .map(token => token.nestedPool?.hook)
-
-  return !![pool.hook, ...nestedHooks].filter(Boolean).length
+  return !!pool.hook
 }
 
 export function hasSurgeHook(pool: Pool): boolean {
@@ -358,13 +254,7 @@ export function hasSurgeHook(pool: Pool): boolean {
 }
 
 export function hasHookType(pool: Pool, hookType: GqlHookType): boolean {
-  const nestedHooks = pool.poolTokens.flatMap(token =>
-    token.nestedPool ? token.nestedPool.hook : []
-  )
-
-  const hooks = [...(pool.hook ? [pool.hook] : []), ...nestedHooks]
-
-  return hooks.some(hook => hook && hook.type === hookType)
+  return pool.hook?.type === hookType
 }
 
 export function hasReviewedErc4626(token: GqlPoolTokenDetail): boolean {
@@ -386,13 +276,11 @@ export function shouldBlockAddLiquidity(pool: Pool, metadata?: PoolMetadata) {
 export function getPoolAddBlockedReason(pool: Pool, metadata?: PoolMetadata): string[] {
   // we allow the metadata to override the default behavior
   if (metadata?.allowAddLiquidity === true) return []
-  if (pool.chain === GqlChainValues.Sepolia) return []
 
   const reasons: string[] = []
 
   if (isV3Pool(pool) && shouldBlockV3PoolAdds) reasons.push('Adds are blocked for all V3 pools')
   if (isLBP(pool.type)) reasons.push('LBP pool')
-  if (isManaged(pool.type)) reasons.push('Managed pools are not supported. Seek help in Discord.')
   if (pool.dynamicData.isPaused) reasons.push('Paused pool')
   if (pool.dynamicData.isInRecoveryMode) reasons.push('Pool in recovery')
 
@@ -403,18 +291,8 @@ export function getPoolAddBlockedReason(pool: Pool, metadata?: PoolMetadata): st
   // reason for blocking in custom scenarios eg. maBEETS
   if (isMaBeetsPool(pool.id)) reasons.push('Please manage your liquidity on the maBEETS page')
 
-  if (isNotSupported(pool)) {
-    reasons.push(
-      `This pool type is not currently supported in the ${PROJECT_CONFIG.projectName} UI`
-    )
-  }
-
   if (pool.hook && !hasReviewedHook(pool.hook)) reasons.push('Unreviewed hook')
   if (pool.hook?.reviewData?.summary === 'unsafe') reasons.push('Unsafe hook')
-
-  if (isChainDeprecated(pool.chain)) {
-    reasons.push(`${getChainName(pool.chain)} is being sunset on Balancer`)
-  }
 
   const poolTokens = pool.poolTokens as GqlPoolTokenDetail[]
 
@@ -427,9 +305,7 @@ export function getPoolAddBlockedReason(pool: Pool, metadata?: PoolMetadata): st
     if (
       token.priceRateProvider &&
       // if rateProvider is null - we consider it as zero address and not block adding liquidity
-      token.priceRateProvider !== zeroAddress &&
-      // if rateProvider is the nested pool address - we consider it as safe
-      token.priceRateProvider !== token.nestedPool?.address
+      token.priceRateProvider !== zeroAddress
     ) {
       // if price rate provider is set but is not reviewed - we should block adding liquidity
       if (!hasReviewedRateProvider(token)) {
@@ -452,7 +328,7 @@ export function getPoolAddBlockedReason(pool: Pool, metadata?: PoolMetadata): st
 }
 
 export function isAffectedByV2Exploit(pool: Pool) {
-  if (isV2Pool(pool) && (isComposableStable(pool.type) || isMetaStable(pool.type))) {
+  if (isV2Pool(pool) && isComposableStable(pool.type)) {
     if (
       pool.poolTokens.some(
         token => token.priceRateProvider && token.priceRateProvider !== zeroAddress
@@ -471,14 +347,11 @@ export function shouldBlockRemoveLiquidity(pool: Pool) {
 }
 
 export function getPoolRemoveBlockedReason(pool: Pool): string[] {
-  if (pool.chain === GqlChainValues.Sepolia) return []
-
   const hasUnstakedBalance = bn(getUserWalletBalance(pool)).gt(0)
   const hasTooSmallBalance = isTooSmallToRemoveUsd(getUserWalletBalanceUsd(pool))
 
   const reasons: string[] = []
 
-  if (isManaged(pool.type)) reasons.push('Managed pools are not supported. Seek help in Discord.')
   if (!hasUnstakedBalance) reasons.push("You don't have any unstaked balance to remove")
   if (hasTooSmallBalance) reasons.push('Your balance is too small to remove')
 
@@ -522,16 +395,8 @@ export function isV3Pool(pool: PoolWithProtocolVersion): boolean {
   return pool.protocolVersion === 3
 }
 
-export function isV3WithNestedActionsPool(pool: Pool): boolean {
-  return supportsNestedActions(pool) && isV3Pool(pool)
-}
-
 export function supportsWethIsEth(pool: Pool): boolean {
-  /*
-    Currently all SDK handlers support wethIsEth
-    and Cow AMM pools is the only scenario that doesn't support wethIsEth
-  */
-  return !isCowAmmPool(pool.type) && !pool.hasErc4626 && !pool.hasNestedErc4626
+  return !pool.hasErc4626
 }
 
 export function requiresPermit2Approval(pool: Pool): boolean {
@@ -546,25 +411,6 @@ export function getWarnings(warnings: string[]) {
   return warnings.filter(warning => !isEmpty(warning))
 }
 
-/*
-  Allowed pool swaps:
-    1. From a standard root token to another standard root token
-    2. From a standard root token to a nested child token
-    3. From a nested child token to a standard root token
-  Disallowed pool swaps:
-    1. From a nested child token to another nested child token
-*/
-export function isPoolSwapAllowed(pool: Pool, token1: Address, token2: Address): boolean {
-  if (
-    !isStandardOrUnderlyingRootToken(pool, token1) &&
-    !isStandardOrUnderlyingRootToken(pool, token2)
-  ) {
-    return false
-  }
-
-  return true
-}
-
 export function poolTypeLabel(poolType: PoolFilterType) {
   switch (poolType) {
     case GqlPoolTypeValues.Weighted:
@@ -575,10 +421,6 @@ export function poolTypeLabel(poolType: PoolFilterType) {
       return 'Liquidity Bootstrapping (LBP)'
     case GqlPoolTypeValues.Gyro:
       return 'Gyro CLP'
-    case GqlPoolTypeValues.CowAmm:
-      return 'CoW AMM'
-    case GqlPoolTypeValues.Fx:
-      return 'FX'
     case GqlPoolTypeValues.QuantAmmWeighted:
       return 'QuantAMM BTF'
     case 'AUTORANGE':

@@ -3,7 +3,7 @@ import { usePoolCreationForm } from '../../PoolCreationFormProvider'
 import { BullseyeIcon } from '@repo/lib/shared/components/icons/BullseyeIcon'
 import { useTokens } from '@repo/lib/modules/tokens/TokensProvider'
 import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
-import { isWeightedPool, isCowPool } from '../../helpers'
+import { isWeightedPool } from '../../helpers'
 import { useWatch } from 'react-hook-form'
 
 const WEIGHT_DEVIATION_TOLERANCE = 5
@@ -54,7 +54,7 @@ export function SeedAmountProportions({ variant = 'level3', displayAlert = false
     return Math.abs(weight - usdWeight) < WEIGHT_DEVIATION_TOLERANCE
   })
 
-  const showTargetWeights = isWeightedPool(poolType) || isCowPool(poolType)
+  const showTargetWeights = isWeightedPool(poolType)
 
   const isGoingToGetRekt =
     showTargetWeights && !isAllWeightsCloseToTarget && poolTokens.every(t => t.amount)

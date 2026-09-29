@@ -1,25 +1,27 @@
+import { GqlChainValues } from '@repo/lib/shared/services/api/graphql-enums'
+
 export const fakeGqlTokens = [
   {
     __typename: 'GqlToken',
     address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    name: 'Ether',
-    symbol: 'ETH',
+    name: 'Sonic',
+    symbol: 'S',
     decimals: 18,
-    chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
+    chainId: 146,
+    chain: GqlChainValues.Sonic,
+    logoURI: '',
     priority: 0,
     tradable: true,
   },
   {
     __typename: 'GqlToken',
-    address: '0xba100000625a3754423978a60c9317c58a424e3d',
-    name: 'Balancer',
-    symbol: 'BAL',
+    address: '0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38',
+    name: 'Wrapped Sonic',
+    symbol: 'wS',
     decimals: 18,
-    chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/balancer/tokenlists/main/src/assets/images/tokens/0xba100000625a3754423978a60c9317c58a424e3d.png',
+    chainId: 146,
+    chain: GqlChainValues.Sonic,
+    logoURI: '',
     priority: 0,
     tradable: true,
   },

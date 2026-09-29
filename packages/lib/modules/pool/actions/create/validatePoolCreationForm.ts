@@ -7,10 +7,9 @@ import {
   POOL_TYPES,
   REQUIRED_TOTAL_WEIGHT,
 } from './constants'
-import { getMinSwapFeePercentage, isWeightedPool, isCowPool } from './helpers'
+import { getMinSwapFeePercentage, isWeightedPool } from './helpers'
 import { PoolCreationToken, SupportedPoolTypes } from './types'
-import { parseUnits, isAddress } from 'viem'
-import { PoolType } from '@balancer/sdk'
+import { isAddress } from 'viem'
 
 const LESS_THAN_0_ERROR = 'Amount must be greater than 0'
 const LESS_THAN_1_ERROR = 'Minimum amount is 1'
@@ -55,31 +54,16 @@ export const validatePoolTokens = {
     return !isWeightedPool(poolType) || isValidTotalWeight
   },
 
-  hasAmountError(
-    token: PoolCreationToken,
-    poolType: PoolType
-  ): { error: string | undefined; possibleErrors: string[] } {
+  hasAmountError(token: PoolCreationToken): {
+    error: string | undefined
+    possibleErrors: string[]
+  } {
     const possibleErrors = [LESS_THAN_0_ERROR, LESS_THAN_1_ERROR]
 
     if (!token.address) return { error: undefined, possibleErrors }
     if (token.amount === '') return { error: undefined, possibleErrors }
 
     if (Number(token.amount) === 0) return { error: LESS_THAN_0_ERROR, possibleErrors }
-
-    // CoW amm on v1 has special amount requirement based on token decimals
-    const tokenDecimals = token.data?.decimals || 0
-    let rawAmount: bigint
-
-    try {
-      rawAmount = parseUnits(token.amount, tokenDecimals)
-    } catch {
-      return { error: LESS_THAN_0_ERROR, possibleErrors }
-    }
-
-    const isInvalidAmountForCowPool =
-      isCowPool(poolType) && tokenDecimals < 18 && rawAmount < BigInt(1e6)
-
-    if (isInvalidAmountForCowPool) return { error: LESS_THAN_1_ERROR, possibleErrors }
 
     return { error: undefined, possibleErrors }
   },

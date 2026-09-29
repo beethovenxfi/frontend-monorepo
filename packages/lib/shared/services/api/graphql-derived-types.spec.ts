@@ -11,20 +11,17 @@ import type {
   HookFragment,
   LbpV3CommonMetadataFieldsFragment,
   Erc4626ReviewDataFragment,
-  GetVeBalUserQuery,
   GetStakedSonicDataQuery,
 } from './generated/graphql'
 import type {
   GqlToken,
   GqlTokenPrice,
-  GqlPoolElement,
   GqlPoolWeighted,
   GqlPoolGyro,
   GqlPoolComposableStable,
   GqlPoolLiquidityBootstrapping,
   GqlPoolQuantAmmWeighted,
   GqlPoolTokenDetail,
-  GqlNestedPool,
   GqlPoolStaking,
   GqlPoolStakingGauge,
   GqlPoolStakingOtherGauge,
@@ -33,7 +30,6 @@ import type {
   GqlUserStakedBalance,
   GqlPoolAddRemoveEventV3,
   GqlPoolSwapEventV3,
-  GqlPoolSwapEventCowAmm,
   GqlPoolAprItem,
   GqlPriceRateProviderData,
   GqlPriceRateProviderUpgradeableComponent,
@@ -46,7 +42,6 @@ import type {
   MevTaxHookParams,
   GqlLBPTopTrade,
   QuantAmmWeightSnapshot,
-  GqlVeBalLockSnapshot,
   GqlStakedSonicData,
 } from './graphql-derived-types'
 
@@ -59,7 +54,6 @@ describe('graphql-derived-types', () => {
     type _CheckTokenPrice = GqlTokenPrice extends GetTokenPricesQuery['tokenPrices'][number]
       ? true
       : never
-    type _CheckPoolElement = GqlPoolElement extends GetPoolQuery['pool'] ? true : never
     type _CheckPoolWeighted = GqlPoolWeighted extends GetPoolQuery['pool'] ? true : never
     type _CheckPoolGyro = GqlPoolGyro extends GetPoolQuery['pool'] ? true : never
     type _CheckPoolComposableStable = GqlPoolComposableStable extends GetPoolQuery['pool']
@@ -71,8 +65,6 @@ describe('graphql-derived-types', () => {
       ? true
       : never
     type _CheckPoolTokenDetail = GqlPoolTokenDetail extends PoolTokensFragment ? true : never
-    type _CheckNestedPool =
-      GqlNestedPool extends NonNullable<PoolTokensFragment['nestedPool']> ? true : never
     type _CheckPoolStaking =
       GqlPoolStaking extends NonNullable<GetPoolsQuery['pools'][number]['staking']> ? true : never
     type _CheckPoolStakingGauge =
@@ -101,8 +93,6 @@ describe('graphql-derived-types', () => {
     type _CheckPoolSwapEventV3 = GqlPoolSwapEventV3 extends GetPoolEventsQuery['poolEvents'][number]
       ? true
       : never
-    type _CheckPoolSwapEventCowAmm =
-      GqlPoolSwapEventCowAmm extends GetPoolEventsQuery['poolEvents'][number] ? true : never
     type _CheckHook = GqlHook extends HookFragment ? true : never
     type _CheckHookReviewData =
       GqlHookReviewData extends NonNullable<HookFragment['reviewData']> ? true : never
@@ -123,10 +113,6 @@ describe('graphql-derived-types', () => {
     type _CheckFeeTakingHookParams = FeeTakingHookParams extends unknown ? true : never
     type _CheckMevTaxHookParams = MevTaxHookParams extends unknown ? true : never
     type _CheckQuantAmmWeightSnapshot = QuantAmmWeightSnapshot extends unknown ? true : never
-    type _CheckVeBalLockSnapshot =
-      GqlVeBalLockSnapshot extends GetVeBalUserQuery['veBalGetUser']['lockSnapshots'][number]
-        ? true
-        : never
     type _CheckStakedSonicData =
       GqlStakedSonicData extends GetStakedSonicDataQuery['stsGetGqlStakedSonicData'] ? true : never
 

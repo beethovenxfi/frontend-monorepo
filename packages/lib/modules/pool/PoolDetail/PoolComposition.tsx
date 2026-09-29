@@ -27,7 +27,7 @@ import { PoolToken } from '../pool.types'
 import { usePool } from '../PoolProvider'
 import { Pool } from '../pool.types'
 import { PoolTypeTag } from './PoolTypeTag'
-import { getCompositionTokens, getNestedPoolTokens } from '../pool-tokens.utils'
+import { getCompositionTokens } from '../pool-tokens.utils'
 import { useGetPoolTokensWithActualWeights } from '../useGetPoolTokensWithActualWeights'
 import { ArrowUpRight } from 'lucide-react'
 import { PoolCompositionChart } from './PoolCompositionChart'
@@ -104,43 +104,7 @@ function CardContent({ totalLiquidity, poolTokens, chain, pool }: CardContentPro
                 showZeroAmountAsDash={true}
                 targetWeight={poolToken.weight || undefined}
                 value={tokenValue}
-                {...(poolToken.hasNestedPool && {
-                  isNestedBpt: true,
-                })}
               />
-              {poolToken.hasNestedPool && poolToken.nestedPool && (
-                <VStack pl="8" w="full">
-                  {getNestedPoolTokens(poolToken).map(nestedPoolToken => {
-                    const calculatedWeight =
-                      isBnParseable(nestedPoolToken.balanceUSD) &&
-                      isBnParseable(poolToken.balanceUSD)
-                        ? bn(nestedPoolToken.balanceUSD).div(bn(poolToken.balanceUSD))
-                        : bn(0)
-
-                    return (
-                      <TokenRow
-                        actualWeight={bn(actualWeight ?? 0)
-                          .times(calculatedWeight)
-                          .toString()}
-                        address={nestedPoolToken.address as Address}
-                        chain={chain}
-                        iconSize={35}
-                        isNestedToken
-                        key={`nested-pool-${nestedPoolToken.address}`}
-                        targetWeight={
-                          nestedPoolToken.weight &&
-                          poolToken.weight &&
-                          isBnParseable(nestedPoolToken.weight) &&
-                          isBnParseable(poolToken.weight)
-                            ? bn(nestedPoolToken.weight).times(poolToken.weight).toString()
-                            : undefined
-                        }
-                        value={nestedPoolToken.balance}
-                      />
-                    )
-                  })}
-                </VStack>
-              )}
 
               {isVirtualPairedToken && (
                 <VStack pl="8" w="full">

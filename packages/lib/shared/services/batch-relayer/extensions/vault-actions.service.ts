@@ -1,11 +1,11 @@
 import { encodeFunctionData } from 'viem'
 import { EncodeExitPoolInput, EncodeJoinPoolInput } from '../relayer-types'
-import { balancerV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
+import { beetsV2BatchRelayerLibraryAbi } from '@repo/lib/modules/web3/contracts/abi/generated'
 
 export class VaultActionsService {
   public encodeExitPool(params: EncodeExitPoolInput): string {
     return encodeFunctionData({
-      abi: balancerV2BatchRelayerLibraryAbi,
+      abi: beetsV2BatchRelayerLibraryAbi,
       functionName: 'exitPool',
       args: [
         params.poolId,
@@ -20,7 +20,7 @@ export class VaultActionsService {
 
   public encodeJoinPool(params: EncodeJoinPoolInput): string {
     return encodeFunctionData({
-      abi: balancerV2BatchRelayerLibraryAbi,
+      abi: beetsV2BatchRelayerLibraryAbi,
       functionName: 'joinPool',
       args: [
         params.poolId,

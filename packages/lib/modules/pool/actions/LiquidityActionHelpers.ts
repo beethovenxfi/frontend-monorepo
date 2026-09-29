@@ -4,22 +4,17 @@ import { nullAddress } from '@repo/lib/modules/web3/contracts/wagmi-helpers'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlPoolTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
-import { SentryError } from '@repo/lib/shared/utils/errors'
 import { bn, isZero } from '@repo/lib/shared/utils/numbers'
 import {
   AddLiquidityQueryOutput,
   HumanAmount,
   InputAmount,
   MinimalToken,
-  NestedPoolState,
-  PoolGetPool,
   PoolState,
   PoolStateWithUnderlyings,
   PoolTokenWithUnderlying,
   Token,
   TokenAmount,
-  mapPoolToNestedPoolStateV2,
-  mapPoolToNestedPoolStateV3,
   mapPoolType,
 } from '@balancer/sdk'
 import BigNumber from 'bignumber.js'
@@ -34,13 +29,11 @@ import { HumanTokenAmountWithSymbol } from '../../tokens/token.types'
 import { Pool } from '../pool.types'
 import {
   isComposableStableV1,
-  isCowAmmPool,
   isGyro,
   isUnbalancedLiquidityDisabled,
   isV2Pool,
   isV3Pool,
   supportsWethIsEth,
-  hasNestedPools,
   isWeightedV1,
 } from '../pool.helpers'
 import { getActionableTokenSymbol } from '../pool-tokens.utils'
@@ -68,20 +61,6 @@ export class LiquidityActionHelpers {
   /* Used by default (non-nested) SDK handlers */
   public get poolState(): PoolState {
     return toPoolState(this.pool)
-  }
-
-  /* Used by default nested SDK handlers */
-  public get nestedPoolStateV2(): NestedPoolState {
-    const result = mapPoolToNestedPoolStateV2(this.pool as PoolGetPool)
-    result.protocolVersion = 2
-    return result
-  }
-
-  /* Used by default nested SDK handlers */
-  public get nestedPoolStateV3(): NestedPoolState {
-    const result = mapPoolToNestedPoolStateV3(this.pool as PoolGetPool)
-    result.protocolVersion = 3
-    return result
   }
 
   /* Used by V3 boosted SDK handlers */
@@ -239,20 +218,13 @@ export function ensureLastQueryResponse<Q>(
   if (!queryResponse) {
     // This should never happen but this is a check against potential regression bugs
     console.error(`Missing queryResponse in ${liquidityActionDescription}`)
-    throw new SentryError(
+    throw new Error(
       `Missing queryResponse.
 It looks that you tried to call useBuildCallData before the last query finished generating queryResponse`
     )
   }
 
   return queryResponse
-}
-
-export function supportsNestedActions(pool: Pool): boolean {
-  if (!hasNestedPools(pool)) return false
-  const disallowNestedActions = getNetworkConfig(pool.chain).pools?.disallowNestedActions ?? []
-  if (disallowNestedActions.includes(pool.id)) return false
-  return true
 }
 
 export function shouldUseRecoveryRemoveLiquidity(pool: Pool): boolean {
@@ -279,7 +251,6 @@ export function requiresProportionalInputReason(pool: Pool): string | undefined 
   }
 
   if (isGyro(pool.type) && !isV3Pool(pool)) return requiresProportionalTemplate('Gyro (CLP)')
-  if (isCowAmmPool(pool.type)) return requiresProportionalTemplate('Cow AMM')
 
   return undefined
 }
@@ -296,10 +267,6 @@ export function supportsProportionalAddLiquidityKind(pool: Pool): boolean {
 export function supportsProportionalAddLiquidityReasons(pool: Pool): string | undefined {
   if (isV2Pool(pool)) {
     if (pool.type === GqlPoolTypeValues.Stable) return supportsProportionalTemplate('v2 stable')
-
-    if (pool.type === GqlPoolTypeValues.MetaStable) {
-      return supportsProportionalTemplate('v2 metastable')
-    }
   }
 
   // WeightedPool2Tokens pool types do not support AddLiquidityKind.Proportional in the SDK
@@ -411,12 +378,7 @@ export function injectNativeAsset(
     isWrappedNativeAsset(token.address as Address, pool.chain)
   )
 
-  if (
-    isWrappedNativeAssetInPool &&
-    nativeAsset &&
-    // Cow AMM pools don't support wethIsEth
-    !isCowAmmPool(pool.type)
-  ) {
+  if (isWrappedNativeAssetInPool && nativeAsset) {
     return [nativeAsset, ...validTokens]
   }
 

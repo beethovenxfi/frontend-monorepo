@@ -7,7 +7,7 @@ import { PoolCreationModal } from './modal/PoolCreationModal'
 import { useRef, useEffect } from 'react'
 import { InvalidTotalWeightAlert } from './InvalidTotalWeightAlert'
 import { useCopyToClipboard } from '@repo/lib/shared/hooks/useCopyToClipboard'
-import { isAutoRangePool, isCowPool } from './helpers'
+import { isAutoRangePool } from './helpers'
 import { useFormState, useWatch } from 'react-hook-form'
 
 export function PoolCreationFormAction({ disabled }: { disabled?: boolean }) {
@@ -57,7 +57,7 @@ export function PoolCreationFormAction({ disabled }: { disabled?: boolean }) {
             />
           )}
 
-          {poolAddress && !isCowPool(poolType) && (
+          {poolAddress && (
             <Button
               onClick={() => copyToClipboard(initializeUrl)}
               size="lg"

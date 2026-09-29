@@ -12,7 +12,6 @@ import { useParams } from 'next/navigation'
 import { usePool } from '../../../PoolProvider'
 import { NumberFormatter } from '@repo/lib/shared/utils/numbers'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
-import { isCowAmmPool } from '../../../pool.helpers'
 import { PoolChartTab, usePoolChartTabs } from './PoolChartTabsProvider'
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
 import { alignUtcWithLocalDay } from '@repo/lib/shared/utils/time'
@@ -217,8 +216,6 @@ export function usePoolChartsLogic() {
     activePeriod.value
   )
 
-  const isCowPool = isCowAmmPool(pool.type)
-
   const chartValueSum = useMemo(() => {
     if (!data?.snapshots) return null
 
@@ -231,12 +228,6 @@ export function usePoolChartsLogic() {
     if (activeTab.value === PoolChartTab.FEES) {
       val = data?.snapshots.reduce((acc, snapshot) => {
         return acc + Number(snapshot.fees24h)
-      }, 0)
-    }
-
-    if (activeTab.value === PoolChartTab.SURPLUS) {
-      val = data?.snapshots.reduce((acc, snapshot) => {
-        return acc + Number(snapshot.surplus24h)
       }, 0)
     }
 
@@ -264,12 +255,6 @@ export function usePoolChartsLogic() {
     if (activeTab.value === PoolChartTab.FEES) {
       chartArr = snapshots.map(snapshot => {
         return [snapshot.timestamp, snapshot.fees24h]
-      })
-    }
-
-    if (activeTab.value === PoolChartTab.SURPLUS) {
-      chartArr = snapshots.map(snapshot => {
-        return [snapshot.timestamp, snapshot.surplus24h]
       })
     }
 
@@ -379,8 +364,7 @@ export function usePoolChartsLogic() {
 
   const defaultChartOptions = getDefaultPoolChartOptions(toCurrency, theme)
 
-  type SupportedPoolChartTab =
-    PoolChartTab.VOLUME | PoolChartTab.TVL | PoolChartTab.FEES | PoolChartTab.SURPLUS
+  type SupportedPoolChartTab = PoolChartTab.VOLUME | PoolChartTab.TVL | PoolChartTab.FEES
 
   const poolChartTypeOptions: Record<SupportedPoolChartTab, PoolChartTypeOptions> = {
     [PoolChartTab.VOLUME]: {
@@ -394,21 +378,15 @@ export function usePoolChartsLogic() {
         colorStops: [
           {
             offset: 0,
-            color: isCowPool
-              ? theme.semanticTokens.colors.chart.pool.bar.volume.cow.from
-              : theme.semanticTokens.colors.chart.pool.bar.volume.from,
+            color: theme.semanticTokens.colors.chart.pool.bar.volume.from,
           },
           {
             offset: 1,
-            color: isCowPool
-              ? theme.semanticTokens.colors.chart.pool.bar.volume.cow.to
-              : theme.semanticTokens.colors.chart.pool.bar.volume.to,
+            color: theme.semanticTokens.colors.chart.pool.bar.volume.to,
           },
         ],
       },
-      hoverColor: isCowPool
-        ? theme.semanticTokens.colors.chart.pool.bar.volume.cow.hover
-        : defaultTheme.colors.pink[500],
+      hoverColor: defaultTheme.colors.pink[500],
     },
     [PoolChartTab.TVL]: {
       type: 'line',
@@ -436,11 +414,6 @@ export function usePoolChartsLogic() {
       },
     },
     [PoolChartTab.FEES]: {
-      type: 'bar',
-      color: defaultTheme.colors.yellow[400],
-      hoverColor: defaultTheme.colors.pink[500],
-    },
-    [PoolChartTab.SURPLUS]: {
       type: 'bar',
       color: defaultTheme.colors.yellow[400],
       hoverColor: defaultTheme.colors.pink[500],

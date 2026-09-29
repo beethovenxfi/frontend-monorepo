@@ -1,4 +1,4 @@
-# Balancer frontend monorepo
+# Beets frontend monorepo
 
 _This project uses `pnpm`, if you haven't already installed it you can find the documentation here:
 https://pnpm.io/installation_
@@ -7,7 +7,7 @@ _The monorepo uses [pnpm workspaces](https://pnpm.io/workspaces) along with Turb
 build orchestration, to learn more about Turborepo please see the
 [docs](https://turbo.build/repo/docs)._
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/balancer/frontend-monorepo)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/beethovenxfi/frontend-monorepo)
 
 ## What's inside?
 
@@ -15,23 +15,23 @@ This monorepo includes the following apps & packages:
 
 ### Apps
 
-- [apps/beets-frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/beets-frontend-v3):
+- [apps/beets-frontend-v3](https://github.com/beethovenxfi/frontend-monorepo/tree/main/apps/beets-frontend-v3):
   The web app for the Beets protocol.
 
 ### Packages
 
-- [packages/lib](https://github.com/balancer/frontend-monorepo/tree/main/packages/lib): Shared logic
+- [packages/lib](https://github.com/beethovenxfi/frontend-monorepo/tree/main/packages/lib): Shared logic
   for the Beets app.
-- [packages/eslint-config](https://github.com/balancer/frontend-monorepo/tree/main/packages/eslint-config):
+- [packages/eslint-config](https://github.com/beethovenxfi/frontend-monorepo/tree/main/packages/eslint-config):
   eslint configurations.
-- [packages/typescript-config](https://github.com/balancer/frontend-monorepo/tree/main/packages/typescript-config):
+- [packages/typescript-config](https://github.com/beethovenxfi/frontend-monorepo/tree/main/packages/typescript-config):
   Typescript config's used throughout the monorepo.
 
 ## Getting started
 
 Click on the link below to see the README for the app:
 
-- [beets-frontend-v3](https://github.com/balancer/frontend-monorepo/tree/main/apps/beets-frontend-v3/README.md)
+- [beets-frontend-v3](https://github.com/beethovenxfi/frontend-monorepo/tree/main/apps/beets-frontend-v3/README.md)
 
 ### Build
 
@@ -72,13 +72,13 @@ make fork-sonic
 3. Start the local development server in fork mode:
 
 ```
-pnpm dev:beets:fork
+pnpm dev:fork
 ```
 
 4. Start the playwright UI for Beets:
 
 ```
-pnpm test:e2e:dev:ui:beets
+pnpm test:e2e:dev:ui
 ```
 
 ### Install a package

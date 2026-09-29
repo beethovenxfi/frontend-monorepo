@@ -17,18 +17,6 @@ import type {
 } from './generated/graphql.ts'
 
 export const GqlChainValues = {
-  Arbitrum: 'ARBITRUM',
-  Avalanche: 'AVALANCHE',
-  Base: 'BASE',
-  Fantom: 'FANTOM',
-  Gnosis: 'GNOSIS',
-  Hyperevm: 'HYPEREVM',
-  Mainnet: 'MAINNET',
-  Monad: 'MONAD',
-  Optimism: 'OPTIMISM',
-  Plasma: 'PLASMA',
-  Polygon: 'POLYGON',
-  Sepolia: 'SEPOLIA',
   Sonic: 'SONIC',
 } as const satisfies Record<string, GqlChain>
 
@@ -49,26 +37,14 @@ export const GqlHookTypeValues = {
 } as const satisfies Record<string, GqlHookType>
 
 export const GqlPoolAprItemTypeValues = {
-  Aura: 'AURA',
   DynamicSwapFee24h: 'DYNAMIC_SWAP_FEE_24H',
-  Fuul: 'FUUL',
   IbYield: 'IB_YIELD',
-  Locking: 'LOCKING',
   MaBeetsEmissions: 'MABEETS_EMISSIONS',
   Merkl: 'MERKL',
-  Nested: 'NESTED',
   QuantAmmUplift: 'QUANT_AMM_UPLIFT',
   Staking: 'STAKING',
   StakingBoost: 'STAKING_BOOST',
-  Surplus: 'SURPLUS',
-  Surplus7d: 'SURPLUS_7D',
-  Surplus24h: 'SURPLUS_24H',
-  Surplus30d: 'SURPLUS_30D',
-  SwapFee: 'SWAP_FEE',
-  SwapFee7d: 'SWAP_FEE_7D',
   SwapFee24h: 'SWAP_FEE_24H',
-  SwapFee30d: 'SWAP_FEE_30D',
-  VeBalEmissions: 'VEBAL_EMISSIONS',
   Voting: 'VOTING',
 } as const satisfies Record<string, GqlPoolAprItemType>
 
@@ -107,27 +83,17 @@ export const GqlPoolStakingGaugeStatusValues = {
 } as const satisfies Record<string, GqlPoolStakingGaugeStatus>
 
 export const GqlPoolStakingTypeValues = {
-  Aura: 'AURA',
-  FreshBeets: 'FRESH_BEETS',
   Gauge: 'GAUGE',
-  MasterChef: 'MASTER_CHEF',
   Reliquary: 'RELIQUARY',
-  VeBal: 'VEBAL',
 } as const satisfies Record<string, GqlPoolStakingType>
 
 export const GqlPoolTypeValues = {
   ComposableStable: 'COMPOSABLE_STABLE',
-  CowAmm: 'COW_AMM',
-  Element: 'ELEMENT',
   FixedLbp: 'FIXED_LBP',
-  Fx: 'FX',
   Gyro: 'GYRO',
   Gyro3: 'GYRO3',
   GyroE: 'GYROE',
-  Investment: 'INVESTMENT',
   LiquidityBootstrapping: 'LIQUIDITY_BOOTSTRAPPING',
-  MetaStable: 'META_STABLE',
-  PhantomStable: 'PHANTOM_STABLE',
   QuantAmmWeighted: 'QUANT_AMM_WEIGHTED',
   Reclamm: 'RECLAMM',
   Stable: 'STABLE',

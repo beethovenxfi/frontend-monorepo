@@ -19,12 +19,11 @@ import { AbiMap } from './AbiMap'
 import { TransactionExecution, TransactionSimulation, WriteAbiMutability } from './contract.types'
 import { useOnTransactionConfirmation } from './useOnTransactionConfirmation'
 import { useOnTransactionSubmission } from './useOnTransactionSubmission'
-import { captureWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
+import { logWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
 import { useTxHash } from '../safe.hooks'
 import { getWaitForReceiptTimeout } from './wagmi-helpers'
 import { onlyExplicitRefetch } from '@repo/lib/shared/utils/queries'
 import { useMockedTxHash } from '@repo/lib/modules/web3/contracts/useMockedTxHash'
-import { useTenderlyGasEstimate } from '@repo/lib/modules/web3/useTenderlyGasEstimate'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { useEffect, useRef } from 'react'
 
@@ -80,14 +79,11 @@ export function useManagedTransaction({
     query: {
       enabled: enabled && !shouldChangeNetwork,
       meta: txSimulationMeta,
-      // In chains like polygon, we don't want background refetches while waiting for min block confirmations
+      // Avoid background refetches while waiting for min block confirmations.
       ...onlyExplicitRefetch,
     },
     value,
   })
-
-  // use tenderly gas estimate only on ethereum mainnet
-  const useEstimateGasHook = chainId === 1 ? useTenderlyGasEstimate : useEstimateGas
 
   const useEstimateGasProps = {
     ...txConfig,
@@ -95,12 +91,12 @@ export function useManagedTransaction({
     from: userAddress,
     query: {
       enabled: !!txConfig && !shouldChangeNetwork,
-      // In chains like polygon, we don't want background refetches while waiting for min block confirmations
+      // Avoid background refetches while waiting for min block confirmations.
       ...onlyExplicitRefetch,
     },
   }
 
-  const estimateGasQuery = useEstimateGasHook(useEstimateGasProps)
+  const estimateGasQuery = useEstimateGas(useEstimateGasProps)
 
   const { mockedTxHash, setMockedTxHash } = useMockedTxHash()
 
@@ -163,7 +159,7 @@ export function useManagedTransaction({
         chainId: chainId,
       })
     } catch (e: unknown) {
-      captureWagmiExecutionError(e, 'Error in managed transaction execution', {
+      logWagmiExecutionError(e, 'Error in managed transaction execution', {
         chainId,
         request: simulateQuery.data.request,
       })

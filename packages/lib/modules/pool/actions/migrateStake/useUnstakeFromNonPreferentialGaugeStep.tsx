@@ -7,7 +7,7 @@ import {
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { ManagedTransactionInput } from '@repo/lib/modules/web3/contracts/useManagedTransaction'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo, useState } from 'react'
 import { parseUnits } from 'viem'
 import { bn } from '@repo/lib/shared/utils/numbers'
@@ -46,7 +46,7 @@ export function useUnstakeFromNonPreferentialGaugeStep(
 
   const amount = parseUnits(bn(nonPreferentialStakedBalance).toFixed(), BPT_DECIMALS)
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Unstake from non preferential gauge transaction)',
     {
       poolId: pool.id,

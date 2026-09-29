@@ -19,7 +19,6 @@ import {
   shouldUseAnvilFork,
 } from '@repo/lib/config/app.config'
 import { mins } from '@repo/lib/shared/utils/time'
-import mainnetNetworkConfig from '@repo/lib/config/networks/mainnet'
 import { PoolToken } from '../pool/pool.types'
 import { ApiToken, ApiOrCustomToken } from './token.types'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
@@ -143,10 +142,6 @@ export function useTokensLogic() {
     [priceFor]
   )
 
-  const vebalBptToken = tokens.find(
-    t => t.address === mainnetNetworkConfig.tokens.addresses.veBalBpt
-  )
-
   return {
     tokens,
     prices,
@@ -163,7 +158,6 @@ export function useTokensLogic() {
     calcTotalUsdValue,
     startTokenPricePolling: () => startPolling(POLL_INTERVAL),
     stopTokenPricePolling: stopPolling,
-    vebalBptToken,
   }
 }
 

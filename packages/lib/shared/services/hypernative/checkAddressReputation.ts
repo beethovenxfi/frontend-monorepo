@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { captureError, ensureError } from '../../utils/errors'
 import { hours } from '../../utils/time'
 
 type ReputationResponse = {
@@ -58,9 +57,7 @@ export async function checkAddressReputation({
 
     return NextResponse.json({ isAuthorized })
   } catch (err) {
-    const error = ensureError(err)
-
-    captureError(error, { extra: { address } })
+    console.error('Failed to check address reputation', { address, error: err })
 
     return NextResponse.json({ isAuthorized: true })
   }

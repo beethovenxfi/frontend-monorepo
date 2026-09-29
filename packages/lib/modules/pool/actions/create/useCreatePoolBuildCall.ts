@@ -3,9 +3,7 @@ import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { CreatePool } from '@balancer/sdk'
 import { CreatePoolInput } from './types'
 import { type TransactionConfig } from '@repo/lib/modules/web3/contracts/contract.types'
-import { sentryMetaForCreatePoolHandler } from '@repo/lib/shared/utils/query-errors'
-import { getGqlChain, getNetworkConfig } from '@repo/lib/config/app.config'
-import { encodeFunctionData, parseAbi } from 'viem'
+import { queryErrorMetaForCreatePoolHandler } from '@repo/lib/shared/utils/query-errors'
 import { useBlockNumber } from 'wagmi'
 
 type Props = {
@@ -28,29 +26,9 @@ export function useCreatePoolBuildCall({ createPoolInput, enabled }: Props) {
         data: callData,
         to,
       }
-    } else if (createPoolInput.protocolVersion === 1) {
-      const { name, symbol } = createPoolInput
-      const chain = getGqlChain(createPoolInput.chainId)
-      const { contracts } = getNetworkConfig(chain)
-      const to = contracts.balancer.bCoWFactory
-
-      if (!to) throw new Error(`Missing bCoW factory address for ${chain}`)
-
-      const data = encodeFunctionData({
-        abi: parseAbi(['function newBPool(string name, string symbol)']),
-        functionName: 'newBPool',
-        args: [name, symbol],
-      })
-
-      return {
-        chainId: createPoolInput.chainId,
-        account: userAddress,
-        data,
-        to,
-      }
-    } else {
-      throw new Error('Unsupported protocol version for create pool build call')
     }
+
+    throw new Error('Unsupported protocol version for create pool build call')
   }
 
   return useQuery({
@@ -58,7 +36,7 @@ export function useCreatePoolBuildCall({ createPoolInput, enabled }: Props) {
     queryFn,
     enabled: enabled && isConnected,
     gcTime: 0,
-    meta: sentryMetaForCreatePoolHandler('Error in create pool build call', {
+    meta: queryErrorMetaForCreatePoolHandler('Error in create pool build call', {
       ...createPoolInput,
       blockNumber,
     }),

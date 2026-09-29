@@ -23,7 +23,6 @@ query GetPools(
     protocolVersion
     tags
     hasErc4626
-    hasNestedErc4626
     hook {
       ...Hook
     }
@@ -35,11 +34,9 @@ query GetPools(
       fees24h
       holdersCount
       swapFee
-      swapsCount
       totalShares
       aprItems {
         id
-        title
         apr
         type
         rewardTokenSymbol
@@ -78,7 +75,6 @@ query GetPools(
     factory
     id
     name
-    owner
     swapFeeManager
     pauseManager
     poolCreator
@@ -133,7 +129,6 @@ query GetFeaturedPools($chains: [GqlChain!]!) {
         totalLiquidity
         aprItems {
           id
-          title
           apr
           type
           rewardTokenSymbol
@@ -144,7 +139,6 @@ query GetFeaturedPools($chains: [GqlChain!]!) {
         ...PoolTokens
       }
       hasErc4626
-      hasNestedErc4626
     }
   }
 }

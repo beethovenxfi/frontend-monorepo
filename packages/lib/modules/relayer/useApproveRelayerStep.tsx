@@ -9,7 +9,7 @@ import { ManagedTransactionInput } from '../web3/contracts/useManagedTransaction
 import { useUserAccount } from '../web3/UserAccountProvider'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { useHasApprovedRelayer } from './useHasApprovedRelayer'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useState } from 'react'
 import { RelayerMode } from './useRelayerMode'
 import { buildBatchableTxCall } from '../transactions/transaction-steps/tx-batch.helpers'
@@ -46,7 +46,7 @@ export function useApproveRelayerStep(
     tooltip: 'Approve the Balancer relayer.',
   }
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation: Approving Relayer',
     {
       vaultAddress,

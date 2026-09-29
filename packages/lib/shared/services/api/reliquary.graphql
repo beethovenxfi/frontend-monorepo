@@ -8,11 +8,6 @@ query GetReliquaryFarmSnapshots(
     timestamp
     totalBalance
     totalLiquidity
-    levelBalances {
-      id
-      level
-      balance
-    }
     relicCount
     userCount
   }

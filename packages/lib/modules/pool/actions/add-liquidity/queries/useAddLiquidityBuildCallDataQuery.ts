@@ -5,7 +5,7 @@ import { usePool } from '../../../PoolProvider'
 import { ensureLastQueryResponse } from '../../LiquidityActionHelpers'
 import { AddLiquidityParams, addLiquidityKeys } from './add-liquidity-keys'
 import { useRelayerSignature } from '@repo/lib/modules/relayer/RelayerSignatureProvider'
-import { sentryMetaForAddLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForAddLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
 import { AddLiquidityHandler } from '../handlers/AddLiquidity.handler'
 import { AddLiquiditySimulationQueryResult } from './useAddLiquiditySimulationQuery'
 import { useDebounce } from 'use-debounce'
@@ -61,7 +61,7 @@ export function useAddLiquidityBuildCallDataQuery({
       humanAmountsIn: debouncedHumanAmountsIn,
       slippagePercent: slippage,
       queryOutput,
-      relayerApprovalSignature, // only present in Add Nested Liquidity with sign relayer mode
+      relayerApprovalSignature, // only present in signRelayer mode
       permit2, // only present in V3 pools
     })
 
@@ -75,7 +75,7 @@ export function useAddLiquidityBuildCallDataQuery({
     queryFn,
     enabled: enabled && isConnected && !!simulationQuery.data,
     gcTime: 0,
-    meta: sentryMetaForAddLiquidityHandler('Error in add liquidity buildCallData query', {
+    meta: queryErrorMetaForAddLiquidityHandler('Error in add liquidity buildCallData query', {
       ...params,
       chainId,
       blockNumber,

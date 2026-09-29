@@ -1,16 +1,9 @@
-import { base, gnosis, mainnet, polygon, sepolia, sonic } from 'viem/chains'
+import { sonic } from 'viem/chains'
 import { Address, Hex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { drpcUrlByChainId } from '@repo/lib/shared/utils/rpc'
 
-type NetworksWithFork = readonly [
-  typeof mainnet,
-  typeof polygon,
-  typeof sepolia,
-  typeof gnosis,
-  typeof base,
-  typeof sonic,
-]
+type NetworksWithFork = readonly [typeof sonic]
 export type ChainIdWithFork = NetworksWithFork[number]['id']
 
 export type NetworkSetup = {
@@ -47,11 +40,6 @@ export function testAccountIndex(account: Address) {
 
 const ANVIL_PORTS: Record<ChainIdWithFork, number> = {
   //Ports separated by 100 to avoid port collision when running tests in parallel
-  [mainnet.id]: 8645,
-  [polygon.id]: 8745,
-  [sepolia.id]: 8845,
-  [base.id]: 8945,
-  [gnosis.id]: 9045,
   [sonic.id]: 9145,
 }
 
@@ -60,30 +48,6 @@ const ANVIL_PORTS: Record<ChainIdWithFork, number> = {
  * Alternatively, omitting forkBlockNumber forks from latest, but can cause flaky tests
  */
 export const ANVIL_NETWORKS: Record<ChainIdWithFork, NetworkSetup> = {
-  [mainnet.id]: {
-    chainId: mainnet.id,
-    fallBackRpc: 'https://cloudflare-eth.com',
-    port: ANVIL_PORTS[mainnet.id],
-    forkBlockNumber: 24521900n,
-  },
-  [polygon.id]: {
-    chainId: polygon.id,
-    fallBackRpc: 'https://polygon-rpc.com',
-    port: ANVIL_PORTS[polygon.id],
-    forkBlockNumber: 67867894n,
-  },
-  [sepolia.id]: {
-    chainId: sepolia.id,
-    fallBackRpc: 'https://gateway.tenderly.co/public/sepolia',
-    port: ANVIL_PORTS[sepolia.id],
-    forkBlockNumber: 10295680n,
-  },
-  [base.id]: {
-    chainId: base.id,
-    fallBackRpc: 'https://gateway.tenderly.co/public/base',
-    port: ANVIL_PORTS[base.id],
-    forkBlockNumber: 42375000n,
-  },
   [sonic.id]: {
     chainId: sonic.id,
     fallBackRpc: 'https://gateway.tenderly.co/public/sonic',
@@ -91,12 +55,6 @@ export const ANVIL_NETWORKS: Record<ChainIdWithFork, NetworkSetup> = {
     // Must be after the deployment of the Sonic pools used by the integration
     // suite (usdcFlyStS, anSSiloWSBoosted) and their tokens.
     forkBlockNumber: 32_600_000n,
-  },
-  [gnosis.id]: {
-    chainId: gnosis.id,
-    fallBackRpc: 'https://gnosis.drpc.org',
-    port: ANVIL_PORTS[gnosis.id],
-    forkBlockNumber: 37902207n,
   },
 }
 
@@ -123,10 +81,10 @@ export function getTestRpcSetup(networkName: ChainIdWithFork) {
 }
 
 /*
- *  We currently use Drpc for all integration tests (Ethereum, Polygon and Sepolia networks)
+ *  We currently use Drpc for Sonic integration tests.
  *  In case you want to use a different RPC, you can set something like this (i.e. ALCHEMY)
  *     const privateAlchemyKey = process.env['NEXT_PRIVATE_ALCHEMY_KEY']
- *     return `https://polygon-mainnet.g.alchemy.com/v2/${privateAlchemyKey}`
+ *     return `https://sonic.g.alchemy.com/v2/${privateAlchemyKey}`
  */
 export function getForkUrl(chainId: ChainIdWithFork, verbose = false): string {
   const network = ANVIL_NETWORKS[chainId]

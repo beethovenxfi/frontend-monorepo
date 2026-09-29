@@ -10,7 +10,6 @@ import {
   Flex,
   HStack,
   Button,
-  Link,
   Box,
 } from '@chakra-ui/react'
 import { usePortfolio } from '../../PortfolioProvider'
@@ -27,13 +26,11 @@ import { MerklAlert } from '../../merkl/MerklAlert'
 import { motion } from 'motion/react'
 import { easeOut } from 'motion'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
-import { getChainId, getChainName } from '@repo/lib/config/app.config'
+import { getChainId } from '@repo/lib/config/app.config'
 import { useBreakpoints } from '@repo/lib/shared/hooks/useBreakpoints'
 import { NetworkIcon } from '@repo/lib/shared/components/icons/NetworkIcon'
 import { WalletIcon } from '@repo/lib/shared/components/icons/WalletIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
-import { isChainDeprecated } from '@repo/lib/modules/chains/chain.utils'
 
 interface NetworkConfig {
   chain: GqlChain
@@ -80,10 +77,6 @@ export function ClaimNetworkPools() {
 
   const noRewards = !hasChainRewards
 
-  const deprecatedChains = poolsWithChain
-    .map(item => item[0])
-    .filter(chain => isChainDeprecated(chain as GqlChain)) as GqlChain[]
-
   // Build claimable items
   const claimableItems = useMemo(() => {
     const items: { type: string; chain: GqlChain; amount: number; icon?: string }[] = []
@@ -111,11 +104,6 @@ export function ClaimNetworkPools() {
         <Heading size="h4" variant="special">
           Claimable incentives
         </Heading>
-        {deprecatedChains.length > 0 && (
-          <AnimatedAlert>
-            <DeprecatedChainsAlert chains={deprecatedChains} />
-          </AnimatedAlert>
-        )}
         {isLoadingRewards || isLoadingPortfolio ? (
           <SimpleGrid columns={GRID_COLUMNS} spacing="md">
             {Array.from({ length: SLOT_COUNT }).map((_, index) => (
@@ -243,45 +231,5 @@ function AnimatedAlert({ children }: { children: ReactNode }) {
     <motion.div animate={{ opacity: 1, height: 'auto' }} initial={{ opacity: 0, height: 0 }} layout>
       {children}
     </motion.div>
-  )
-}
-
-function DeprecatedChainsAlert({ chains }: { chains: GqlChain[] }) {
-  const listFormatter = new Intl.ListFormat('en-GB', {
-    style: 'long',
-    type: 'conjunction',
-  })
-
-  const chainNames = listFormatter.format(chains.map(getChainName))
-  const title = `${chainNames} ${chains.length > 1 ? 'are' : 'is'} being sunset on Balancer soon.`
-  const content = `Claim your incentives asap before ${chains.length > 1 ? 'they are' : 'it is'} no longer supported.`
-
-  const learnMoreLink =
-    'https://forum.balancer.fi/t/bip-906-deprecation-of-polygon-zkevm-fraxtal-and-mode/6951'
-
-  return (
-    <BalAlert
-      content={
-        <HStack>
-          <Text color="#000" fontWeight="bold">
-            {title}
-          </Text>
-          <Text color="#000">{content}</Text>
-          <Link
-            _hover={{
-              color: '#555',
-            }}
-            color="#000"
-            fontWeight="bold"
-            href={learnMoreLink}
-            isExternal
-            textDecoration="underline"
-          >
-            Learn more
-          </Link>
-        </HStack>
-      }
-      status="warning"
-    />
   )
 }

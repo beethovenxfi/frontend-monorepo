@@ -114,21 +114,18 @@ export function RelicCard({ relic, isSelected = false }: RelicCardSimpleProps) {
   const hasBalance = isValidNumber(relic.amount) && bn(relic.amount).gt(0)
 
   // Calculate APR with boost
-  const baseApr = pool.dynamicData.aprItems.find(
-    item => item.title === 'BEETS reward APR' && item.type === 'MABEETS_EMISSIONS'
-  )
+  const baseApr = pool.dynamicData.aprItems.find(item => item.type === 'MABEETS_EMISSIONS')
 
   const dynamicDataAprItems = pool.dynamicData.aprItems.map(item => {
-    if (item.title === 'BEETS reward APR' && item.type === 'STAKING_BOOST') {
+    if (item.type === 'STAKING_BOOST' && item.rewardTokenSymbol === 'BEETS') {
       return {
         ...item,
-        title: 'BEETS reward APR',
         apr:
           isValidNumber(relicApr) && baseApr && isValidNumber(baseApr.apr)
             ? bn(relicApr).minus(baseApr.apr).toNumber()
             : 0,
       }
-    } else if (item.title === 'Voting APR Boost' && item.type === 'STAKING_BOOST') {
+    } else if (item.type === 'STAKING_BOOST' && !item.rewardTokenSymbol) {
       return {
         ...item,
         apr:
@@ -317,7 +314,6 @@ export function RelicCard({ relic, isSelected = false }: RelicCardSimpleProps) {
               chain={config.chain}
               onlySparkles
               pool={pool}
-              poolId={pool.id}
             />
           </HStack>
         </RelicStat>

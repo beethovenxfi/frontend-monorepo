@@ -7,8 +7,6 @@
 import { getApolloServerClient } from '@repo/lib/shared/services/api/apollo-server.client'
 import { GetProtocolStatsDocument } from '@repo/lib/shared/services/api/generated/graphql'
 import { TokensProvider } from '@repo/lib/modules/tokens/TokensProvider'
-import { FiatFxRatesProvider } from '../../hooks/FxRatesProvider'
-import { getFxRates } from '../../utils/currencies'
 import { mins } from '../../utils/time'
 import { PropsWithChildren } from 'react'
 import { getHooksMetadata } from '@repo/lib/modules/hooks/getHooksMetadata'
@@ -33,7 +31,7 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
   const { data: protocolData } = await client.query({
     query: GetProtocolStatsDocument,
     variables: {
-      chains: PROJECT_CONFIG.supportedNetworks,
+      chain: PROJECT_CONFIG.defaultNetwork,
     },
     context: {
       fetchOptions: {
@@ -43,7 +41,6 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
   })
 
   const [
-    exchangeRates,
     hooksMetadata,
     poolTags,
     erc4626Metadata,
@@ -51,7 +48,6 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
     feeManagersMetadata,
     poolMigrations,
   ] = await Promise.all([
-    getFxRates(),
     getHooksMetadata(),
     getPoolTags(),
     getErc4626Metadata(),
@@ -62,24 +58,22 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
 
   return (
     <TokensProvider>
-      <FiatFxRatesProvider data={exchangeRates}>
-        <PoolTagsProvider data={poolTags}>
-          <HooksProvider data={hooksMetadata}>
-            <FeeManagersProvider data={feeManagersMetadata}>
-              <ProtocolStatsProvider data={protocolData}>
-                <PoolsMetadataProvider
-                  erc4626Metadata={erc4626Metadata}
-                  poolsMetadata={poolsMetadata}
-                >
-                  <PoolMigrationsProvider poolMigrations={poolMigrations}>
-                    {children}
-                  </PoolMigrationsProvider>
-                </PoolsMetadataProvider>
-              </ProtocolStatsProvider>
-            </FeeManagersProvider>
-          </HooksProvider>
-        </PoolTagsProvider>
-      </FiatFxRatesProvider>
+      <PoolTagsProvider data={poolTags}>
+        <HooksProvider data={hooksMetadata}>
+          <FeeManagersProvider data={feeManagersMetadata}>
+            <ProtocolStatsProvider data={protocolData}>
+              <PoolsMetadataProvider
+                erc4626Metadata={erc4626Metadata}
+                poolsMetadata={poolsMetadata}
+              >
+                <PoolMigrationsProvider poolMigrations={poolMigrations}>
+                  {children}
+                </PoolMigrationsProvider>
+              </PoolsMetadataProvider>
+            </ProtocolStatsProvider>
+          </FeeManagersProvider>
+        </HooksProvider>
+      </PoolTagsProvider>
     </TokensProvider>
   )
 }

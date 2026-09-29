@@ -1,16 +1,10 @@
-import { Stack, Button, VStack, useDisclosure, HStack, Tooltip, Text } from '@chakra-ui/react'
+import { Stack, Button, VStack, HStack, Tooltip, Text } from '@chakra-ui/react'
 import { usePathname, useRouter } from 'next/navigation'
 import PoolMetaBadges from './PoolMetaBadges'
 import { usePool } from '../../PoolProvider'
-import { getPoolAddBlockedReason, isFx, shouldBlockAddLiquidity } from '../../pool.helpers'
+import { getPoolAddBlockedReason, shouldBlockAddLiquidity } from '../../pool.helpers'
 import { PoolTags } from '../../tags/PoolTags'
 import { PoolBreadcrumbs } from './PoolBreadcrumbs'
-import {
-  PartnerRedirectModal,
-  RedirectPartner,
-} from '@repo/lib/shared/components/modals/PartnerRedirectModal'
-import { useState } from 'react'
-import { getXavePoolLink } from '../../pool.utils'
 import { PoolAdvancedOptions } from './PoolAdvancedOptions'
 import { usePoolMetadata } from '../../metadata/usePoolMetadata'
 import { formatTextListAsItems } from '@repo/lib/shared/utils/text-format'
@@ -19,32 +13,13 @@ export function PoolHeader() {
   const pathname = usePathname()
   const { pool } = usePool()
   const router = useRouter()
-  const [redirectPartner, setRedirectPartner] = useState<RedirectPartner>(RedirectPartner.Xave)
-  const [redirectPartnerUrl, setRedirectPartnerUrl] = useState<string>()
-  const partnerRedirectDisclosure = useDisclosure()
   const poolMetadata = usePoolMetadata(pool)
 
   const isAddLiquidityBlocked = shouldBlockAddLiquidity(pool, poolMetadata)
   const blockingReasons = formatTextListAsItems(getPoolAddBlockedReason(pool))
 
-  function openRedirectModal(partner: RedirectPartner) {
-    setRedirectPartner(partner)
-    let url
-
-    if (partner === RedirectPartner.Xave && pool?.address && pool.chain) {
-      url = getXavePoolLink(pool.chain, pool.address)
-    }
-
-    setRedirectPartnerUrl(url)
-    partnerRedirectDisclosure.onOpen()
-  }
-
   function handleClick() {
-    if (isFx(pool.type)) {
-      openRedirectModal(RedirectPartner.Xave)
-    } else {
-      router.push(`${pathname}/add-liquidity`)
-    }
+    router.push(`${pathname}/add-liquidity`)
   }
 
   return (
@@ -89,12 +64,6 @@ export function PoolHeader() {
             </Tooltip>
             <PoolAdvancedOptions />
           </HStack>
-          <PartnerRedirectModal
-            isOpen={partnerRedirectDisclosure.isOpen}
-            onClose={partnerRedirectDisclosure.onClose}
-            partner={redirectPartner}
-            redirectUrl={redirectPartnerUrl}
-          />
         </Stack>
       </Stack>
     </VStack>

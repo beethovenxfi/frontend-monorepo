@@ -33,14 +33,14 @@ anvil --fork-url https://lb.drpc.live/sonic/<YOUR_LOCAL_NEXT_PRIVATE_DRPC_KEY> -
 ```
 
 ```bash
-pnpm run test:e2e:dev:beets
+pnpm run test:e2e:dev
 ```
 
 This tests use an anvil fork so that we can impersonate accounts and run complete transaction flows
 (using wagmi connector mock to avoid playwright interacting with a real wallet).
 
-In CI the Beets dev suite is split across three jobs by `scripts/shard-specs.mjs`, which assigns
-whole spec files to each job. Keep that granularity: the specs share fork state within a file
+In CI the dev suite is split across three jobs by `scripts/shard-specs.mjs`, which assigns whole
+spec files to each job. Keep that granularity: the specs share fork state within a file
 (`liquidity-operations` removes the LP tokens its own earlier tests minted), so Playwright's
 test-level `--shard` cuts those groups apart and the later half fails. Add a spec and it is picked
 up automatically — no list to rebalance.
@@ -58,14 +58,14 @@ reproducible. Bump it to a recent block if specs start failing on stale pool sta
   pnpm playwright:install # if you want to test with non-chromium browsers locally
 ```
 
-You can also run `pnpm test:e2e:build:beets` or `pnpm test:e2e:dev:beets` but, when implementing new
-tests, we recommend the ui option:
+You can also run `pnpm test:e2e:build` or `pnpm test:e2e:dev` but, when implementing new tests, we
+recommend the ui option:
 
 ```bash
-pnpm run test:e2e:build:ui:beets
+pnpm run test:e2e:build:ui
 # or
-# Remember to run the sonic anvil fork locally before running dev E2E tests for Beets.
-pnpm run test:e2e:dev:ui:beets
+# Remember to run the sonic anvil fork locally before running dev E2E tests.
+pnpm run test:e2e:dev:ui
 ```
 
 For more info about playwright tests check the [official documentation](https://playwright.dev/) and

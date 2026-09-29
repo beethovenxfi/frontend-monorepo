@@ -21,12 +21,7 @@ export const ProjectConfigBeets: ProjectConfig = {
   options: {
     poolDisplayType: PoolDisplayType.Name,
     hidePoolTags: ['RWA', 'VE8020'],
-    hidePoolTypes: [
-      GqlPoolTypeValues.LiquidityBootstrapping,
-      GqlPoolTypeValues.CowAmm,
-      GqlPoolTypeValues.Fx,
-    ],
-    hideProtocolVersion: ['cow'],
+    hidePoolTypes: [GqlPoolTypeValues.LiquidityBootstrapping],
     showPoolName: true,
     showMaBeets: true,
     allowCreateWallet: false,
@@ -89,7 +84,7 @@ export const ProjectConfigBeets: ProjectConfig = {
           { label: 'Docs', href: 'https://docs.beets.fi', isExternal: true },
           {
             label: 'Prototype on v3',
-            href: 'https://github.com/balancer/scaffold-balancer-v3',
+            href: 'https://github.com/beethovenxfi/scaffold-balancer-v3',
             isExternal: true,
           },
         ],
@@ -112,101 +107,8 @@ export const ProjectConfigBeets: ProjectConfig = {
             isExternal: true,
           },
           { label: 'Governance', href: 'https://snapshot.box/#/s:beets.eth', isExternal: true },
-          {
-            label: 'Bug bounties',
-            href: 'https://immunefi.com/bug-bounty/balancer',
-            isExternal: true,
-          },
         ],
       },
     ],
   },
-  cowSupportedNetworks: [],
-  promoItems: [
-    {
-      id: 0,
-      icon: 'boosted',
-      label: 'Boosted Pools',
-      title: '100% Boosted Pools on Balancer v3',
-      description:
-        'A simple, capital efficient strategy for LPs to get boosted yield. Partnering with leading lending protocols like Aave and Morpho.',
-      buttonText: 'View pools',
-      buttonLink: '/pools?poolTags=BOOSTED',
-      linkText: 'Learn more',
-      linkURL:
-        'https://docs.balancer.fi/concepts/explore-available-balancer-pools/boosted-pool.html',
-      linkExternal: true,
-      bgImageActive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-active',
-      },
-      bgImageInactive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-inactive',
-      },
-    },
-    {
-      id: 1,
-      icon: 'v3',
-      label: 'Balancer v3',
-      title: 'Balancer v3 is live and thriving!',
-      description:
-        'A simple, flexible, powerful platform to innovate upon and build the future of AMMs. Battle-tested on-chain since November.',
-      buttonText: 'View pools',
-      buttonLink: 'pools?protocolVersion=3',
-      linkText: 'Learn more',
-      linkURL: 'https://docs.balancer.fi/partner-onboarding/balancer-v3/v3-overview.html',
-      linkExternal: true,
-      bgImageActive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-active',
-      },
-      bgImageInactive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-inactive',
-      },
-    },
-    {
-      id: 2,
-      icon: 'gyro',
-      label: 'Gyroscope',
-      title: 'Superliquidity, made simple',
-      description:
-        'Next generation Gyroscope pools are now live on Balancer v3. Manage liquidity directly within the Balancer UI.',
-      buttonText: 'View pools',
-      buttonLink: '/pools?protocolVersion=3&poolTypes=GYRO',
-      linkText: 'Learn more',
-      linkURL: 'https://www.gyro.finance/',
-      linkExternal: true,
-      bgImageActive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-active',
-      },
-      bgImageInactive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-inactive',
-      },
-    },
-    {
-      id: 3,
-      icon: 'hook',
-      label: 'StableSurge Hook',
-      title: 'StableSurge Hook',
-      description:
-        'A dynamic directional surge swap fee in times of volatility to help defend the peg. LPs get MEV protection and increased fees.',
-      buttonText: 'View pools',
-      buttonLink: '/pools?poolHookTags=HOOKS_STABLESURGE',
-      linkText: 'Learn more',
-      linkURL: 'https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219',
-      linkExternal: true,
-      bgImageActive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-active',
-      },
-      bgImageInactive: {
-        directory: '/images/promos/promo-banner/',
-        imgName: 'bg-inactive',
-      },
-    },
-  ],
 }

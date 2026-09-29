@@ -1,12 +1,10 @@
 'use client'
 
 import {
-  GqlChain,
   GqlPoolOrderBy,
   GqlPoolOrderDirection,
 } from '@repo/lib/shared/services/api/generated/graphql'
 import {
-  GqlChainValues,
   GqlPoolOrderByValues,
   GqlPoolOrderDirectionValues,
   GqlPoolTypeValues,
@@ -49,10 +47,6 @@ export const PROTOCOL_VERSION_TABS: ButtonGroupOption[] = [
     value: 'v3',
     label: 'v3',
   },
-  {
-    value: 'cow',
-    label: 'CoW',
-  },
 ] as const
 
 const JOINABLE_POOLS_FIRST = 100
@@ -69,9 +63,6 @@ const poolListQueryStateParsers = {
   poolTypes: parseAsArrayOf(
     parseAsStringEnum<PoolFilterType>(poolTypeFilters as unknown as PoolFilterType[])
   ).withDefault([]),
-  networks: parseAsArrayOf(parseAsStringEnum<GqlChain>(Object.values(GqlChainValues))).withDefault(
-    []
-  ),
   protocolVersion: parseAsInteger,
   textSearch: parseAsString,
   userAddress: parseAsString,
@@ -90,7 +81,6 @@ export function usePoolListQueryState() {
   const [skip, setSkip] = useQueryState('skip', poolListQueryStateParsers.skip)
   const [orderBy, setOrderBy] = useQueryState('orderBy', poolListQueryStateParsers.orderBy)
   const [poolTypes, setPoolTypes] = useQueryState('poolTypes', poolListQueryStateParsers.poolTypes)
-  const [networks, setNetworks] = useQueryState('networks', poolListQueryStateParsers.networks)
   const [minTvl, setMinTvl] = useQueryState('minTvl', poolListQueryStateParsers.minTvl)
   const [poolTags, setPoolTags] = useQueryState('poolTags', poolListQueryStateParsers.poolTags)
 
@@ -179,20 +169,6 @@ export function usePoolListQueryState() {
   }
 
   // Set internal checked state
-  function toggleNetwork(checked: boolean, network: GqlChain) {
-    if (skip) setSkip(0)
-
-    if (checked) {
-      setNetworks(current => uniq([...current, network]))
-    } else {
-      setNetworks(current => {
-        const next = current.filter(chain => chain !== network)
-        return next.length ? next : null
-      })
-    }
-  }
-
-  // Set internal checked state
   function togglePoolType(checked: boolean, poolType: PoolFilterType) {
     if (skip) setSkip(0)
 
@@ -271,7 +247,6 @@ export function usePoolListQueryState() {
   }
 
   function resetFilters() {
-    setNetworks(null)
     setPoolTypes(null)
     setMinTvl(null)
     setPoolTags(null)
@@ -286,7 +261,6 @@ export function usePoolListQueryState() {
   }
 
   const totalFilterCount =
-    networks.length +
     poolTypes.length +
     (userAddress ? 1 : 0) +
     (minTvl > 0 ? 1 : 0) +
@@ -322,7 +296,7 @@ export function usePoolListQueryState() {
         poolType => poolType !== GqlPoolTypeValues.LiquidityBootstrapping
       ),
       poolTypeNotIn: [GqlPoolTypeValues.LiquidityBootstrapping],
-      chainIn: networks.length > 0 ? networks : PROJECT_CONFIG.supportedNetworks,
+      chainIn: PROJECT_CONFIG.supportedNetworks,
       userAddress,
       minTvl,
       tagIn:
@@ -348,12 +322,10 @@ export function usePoolListQueryState() {
       orderBy,
       orderDirection,
       poolTypes,
-      networks,
       textSearch,
       protocolVersion,
     },
     toggleUserAddress,
-    toggleNetwork,
     togglePoolType,
     togglePoolTag,
     togglePoolHookTag,
@@ -368,7 +340,6 @@ export function usePoolListQueryState() {
     resetFilters,
     poolTagLabel,
     poolHookTagLabel,
-    setNetworks,
     setProtocolVersion,
     poolTags,
     protocolVersion,
@@ -378,7 +349,6 @@ export function usePoolListQueryState() {
     sorting,
     totalFilterCount,
     poolTypes,
-    networks,
     mappedPoolTypes,
     queryVariables,
     userAddress,

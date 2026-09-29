@@ -4,7 +4,6 @@ import { Address } from 'viem'
 import { MAX_BIGINT } from '@repo/lib/shared/utils/numbers'
 import { InputAmount } from '@balancer/sdk'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
-import { requiresDoubleApproval } from '../token.helpers'
 
 export type TokenAmountToApprove = {
   tokenAddress: Address
@@ -20,7 +19,6 @@ export type RawAmount = Pick<InputAmount, 'address' | 'rawAmount'> & { symbol?: 
 type TokenApprovalParams = {
   chainId: GqlChain | SupportedChainId | null
   rawAmounts: RawAmount[]
-  allowanceFor: (tokenAddress: Address) => bigint
   isPermit2?: boolean
   approveMaxBigInt?: boolean
   skipAllowanceCheck?: boolean
@@ -32,7 +30,6 @@ type TokenApprovalParams = {
 export function getRequiredTokenApprovals({
   chainId,
   rawAmounts,
-  allowanceFor,
   isPermit2 = false,
   approveMaxBigInt = true,
   skipAllowanceCheck = false,
@@ -57,63 +54,14 @@ export function getRequiredTokenApprovals({
     ({ tokenAddress }) => !isNativeAsset(chainId, tokenAddress)
   )
 
-  /**
-   * Some tokens (e.g. USDT) require setting their approval amount to 0n before being
-   * able to adjust the value up again (only when there was an existing allowance)
-   */
-  return tokenAmountsToApprove.flatMap(t => {
-    if (isDoubleApprovalRequired(chainId, t.tokenAddress, allowanceFor)) {
-      const zeroTokenAmountToApprove: TokenAmountToApprove = {
-        requiredRawAmount: 0n,
-        requestedRawAmount: 0n,
-        tokenAddress: t.tokenAddress,
-        isPermit2,
-        symbol: t.symbol,
-      }
-
-      // Prepend approval for ZERO amount
-      return [zeroTokenAmountToApprove, t]
-    }
-
-    return t
-  })
-}
-
-/**
- * Some tokens require setting their approval amount to 0 first before being
- * able to adjust the value up again. This returns true for tokens that requires
- * this and false otherwise.
- */
-function isDoubleApprovalRequired(
-  chainId: GqlChain | SupportedChainId,
-  tokenAddress: Address,
-  allowanceFor: (tokenAddress: Address) => bigint
-): boolean {
-  const previousAllowanceApproved = allowanceFor(tokenAddress)
-  return !!(
-    requiresDoubleApproval(chainId, tokenAddress) &&
-    previousAllowanceApproved > 0n &&
-    previousAllowanceApproved < MAX_BIGINT
-  )
+  return tokenAmountsToApprove
 }
 
 export function areEmptyRawAmounts(amountsIn: RawAmount[]) {
   return !amountsIn || amountsIn.length === 0 || amountsIn.every(amount => amount.rawAmount === 0n)
 }
 
-export function isTheApprovedAmountEnough(
-  tokenAllowance: bigint,
-  requiredRawAmount: bigint,
-  isApprovingZeroForDoubleApproval: boolean,
-  nextTokenToApprove?: TokenAmountToApprove
-) {
-  if (isApprovingZeroForDoubleApproval && nextTokenToApprove) {
-    // Edge case USDT case is completed if:
-    // - The allowance is 0n
-    // - The allowance is greater than the required amount (of the next step)
-    return tokenAllowance === 0n || tokenAllowance >= nextTokenToApprove.requiredRawAmount
-  }
-
+export function isTheApprovedAmountEnough(tokenAllowance: bigint, requiredRawAmount: bigint) {
   const isAllowed = tokenAllowance >= requiredRawAmount
   return requiredRawAmount > 0n && isAllowed
 }
