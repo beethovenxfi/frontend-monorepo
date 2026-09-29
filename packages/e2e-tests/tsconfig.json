@@ -12,6 +12,10 @@
       "@repo/*": ["../../packages/*"]
     }
   },
-  "include": ["**/*.ts", "../../packages/lib/global.d.ts"],
+  "include": [
+    "**/*.ts",
+    "../../apps/beets-frontend-v3/next-env.d.ts",
+    "../../packages/lib/global.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
