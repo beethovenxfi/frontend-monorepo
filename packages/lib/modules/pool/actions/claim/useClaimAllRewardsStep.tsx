@@ -9,7 +9,7 @@ import {
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-enums'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo, useState } from 'react'
 import { ManagedTransactionInput } from '../../../web3/contracts/useManagedTransaction'
 import { useUserAccount } from '../../../web3/UserAccountProvider'
@@ -67,7 +67,7 @@ export function useClaimAllRewardsStep({
       : 'Claim all rewards from your gauge',
   }
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Claim all rewards transaction)',
     {
       poolId: pool.id,

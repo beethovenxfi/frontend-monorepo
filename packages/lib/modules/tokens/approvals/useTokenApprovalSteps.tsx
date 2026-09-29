@@ -5,7 +5,7 @@ import {
 } from '@repo/lib/config/app.config'
 import type { GqlChain } from '@repo/lib/shared/services/api/generated/graphql'
 import { isSameAddress } from '@repo/lib/shared/utils/addresses'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo } from 'react'
 import { Address, encodeFunctionData, erc20Abi } from 'viem'
 import { ManagedErc20TransactionButton } from '../../transactions/transaction-steps/TransactionButton'
@@ -156,7 +156,7 @@ export function useTokenApprovalSteps({
       chainId: getChainId(chain),
       args: [spenderAddress, requestedRawAmount],
       enabled: isTxEnabled,
-      simulationMeta: sentryMetaForWagmiSimulation(
+      simulationMeta: queryErrorMetaForWagmiSimulation(
         'Error in wagmi tx simulation: Approving token',
         tokenAmountToApprove
       ),

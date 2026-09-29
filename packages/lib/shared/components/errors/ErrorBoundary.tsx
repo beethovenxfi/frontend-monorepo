@@ -3,7 +3,6 @@
 import { Button, Box, Text, Heading, VStack } from '@chakra-ui/react'
 import { ensureError } from '../../utils/errors'
 import { DefaultPageContainer } from '../containers/DefaultPageContainer'
-import { captureSentryError } from '../../utils/query-errors'
 
 interface BoundaryErrorProps {
   error: unknown
@@ -13,7 +12,7 @@ interface BoundaryErrorProps {
 export function BoundaryError({ error, resetErrorBoundary }: BoundaryErrorProps) {
   const _error = ensureError(error)
 
-  captureSentryError(_error, { errorMessage: _error.message })
+  console.error('Error boundary caught an error', _error)
 
   return (
     <Box border="2px dashed" borderColor="red.500" minH="200px" p="md" rounded="lg" w="full">

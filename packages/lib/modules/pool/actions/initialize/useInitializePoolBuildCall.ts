@@ -4,7 +4,7 @@ import { InitPool, type InitPoolInputV3, type PoolType, InitPoolDataProvider } f
 import { type Address } from 'viem'
 import { type TransactionConfig } from '@repo/lib/modules/web3/contracts/contract.types'
 import { usePermit2Signature } from '@repo/lib/modules/tokens/approvals/permit2/Permit2SignatureProvider'
-import { sentryMetaForInitializePoolHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForInitializePoolHandler } from '@repo/lib/shared/utils/query-errors'
 import { useBlockNumber } from 'wagmi'
 
 type Params = {
@@ -77,7 +77,7 @@ export function useInitializePoolBuildCall({
     queryFn,
     enabled: enabled && isConnected,
     gcTime: 0,
-    meta: sentryMetaForInitializePoolHandler('Error in initialize pool build call', {
+    meta: queryErrorMetaForInitializePoolHandler('Error in initialize pool build call', {
       ...initPoolInput,
       blockNumber,
     }),

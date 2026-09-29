@@ -3,7 +3,7 @@ import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { CreatePool } from '@balancer/sdk'
 import { CreatePoolInput } from './types'
 import { type TransactionConfig } from '@repo/lib/modules/web3/contracts/contract.types'
-import { sentryMetaForCreatePoolHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForCreatePoolHandler } from '@repo/lib/shared/utils/query-errors'
 import { useBlockNumber } from 'wagmi'
 
 type Props = {
@@ -36,7 +36,7 @@ export function useCreatePoolBuildCall({ createPoolInput, enabled }: Props) {
     queryFn,
     enabled: enabled && isConnected,
     gcTime: 0,
-    meta: sentryMetaForCreatePoolHandler('Error in create pool build call', {
+    meta: queryErrorMetaForCreatePoolHandler('Error in create pool build call', {
       ...createPoolInput,
       blockNumber,
     }),

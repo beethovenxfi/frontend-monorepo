@@ -3,7 +3,7 @@ import { TransactionConfig } from './contracts/contract.types'
 
 /*
   Checks the current blocknumber and gasPrice for the given chainId and provides a function to build a Tenderly simulation URL
-  Used in sentry metadata to be able to simulate tx from Sentry issues in Tenderly
+  Used in query error metadata to open a failed transaction simulation in Tenderly.
 */
 export function useTenderly({ chainId }: { chainId: number }) {
   const { data: blockNumber } = useBlockNumber({ chainId })

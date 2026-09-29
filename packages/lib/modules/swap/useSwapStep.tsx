@@ -4,7 +4,7 @@ import {
   TransactionLabels,
   TransactionStep,
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { VStack } from '@chakra-ui/react'
 import { capitalize } from 'lodash'
 import { useEffect, useMemo, useState } from 'react'
@@ -95,7 +95,7 @@ export function useSwapStep({
     }
   }, [simulationQuery.data])
 
-  const gasEstimationMeta = sentryMetaForWagmiSimulation('Error in swap gas estimation', {
+  const gasEstimationMeta = queryErrorMetaForWagmiSimulation('Error in swap gas estimation', {
     buildCallQueryData: buildSwapQuery.data,
     tenderlyUrl: buildTenderlyUrl(buildSwapQuery.data),
   })

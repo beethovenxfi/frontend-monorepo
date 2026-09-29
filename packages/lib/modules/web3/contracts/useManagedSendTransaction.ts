@@ -12,8 +12,8 @@ import { useOnTransactionSubmission } from './useOnTransactionSubmission'
 import { getGqlChain } from '@repo/lib/config/app.config'
 import { useChainSwitch } from '../useChainSwitch'
 import {
-  captureWagmiExecutionError,
-  sentryMetaForWagmiExecution,
+  logWagmiExecutionError,
+  queryErrorMetaForWagmiExecution,
 } from '@repo/lib/shared/utils/query-errors'
 import { useNetworkConfig } from '@repo/lib/config/useNetworkConfig'
 import { useRecentTransactions } from '../../transactions/RecentTransactionsProvider'
@@ -65,7 +65,7 @@ export function useManagedSendTransaction({
 
   const writeMutation = useSendTransaction({
     mutation: {
-      meta: sentryMetaForWagmiExecution('Error sending transaction', {
+      meta: queryErrorMetaForWagmiExecution('Error sending transaction', {
         txConfig,
         estimatedGas: estimateGasQuery.data,
         tenderlyUrl: gasEstimationMeta?.tenderlyUrl,
@@ -136,7 +136,7 @@ export function useManagedSendTransaction({
             gas: estimateGasQuery.data,
           })
         } catch (e: unknown) {
-          captureWagmiExecutionError(e, 'Error in send transaction execution', {
+          logWagmiExecutionError(e, 'Error in send transaction execution', {
             chainId,
             txConfig,
             gas: estimateGasQuery.data,

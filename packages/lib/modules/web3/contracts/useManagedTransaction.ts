@@ -19,7 +19,7 @@ import { AbiMap } from './AbiMap'
 import { TransactionExecution, TransactionSimulation, WriteAbiMutability } from './contract.types'
 import { useOnTransactionConfirmation } from './useOnTransactionConfirmation'
 import { useOnTransactionSubmission } from './useOnTransactionSubmission'
-import { captureWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
+import { logWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
 import { useTxHash } from '../safe.hooks'
 import { getWaitForReceiptTimeout } from './wagmi-helpers'
 import { onlyExplicitRefetch } from '@repo/lib/shared/utils/queries'
@@ -159,7 +159,7 @@ export function useManagedTransaction({
         chainId: chainId,
       })
     } catch (e: unknown) {
-      captureWagmiExecutionError(e, 'Error in managed transaction execution', {
+      logWagmiExecutionError(e, 'Error in managed transaction execution', {
         chainId,
         request: simulateQuery.data.request,
       })

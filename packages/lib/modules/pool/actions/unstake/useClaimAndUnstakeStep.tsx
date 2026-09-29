@@ -12,7 +12,7 @@ import { useBuildUnstakeCallData } from './useBuildUnstakeCallData'
 import { getNetworkConfig } from '@repo/lib/config/app.config'
 import { ManagedTransactionInput } from '@repo/lib/modules/web3/contracts/useManagedTransaction'
 import { useClaimableBalances } from '@repo/lib/modules/portfolio/PortfolioClaim/useClaimableBalances'
-import { sentryMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForWagmiSimulation } from '@repo/lib/shared/utils/query-errors'
 import { useMemo, useState } from 'react'
 import { ManagedTransactionButton } from '@repo/lib/modules/transactions/transaction-steps/TransactionButton'
 import { isTransactionSuccess } from '@repo/lib/modules/transactions/transaction-steps/transaction.helper'
@@ -74,7 +74,7 @@ export function useClaimAndUnstakeStep({
     userAddress,
   })
 
-  const txSimulationMeta = sentryMetaForWagmiSimulation(
+  const txSimulationMeta = queryErrorMetaForWagmiSimulation(
     'Error in wagmi tx simulation (Claim and unstake transaction)',
     {
       poolId: pool.id,

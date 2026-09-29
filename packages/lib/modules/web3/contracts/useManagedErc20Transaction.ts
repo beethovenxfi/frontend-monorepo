@@ -7,7 +7,7 @@ import {
   ManagedResult,
   TransactionLabels,
 } from '@repo/lib/modules/transactions/transaction-steps/lib'
-import { captureWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
+import { logWagmiExecutionError } from '@repo/lib/shared/utils/query-errors'
 import { Address, ContractFunctionArgs, ContractFunctionName, erc20Abi } from 'viem'
 import {
   useEstimateGas,
@@ -126,7 +126,7 @@ export function useManagedErc20Transaction({
 
       return await writeQuery.writeContractAsync(request)
     } catch (e: unknown) {
-      captureWagmiExecutionError(e, 'Error in ERC20 transaction execution', {
+      logWagmiExecutionError(e, 'Error in ERC20 transaction execution', {
         chainId,
         request: simulateQuery.data.request,
       })

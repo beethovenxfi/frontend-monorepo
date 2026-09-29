@@ -5,7 +5,7 @@ import { usePermitSignature } from '@repo/lib/modules/tokens/approvals/permit2/P
 import { useUserSettings } from '@repo/lib/modules/user/settings/UserSettingsProvider'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { defaultDebounceMs, onlyExplicitRefetch } from '@repo/lib/shared/utils/queries'
-import { sentryMetaForRemoveLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
+import { queryErrorMetaForRemoveLiquidityHandler } from '@repo/lib/shared/utils/query-errors'
 import { HumanAmount } from '@balancer/sdk'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'use-debounce'
@@ -80,7 +80,7 @@ export function useRemoveLiquidityBuildCallDataQuery({
     queryFn,
     enabled: enabled && isConnected && !!simulationQuery.data,
     gcTime: 0,
-    meta: sentryMetaForRemoveLiquidityHandler('Error in remove liquidity buildCallData query', {
+    meta: queryErrorMetaForRemoveLiquidityHandler('Error in remove liquidity buildCallData query', {
       ...params,
       chainId,
     }),

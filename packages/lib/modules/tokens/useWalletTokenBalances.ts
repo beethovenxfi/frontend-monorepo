@@ -14,7 +14,6 @@ import { isAddress } from 'viem'
 import { includesAddress } from '@repo/lib/shared/utils/addresses'
 import { bn } from '@repo/lib/shared/utils/numbers'
 import { useMemo } from 'react'
-import { captureNonFatalError } from '@repo/lib/shared/utils/query-errors'
 
 const MIN_TOKEN_VALUE_USD = 1
 const BALANCE_STALE_TIME = 30_000
@@ -60,11 +59,7 @@ export function useWalletTokenBalances(enabled: boolean) {
 
         return { nativeBalance, tokenBalances, erc20Tokens, success: true as const }
       } catch (error) {
-        captureNonFatalError({
-          error,
-          errorName: 'WalletTokenBalancesError',
-          errorMessage: 'Error fetching wallet token balances',
-        })
+        console.error('Error fetching wallet token balances', error)
 
         return { success: false as const, error }
       }
