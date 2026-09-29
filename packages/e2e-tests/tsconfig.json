@@ -14,7 +14,7 @@
   },
   "include": [
     "**/*.ts",
-    "../../apps/beets-frontend-v3/next-env.d.ts",
+    "../../apps/beets-frontend-v3/node_modules/next/types/global.d.ts",
     "../../packages/lib/global.d.ts"
   ],
   "exclude": ["node_modules"]
