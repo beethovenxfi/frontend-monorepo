@@ -92,7 +92,6 @@ export function Web3Provider({ children }: PropsWithChildren) {
           <UserAccountProvider>
             <UserSettingsProvider
               initAcceptedPolicies={undefined}
-              initCurrency={undefined}
               initEnableSignatures={undefined}
               initPoolListView={undefined}
               initSlippage={undefined}

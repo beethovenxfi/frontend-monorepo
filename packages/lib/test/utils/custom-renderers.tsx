@@ -70,7 +70,6 @@ function GlobalProviders({ children }: PropsWithChildren) {
               <TokensProvider>
                 <UserSettingsProvider
                   initAcceptedPolicies={undefined}
-                  initCurrency="USD"
                   initEnableSignatures="yes"
                   initPoolListView="list"
                   initSlippage="0.2"

@@ -2,9 +2,6 @@ import { BalAlert } from '@repo/lib/shared/components/alerts/BalAlert'
 import { MinimumDepositErrors } from './useIsMinimumDepositMet'
 import { BalAlertContent } from '@repo/lib/shared/components/alerts/BalAlertContent'
 import { ListItem, Text, UnorderedList } from '@chakra-ui/react'
-import { useUserSettings } from '@repo/lib/modules/user/settings/UserSettingsProvider'
-import { useFxRates } from '@repo/lib/shared/hooks/FxRatesProvider'
-import { symbolForCurrency } from '@repo/lib/shared/utils/currencies'
 import type BigNumber from 'bignumber.js'
 
 type Props = {
@@ -29,12 +26,8 @@ export function MinimumDepositErrorsAlert({ errors }: Props) {
 }
 
 function MinimumDepositErrorAlert({ errorType, min }: { errorType: string; min: BigNumber }) {
-  const { currency } = useUserSettings()
-  const { hasFxRates } = useFxRates()
-
   const toCurrencyWithoutLimit = (min: BigNumber) => {
-    const symbol = hasFxRates ? symbolForCurrency(currency) : '$'
-    return `${symbol}${min.toFixed()}`
+    return `$${min.toFixed()}`
   }
 
   return (
