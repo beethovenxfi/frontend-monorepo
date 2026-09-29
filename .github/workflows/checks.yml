@@ -16,7 +16,6 @@ env:
   NEXT_PRIVATE_DRPC_KEY: ${{ secrets.PRIVATE_DRPC_KEY }}
   TEST_ACCOUNT_MNEMONIC: ${{ secrets.TEST_ACCOUNT_MNEMONIC }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-  SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
 
 jobs:
   Lint:

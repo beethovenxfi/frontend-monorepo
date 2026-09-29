@@ -193,10 +193,7 @@ export class CreatePoolPage {
     if (this.isAutoRange) {
       await generalRisksCheckbox.click()
       await clickButton(this.page, 'Create Pool')
-      await clickButton(
-        this.page,
-        `Deploy pool on ${this.options.networkName ?? 'Ethereum Mainnet'}`,
-      )
+      await clickButton(this.page, `Deploy pool on ${this.options.networkName ?? 'Sonic'}`)
     }
 
     await this.fillTokenAmounts()
@@ -214,10 +211,7 @@ export class CreatePoolPage {
       await clickButton(this.page, 'Initialize Pool')
     } else {
       await clickButton(this.page, 'Create Pool')
-      await clickButton(
-        this.page,
-        `Deploy pool on ${this.options.networkName ?? 'Ethereum Mainnet'}`,
-      )
+      await clickButton(this.page, `Deploy pool on ${this.options.networkName ?? 'Sonic'}`)
       await expect(this.page.getByText('Pool creation confirmed!')).toBeVisible()
     }
 
