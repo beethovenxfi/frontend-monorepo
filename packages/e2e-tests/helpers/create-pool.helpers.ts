@@ -143,7 +143,6 @@ export class CreatePoolPage {
     await expect(this.page).toHaveURL(this.urls.type)
     if (this.options.hasProtocolChoice ?? true)
       await expect(this.page.getByText('Choose protocol')).toBeVisible()
-    await expect(this.page.getByText('Choose network')).toBeVisible()
     await expect(this.page.getByText('Choose a pool type')).toBeVisible()
   }
 

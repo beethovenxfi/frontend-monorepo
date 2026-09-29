@@ -48,6 +48,13 @@ async function addLiquidity(page: Page, boosted: boolean, proportional = boosted
   await expect(page.getByText('Transaction confirmed')).toBeVisible()
 }
 
+async function signRelayerIfNeeded(page: Page) {
+  const signRelayer = button(page, 'Sign relayer')
+  const removeLiquidity = button(page, 'Remove liquidity')
+  await expect(signRelayer.or(removeLiquidity).first()).toBeVisible()
+  if (await signRelayer.isVisible()) await signRelayer.click()
+}
+
 async function doAddLiquidityTxSteps(page: Page) {
   const addButton = button(page, 'Add liquidity')
   const approveOrSignButton = page.getByRole('button', { name: /(Approve|Sign)/i })
@@ -131,9 +138,11 @@ for (const [pool, boosted] of [
         await setSliderPercent(page, 50)
         await clickButton(page, 'Next')
 
+        const removeLiquidity = button(page, 'Remove liquidity')
+        await signRelayerIfNeeded(page)
+
         if (boosted) {
           const signApproval = button(page, `Sign approval: ${pool.symbol}`)
-          const removeLiquidity = button(page, 'Remove liquidity')
           await expect(signApproval.or(removeLiquidity).first()).toBeVisible()
           if (await signApproval.isVisible()) await signApproval.click()
         }
@@ -154,6 +163,7 @@ for (const [pool, boosted] of [
 
         await singleTokenTab.click()
         await clickButton(page, 'Next')
+        await signRelayerIfNeeded(page)
         await clickButton(page, 'Remove liquidity')
         await expect(page.getByText('Transaction confirmed')).toBeVisible()
         await forceClickButton(page, 'Return to pool')
