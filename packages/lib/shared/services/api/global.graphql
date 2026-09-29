@@ -34,8 +34,8 @@ query GetTokens($chains: [GqlChain!]!) {
   }
 }
 
-query GetApiHealth {
-  protocolMetricsChain(chain: SONIC) {
+query GetApiHealth($chain: GqlChain!) {
+  protocolMetricsChain(chain: $chain) {
     poolCount
   }
 }

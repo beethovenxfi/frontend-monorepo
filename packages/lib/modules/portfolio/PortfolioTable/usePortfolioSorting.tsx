@@ -6,7 +6,7 @@ import { ExpandedPoolInfo, ExpandedPoolType } from './useExpandedPools'
 import { usePortfolioFilters } from './PortfolioFiltersProvider'
 import { bn } from '@repo/lib/shared/utils/numbers'
 
-export type PortfolioTableSortingId = 'staking' | 'vebal' | 'liquidity' | 'apr'
+export type PortfolioTableSortingId = 'staking' | 'liquidity' | 'apr'
 export interface PortfolioSortingData {
   id: PortfolioTableSortingId | GqlPoolOrderBy
   desc: boolean
