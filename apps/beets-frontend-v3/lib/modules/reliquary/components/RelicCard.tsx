@@ -1,4 +1,16 @@
-import { Badge, Box, Button, HStack, Progress, SimpleGrid, Text, VStack } from '@chakra-ui/react'
+'use client'
+
+import {
+  Badge,
+  Box,
+  Button,
+  HStack,
+  Progress,
+  SimpleGrid,
+  Skeleton,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import { useNetworkConfig } from '@repo/lib/config/useNetworkConfig'
 import { usePool } from '@repo/lib/modules/pool/PoolProvider'
 import { getTotalApr } from '@repo/lib/modules/pool/pool.utils'
@@ -6,6 +18,7 @@ import MainAprTooltip from '@repo/lib/shared/components/tooltips/apr-tooltip/Mai
 import { bn, fNum, isValidNumber } from '@repo/lib/shared/utils/numbers'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import Countdown from 'react-countdown'
 import { ReliquaryFarmPosition, useReliquary } from '../ReliquaryProvider'
@@ -26,10 +39,14 @@ import { useRelicAddLiquidityBalance } from '../hooks/useRelicAddLiquidityBalanc
 import { LevelUpModal } from './LevelUpModal'
 import { BurnModal } from './BurnModal'
 import { ReliquaryClaimModal } from './ReliquaryClaimModal'
-import { RelicMaturityCurveChart } from './charts/RelicMaturityCurveChart'
 import RelicStat, { StatLabel, StatValueText } from './stats/RelicStat'
 import { useCurrency } from '@repo/lib/shared/hooks/useCurrency'
 import { TooltipWithTouch } from '@repo/lib/shared/components/tooltips/TooltipWithTouch'
+
+const RelicMaturityCurveChart = dynamic(
+  () => import('./charts/RelicMaturityCurveChart').then(module => module.RelicMaturityCurveChart),
+  { ssr: false, loading: () => <Skeleton height="full" width="full" /> }
+)
 
 interface RelicCardSimpleProps {
   relic: ReliquaryFarmPosition
