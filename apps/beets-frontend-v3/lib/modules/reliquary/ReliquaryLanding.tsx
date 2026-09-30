@@ -3,8 +3,8 @@
 import { Flex, SimpleGrid, Skeleton, VStack } from '@chakra-ui/react'
 import { useUserAccount } from '@repo/lib/modules/web3/UserAccountProvider'
 import { useSearchParams } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { useState } from 'react'
-import { MaBeetsCharts } from './components/charts/MaBeetsCharts'
 import { HowToParticipate } from './components/landing/HowToParticipate'
 import { MaBeetsHeader } from './components/landing/MaBeetsHeader'
 import { MyRelicsSection } from './components/landing/MyRelicsSection'
@@ -12,6 +12,23 @@ import { ReliquaryFaq } from './components/landing/ReliquaryFaq'
 import { MaBeetsNumbers } from './components/stats/MaBeetsNumbers'
 import { YourMaBeetsStats } from './components/stats/YourMaBeetsStats'
 import { useReliquary } from './ReliquaryProvider'
+
+const MaBeetsCharts = dynamic(
+  () => import('./components/charts/MaBeetsCharts').then(module => module.MaBeetsCharts),
+  {
+    ssr: false,
+    loading: () => (
+      <Flex flexWrap="wrap" gap="8" width="full">
+        {[0, 1].map(index => (
+          <VStack align="flex-start" flex="1" key={index} minWidth="300px" spacing="4">
+            <Skeleton height="28px" width="240px" />
+            <Skeleton height="400px" width="full" />
+          </VStack>
+        ))}
+      </Flex>
+    ),
+  }
+)
 
 export default function ReliquaryLanding() {
   const { isConnected, isLoading: isAccountLoading } = useUserAccount()
