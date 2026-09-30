@@ -153,7 +153,6 @@ export interface ProjectConfig {
   options: OptionsConfig
   links: Links
   footer: { linkSections: LinkSection[] }
-  networksForProtocolStats?: GqlChain[]
   partnerCards?: PartnerCard[]
   merklRewardsChains: GqlChain[]
 }
