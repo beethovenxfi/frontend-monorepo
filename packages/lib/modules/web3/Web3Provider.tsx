@@ -12,21 +12,12 @@ import { BlockedAddressModal } from './BlockedAddressModal'
 import { CustomAvatar } from './CustomAvatar'
 import { UserAccountProvider } from './UserAccountProvider'
 import { PropsWithChildren } from 'react'
-import { useIsMounted } from '@repo/lib/shared/hooks/useIsMounted'
 import { useWagmiConfig } from './WagmiConfigProvider'
 
 export function Web3Provider({ children }: PropsWithChildren) {
-  const isMounted = useIsMounted()
-
   const { colors, radii, shadows, semanticTokens, fonts } = useTheme()
 
   const { wagmiConfig } = useWagmiConfig()
-
-  /*
-    Avoids warning (Warning: Prop `dangerouslySetInnerHTML` did not match. Server...)
-    when customTheme changes from default (dark) to light theme while mounting.
-  */
-  if (!isMounted) return null
 
   const sharedConfig = {
     fonts: {

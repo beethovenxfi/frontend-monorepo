@@ -69,6 +69,7 @@ if (isBrowser()) {
 
 export type WagmiConfig = ReturnType<typeof createConfig>
 export const wagmiConfig = createConfig({
+  ssr: true,
   chains,
   transports,
   connectors,
@@ -108,6 +109,7 @@ export function impersonateWagmiConfig(impersonationAddress?: Address) {
   }
 
   const impersonatedConfig = createConfig({
+    ssr: true,
     chains,
     transports: _transports,
     connectors,

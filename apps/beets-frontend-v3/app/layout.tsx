@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html data-theme="dark" lang="en" style={{ colorScheme: 'dark' }}>
       <body
-        className={satoshiFont.className}
+        className={`${satoshiFont.className} chakra-ui-dark`}
         style={{ marginRight: '0px !important' }} // Required to prevent layout shift introduced by Rainbowkit
       >
         <ThemeProvider>
