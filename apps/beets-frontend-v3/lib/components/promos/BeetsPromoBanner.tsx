@@ -5,7 +5,7 @@ import { Heading, Flex, Box, Center } from '@chakra-ui/react'
 export function BeetsPromoBanner() {
   return (
     <Box
-      background={`url('/images/misc/banner1.png') no-repeat center center`}
+      background={`url('/images/misc/banner1.avif') no-repeat center center`}
       backgroundSize="cover"
       boxShadow="lg"
       h={{ base: '200px', sm: '140px' }}

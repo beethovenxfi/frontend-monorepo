@@ -19,7 +19,7 @@ export default async function Pools({ children }: PropsWithChildren) {
     <PoolLayout chain={ChainSlug.Sonic} id={PROJECT_CONFIG.corePoolId} variant={BaseVariant.v2}>
       <ReliquaryProvidersLayout>
         <DefaultPageContainer
-          backgroundImage="url('/images/reliquary/bg.png')"
+          backgroundImage="url('/images/reliquary/bg.avif')"
           backgroundPosition="top"
           backgroundRepeat="no-repeat"
           backgroundSize="contain"

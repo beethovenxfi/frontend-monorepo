@@ -51,7 +51,7 @@ export function LandingBalancerV3Section() {
       <Box bg="rgba(255, 255, 255, 0.05)" pb="xl" px="xl" w="full">
         <Box
           alignItems="flex-end"
-          backgroundImage="url(/images/misc/bal-v3.png)"
+          backgroundImage="url(/images/misc/bal-v3.avif)"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
           backgroundSize="100%"
