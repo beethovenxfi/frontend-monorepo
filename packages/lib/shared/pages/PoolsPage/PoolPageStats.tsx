@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverBody,
   Text,
+  Skeleton,
 } from '@chakra-ui/react'
 import Stat from '../../components/other/Stat'
 import { bn, safeToNumber } from '../../utils/numbers'
@@ -22,6 +23,27 @@ type Fee = {
 
 type PoolPageStatsProps = {
   rewardsClaimed24h?: string | number | undefined | null
+}
+
+export function PoolPageStatsSkeleton() {
+  return (
+    <Flex
+      aria-busy="true"
+      aria-label="Loading pool statistics"
+      direction="row"
+      flexWrap="wrap"
+      gap={{ base: 'sm', lg: 'ms' }}
+      mt="3"
+      pr={{ base: 'md', md: '0' }}
+      w={{ base: 'full', sm: 'auto' }}
+    >
+      {['TVL', 'Volume (24h)', 'Fees (24h)'].map(label => (
+        <Box flex="1" key={label}>
+          <Stat label={label} value={<Skeleton h="6" w="20" />} />
+        </Box>
+      ))}
+    </Flex>
+  )
 }
 
 export function PoolPageStats({ rewardsClaimed24h }: PoolPageStatsProps) {

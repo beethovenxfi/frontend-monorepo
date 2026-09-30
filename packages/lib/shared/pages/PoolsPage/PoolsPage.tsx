@@ -4,19 +4,18 @@ import { PoolList } from '@repo/lib/modules/pool/PoolList/PoolList'
 import { DefaultPageContainer } from '@repo/lib/shared/components/containers/DefaultPageContainer'
 import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 import { Box, Skeleton, Flex, Heading, Text } from '@chakra-ui/react'
-import { PropsWithChildren, Suspense } from 'react'
+import { PropsWithChildren, ReactNode, Suspense } from 'react'
 import Noise from '@repo/lib/shared/components/layout/Noise'
 import { RadialPattern } from '@repo/lib/shared/components/zen/RadialPattern'
-import { PoolPageStats } from './PoolPageStats'
 import { PROJECT_CONFIG } from '@repo/lib/config/getProjectConfig'
 import { fNumCustom } from '../../utils/numbers'
 import { useProtocolStats } from '@repo/lib/modules/protocol/ProtocolStatsProvider'
 
 type PoolsPageProps = PropsWithChildren & {
-  rewardsClaimed24h?: string
+  stats: ReactNode
 }
 
-export function PoolsPage({ children, rewardsClaimed24h }: PoolsPageProps) {
+export function PoolsPage({ children, stats }: PoolsPageProps) {
   const { protocolData } = useProtocolStats()
 
   return (
@@ -93,7 +92,7 @@ export function PoolsPage({ children, rewardsClaimed24h }: PoolsPageProps) {
                     {`Join ${fNumCustom(protocolData?.protocolMetricsChain.numLiquidityProviders || '0', '0a')}+ Liquidity Providers in yield-bearing pools`}
                   </Text>
                 </Box>
-                <PoolPageStats rewardsClaimed24h={rewardsClaimed24h} />
+                {stats}
               </Flex>
             </FadeInOnView>
             <FadeInOnView animateOnce={false}>
