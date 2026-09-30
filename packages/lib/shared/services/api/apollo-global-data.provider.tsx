@@ -28,19 +28,8 @@ export const revalidate = 60
 export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) {
   const client = getApolloServerClient()
 
-  const { data: protocolData } = await client.query({
-    query: GetProtocolStatsDocument,
-    variables: {
-      chain: PROJECT_CONFIG.defaultNetwork,
-    },
-    context: {
-      fetchOptions: {
-        next: { revalidate: mins(10).toSecs() },
-      },
-    },
-  })
-
   const [
+    { data: protocolData },
     hooksMetadata,
     poolTags,
     erc4626Metadata,
@@ -48,6 +37,17 @@ export async function ApolloGlobalDataProvider({ children }: PropsWithChildren) 
     feeManagersMetadata,
     poolMigrations,
   ] = await Promise.all([
+    client.query({
+      query: GetProtocolStatsDocument,
+      variables: {
+        chain: PROJECT_CONFIG.defaultNetwork,
+      },
+      context: {
+        fetchOptions: {
+          next: { revalidate: mins(10).toSecs() },
+        },
+      },
+    }),
     getHooksMetadata(),
     getPoolTags(),
     getErc4626Metadata(),
