@@ -14,20 +14,21 @@ export default async function Home() {
     chain: PROJECT_CONFIG.defaultNetwork,
   }
 
-  const { data: protocolData } = await client.query({
-    query: GetProtocolStatsDocument,
-    variables,
-    context: {
-      fetchOptions: {
-        next: { revalidate: mins(10).toSecs() },
+  const [{ data: protocolData }, { data: stakedSonicData }] = await Promise.all([
+    client.query({
+      query: GetProtocolStatsDocument,
+      variables,
+      context: {
+        fetchOptions: {
+          next: { revalidate: mins(10).toSecs() },
+        },
       },
-    },
-  })
-
-  const { data: stakedSonicData } = await client.query({
-    query: GetStakedSonicDataDocument,
-    variables: {},
-  })
+    }),
+    client.query({
+      query: GetStakedSonicDataDocument,
+      variables: {},
+    }),
+  ])
 
   if (protocolData === undefined || stakedSonicData === undefined) {
     return null
