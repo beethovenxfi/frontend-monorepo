@@ -38,7 +38,7 @@ export function LandingBeetsSocialClub() {
   return (
     <DefaultPageContainer noVerticalPadding pb="3xl">
       <Box
-        backgroundImage="url(/images/misc/beets-social-club.png)"
+        backgroundImage="url(/images/misc/beets-social-club.avif)"
         backgroundPosition="center"
         backgroundRepeat="no-repeat"
         backgroundSize="auto 100%"

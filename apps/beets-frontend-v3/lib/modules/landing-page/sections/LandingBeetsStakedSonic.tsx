@@ -20,7 +20,7 @@ export function LandingBeetsStakedSonic() {
     >
       <Box
         backgroundColor="rgba(255, 255, 255, 0.05)"
-        backgroundImage={{ base: 'none', lg: 'url(/images/misc/staking-bg.png)' }}
+        backgroundImage={{ base: 'none', lg: 'url(/images/misc/staking-bg.avif)' }}
         backgroundPosition="left bottom"
         backgroundRepeat="no-repeat"
         backgroundSize="50%"
