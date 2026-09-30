@@ -16,7 +16,15 @@ import { useDelegation } from './useDelegation'
 
 export function useReliquaryDelegationTransaction() {
   const { isConnected } = useUserAccount()
-  const { data: isDelegatedToMDs, delegationAddress, refetch } = useDelegation()
+
+  const {
+    data: isDelegatedToMDs,
+    delegationAddress,
+    refetch,
+    isFetched: isDelegationFetched,
+    isLoading: isDelegationLoading,
+  } = useDelegation()
+
   const networkConfig = getNetworkConfig(GqlChainValues.Sonic)
 
   const transactionInput: ManagedTransactionInput = isDelegatedToMDs
@@ -35,7 +43,13 @@ export function useReliquaryDelegationTransaction() {
         args: networkConfig.snapshot?.id ? [networkConfig.snapshot.id] : null,
         onTransactionChange: () => {},
         enabled:
-          isConnected && !!networkConfig.snapshot?.contractAddress && !!networkConfig.snapshot?.id,
+          isConnected &&
+          // Only simulate clearDelegate once the delegation read has resolved and
+          // the user is actually delegated to the MDs.
+          isDelegationFetched &&
+          isDelegatedToMDs &&
+          !!networkConfig.snapshot?.contractAddress &&
+          !!networkConfig.snapshot?.id,
       }
     : {
         labels: {
@@ -58,6 +72,11 @@ export function useReliquaryDelegationTransaction() {
         onTransactionChange: () => {},
         enabled:
           isConnected &&
+          // Only simulate setDelegate once the delegation read has resolved and the
+          // user is not already delegated to the MDs (delegations to other addresses
+          // are ignored since setDelegate simply re-points them).
+          isDelegationFetched &&
+          !isDelegatedToMDs &&
           !!networkConfig.snapshot?.contractAddress &&
           !!networkConfig.snapshot?.id &&
           !!networkConfig.snapshot?.delegateAddress,
@@ -99,6 +118,7 @@ export function useReliquaryDelegationTransaction() {
   return {
     isDelegatedToMDs,
     delegationAddress,
+    isDelegationLoading,
     transactionState,
     isLoading,
     execute,

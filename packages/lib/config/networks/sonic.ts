@@ -80,7 +80,7 @@ const networkConfig: NetworkConfig = {
   pools: convertHexToLowerCase({ issues: {} }),
   snapshot: {
     contractAddress: '0x469788fe6e9e9681c6ebf3bf78e7fd26fc015446',
-    delegateAddress: '0x641e10Cd6132D3e3FA01bfd65d2e0afCf64b136A', // MD delegator address case sensitive!
+    delegateAddress: '0x641e10cd6132d3e3fa01bfd65d2e0afcf64b136a', // MD delegator address
     id: '0x62656574732D6761756765732E65746800000000000000000000000000000000', // BeethovenX Snapshot id
   },
   reliquary: {

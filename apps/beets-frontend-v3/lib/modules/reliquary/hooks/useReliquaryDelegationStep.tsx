@@ -17,7 +17,7 @@ export type DelegationAction = 'delegate' | 'undelegate'
 
 export function useReliquaryDelegationStep(action: DelegationAction) {
   const { isConnected } = useUserAccount()
-  const { refetch } = useDelegation()
+  const { refetch, data: isDelegatedToMDs, isFetched: isDelegationFetched } = useDelegation()
   const [transaction, setTransaction] = useState<ManagedResult | undefined>()
   const { chain } = useReliquary()
 
@@ -57,6 +57,11 @@ export function useReliquaryDelegationStep(action: DelegationAction) {
               : null,
           enabled:
             isConnected &&
+            // Only simulate setDelegate once the delegation read has resolved and the
+            // user is not already delegated to the MDs (delegations to other addresses
+            // are ignored since setDelegate simply re-points them).
+            isDelegationFetched &&
+            !isDelegatedToMDs &&
             !!networkConfig.snapshot?.contractAddress &&
             !!networkConfig.snapshot?.id &&
             !!networkConfig.snapshot?.delegateAddress,
@@ -71,6 +76,10 @@ export function useReliquaryDelegationStep(action: DelegationAction) {
           args: networkConfig.snapshot?.id ? [networkConfig.snapshot.id] : null,
           enabled:
             isConnected &&
+            // Only simulate clearDelegate once the delegation read has resolved and
+            // the user is actually delegated to the MDs.
+            isDelegationFetched &&
+            isDelegatedToMDs &&
             !!networkConfig.snapshot?.contractAddress &&
             !!networkConfig.snapshot?.id,
           onTransactionChange: setTransaction,

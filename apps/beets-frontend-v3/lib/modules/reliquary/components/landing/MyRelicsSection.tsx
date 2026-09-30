@@ -28,7 +28,7 @@ type Props = {
 
 export function MyRelicsSection({ focusRelicId, isConnected }: Props) {
   const { totalMaBeetsVP, isLoading, relicPositions } = useReliquary()
-  const { isDelegatedToMDs } = useReliquaryDelegationTransaction()
+  const { isDelegatedToMDs, isDelegationLoading } = useReliquaryDelegationTransaction()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
 
@@ -111,7 +111,12 @@ export function MyRelicsSection({ focusRelicId, isConnected }: Props) {
                         <Text>Inactive</Text>
                       </Badge>
                     )}
-                    <Button onClick={onOpen} size="sm" variant="primary">
+                    <Button
+                      isLoading={isDelegationLoading}
+                      onClick={onOpen}
+                      size="sm"
+                      variant="primary"
+                    >
                       {isDelegatedToMDs ? 'Deactivate' : 'Activate'}
                     </Button>
                   </HStack>
