@@ -276,6 +276,14 @@ export function shouldIgnore(message: string, stackTrace = ''): boolean {
   if (message.includes('Provider not found')) return true
 
   /*
+    Expected error when the connected wallet does not implement EIP-5792
+    (non EIP-7702 capable wallets respond with -32601 MethodNotFoundRpcError
+    to the wallet_getCapabilities probe in useEip5792AtomicCapability).
+    The hook already treats this as "unsupported" so the error is noise.
+  */
+  if (message.includes('wallet_getCapabilities')) return true
+
+  /*
     More info: https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
   */
   if (message.includes('ResizeObserver loop limit exceeded')) return true

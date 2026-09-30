@@ -29,6 +29,15 @@ describe('shouldIgnore', () => {
     expect(shouldIgnore('ResizeObserver loop limit exceeded')).toBe(true)
   })
 
+  it('suppresses wallet_getCapabilities method not found errors', () => {
+    // Expected for wallets that do not implement EIP-5792 (non EIP-7702 capable)
+    expect(
+      shouldIgnore(
+        'The method "wallet_getCapabilities" does not exist / is not available.\n\nDetails: method [wallet_getCapabilities] doesn\'t has corresponding handler\nVersion: viem@2.56.0'
+      )
+    ).toBe(true)
+  })
+
   it('does not suppress unknown errors', () => {
     expect(shouldIgnore('Unexpected pool query failure')).toBe(false)
     expect(shouldIgnore('')).toBe(false)

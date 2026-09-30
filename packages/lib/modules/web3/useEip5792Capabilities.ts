@@ -26,6 +26,9 @@ export function useEip5792AtomicCapability(): {
     chainId,
     query: {
       enabled: !!userAddress && !!chainId,
+      // Wallets without EIP-5792 support fail with -32601 (method not found),
+      // which can never succeed on retry
+      retry: false,
     },
   })
 
