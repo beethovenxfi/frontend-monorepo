@@ -34,6 +34,8 @@ const getStakingFilterKey = (poolType: ExpandedPoolType): StakingFilterKeyType =
   switch (poolType) {
     case ExpandedPoolType.Staked:
       return StakingFilterKey.Staked
+    case ExpandedPoolType.Reliquary:
+      return StakingFilterKey.Reliquary
     case ExpandedPoolType.Unstaked:
       return StakingFilterKey.Unstaked
     case ExpandedPoolType.Default:

@@ -35,7 +35,10 @@ const generateStakingWeightForSort = (pool: ExpandedPoolInfo) => {
 
   if (canStake) {
     return (
-      Number(pool.poolType === ExpandedPoolType.Staked) * 20 +
+      Number(
+        pool.poolType === ExpandedPoolType.Staked || pool.poolType === ExpandedPoolType.Reliquary
+      ) *
+        20 +
       Number(pool.poolType === ExpandedPoolType.Unstaked) * 10
     )
   } else {
