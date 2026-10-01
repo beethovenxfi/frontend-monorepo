@@ -5,6 +5,7 @@ import { GqlPoolStakingTypeValues } from '@repo/lib/shared/services/api/graphql-
 
 export enum ExpandedPoolType {
   Staked = 'staked',
+  Reliquary = 'reliquary',
   Unstaked = 'unstaked',
   Default = 'default',
 }
@@ -21,6 +22,7 @@ function generateUniqueKey(...args: string[]) {
 
 export const StakingFilterKey = {
   Staked: 'Staked',
+  Reliquary: 'Reliquary',
   Unstaked: 'Unstaked',
   Default: 'Default',
 } as const
@@ -30,6 +32,7 @@ export type StakingFilterKeyType = (typeof StakingFilterKey)[keyof typeof Stakin
 // Maps UI filter keys to the actual pool types they represent
 export const STAKING_FILTER_MAP: Record<StakingFilterKeyType, ExpandedPoolType[]> = {
   [StakingFilterKey.Staked]: [ExpandedPoolType.Staked],
+  [StakingFilterKey.Reliquary]: [ExpandedPoolType.Reliquary],
   [StakingFilterKey.Unstaked]: [ExpandedPoolType.Unstaked],
   [StakingFilterKey.Default]: [ExpandedPoolType.Default],
 }
@@ -37,6 +40,7 @@ export const STAKING_FILTER_MAP: Record<StakingFilterKeyType, ExpandedPoolType[]
 // Maps UI filter keys to their display labels
 export const STAKING_LABEL_MAP: Record<StakingFilterKeyType, string> = {
   [StakingFilterKey.Staked]: 'Staked',
+  [StakingFilterKey.Reliquary]: 'maBEETS',
   [StakingFilterKey.Unstaked]: 'Unstaked',
   [StakingFilterKey.Default]: 'N/A',
 }
@@ -46,21 +50,32 @@ export function useExpandedPools(pools: Pool[]) {
     const expandedPools: ExpandedPoolInfo[] = []
 
     pools.forEach(pool => {
-      const stakedBalancesUsd =
-        pool.userBalance?.stakedBalances
-          ?.filter(balance =>
-            ([GqlPoolStakingTypeValues.Gauge] as string[]).includes(balance.stakingType)
-          )
-          .reduce((acc, balance) => acc + Number(balance.balanceUsd), 0) || 0
+      const stakedBalances = pool.userBalance?.stakedBalances ?? []
 
+      const stakedUsdFor = (stakingType: string) =>
+        stakedBalances
+          .filter(balance => balance.stakingType === stakingType)
+          .reduce((acc, balance) => acc + Number(balance.balanceUsd), 0)
+
+      const gaugeStakedUsd = stakedUsdFor(GqlPoolStakingTypeValues.Gauge)
+      const reliquaryStakedUsd = stakedUsdFor(GqlPoolStakingTypeValues.Reliquary)
       const walletBalanceUsd = pool.userBalance?.walletBalanceUsd || 0
 
-      if (stakedBalancesUsd > 0) {
+      if (gaugeStakedUsd > 0) {
         expandedPools.push({
           ...pool,
           poolType: ExpandedPoolType.Staked,
-          poolPositionUsd: stakedBalancesUsd,
+          poolPositionUsd: gaugeStakedUsd,
           uniqueKey: generateUniqueKey(pool.id, ExpandedPoolType.Staked),
+        })
+      }
+
+      if (reliquaryStakedUsd > 0) {
+        expandedPools.push({
+          ...pool,
+          poolType: ExpandedPoolType.Reliquary,
+          poolPositionUsd: reliquaryStakedUsd,
+          uniqueKey: generateUniqueKey(pool.id, ExpandedPoolType.Reliquary),
         })
       }
 
@@ -75,7 +90,7 @@ export function useExpandedPools(pools: Pool[]) {
         })
       }
 
-      if (stakedBalancesUsd === 0 && walletBalanceUsd === 0) {
+      if (gaugeStakedUsd === 0 && reliquaryStakedUsd === 0 && walletBalanceUsd === 0) {
         expandedPools.push({
           ...pool,
           poolType: ExpandedPoolType.Default,

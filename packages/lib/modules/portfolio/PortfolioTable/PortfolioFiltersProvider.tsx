@@ -99,6 +99,8 @@ export function usePortfolioFiltersLogic() {
       if (pool.poolType) {
         if (pool.poolType === ExpandedPoolType.Staked) {
           foundFilterKeys.add(StakingFilterKey.Staked)
+        } else if (pool.poolType === ExpandedPoolType.Reliquary) {
+          foundFilterKeys.add(StakingFilterKey.Reliquary)
         } else if (pool.poolType === ExpandedPoolType.Unstaked) {
           foundFilterKeys.add(StakingFilterKey.Unstaked)
         } else if (pool.poolType === ExpandedPoolType.Default) {
