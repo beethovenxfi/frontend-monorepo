@@ -13,7 +13,7 @@ export default function Terms() {
           <div className="subsection">
             <h1>Beets terms of use</h1>
             <p>
-              <em>Last updated: February 2023</em>
+              <em>Last updated: October 6, 2026</em>
             </p>
           </div>
         </FadeInOnView>
@@ -54,10 +54,10 @@ export default function Terms() {
             </p>
             <p>
               To avoid any confusion, you agree a) you retain full control, at all times, over your
-              cryptocurrency assets, b) there are no intermediaries involved when you interact with
-              the Beets Protocol and c) the online interface (UI) is a mere graphical interface for
-              you to interact with the Beets Protocol, which can be accessed through other means,
-              including other interfaces.
+              cryptocurrency assets, b) Beets does not take custody of your assets and c) the online
+              interface (UI) is a graphical interface for you to interact with the Beets Protocol,
+              which can be accessed through other means, including other interfaces. The interface
+              may use third-party services to help you interact with smart contracts.
             </p>
             <p>
               You must be able to form a legally binding contract online either as an individual or
