@@ -30,13 +30,13 @@ export default function Risks() {
             <Box mt="3xl" pb="md">
               <h1>Risks of using&nbsp;Beets</h1>
               <p>
-                <em>Last updated: July 2025</em>
+                <em>Last updated: October 6, 2026</em>
               </p>
               <p>
                 <em>
-                  There are many inherent risks developers accept when working in DeFi and using the
-                  Beets Protocol. This page aims to summarize the top risks to help you with your
-                  risk decisions. It is important to note that this list is not exhaustive, and
+                  Using the Beets Protocol on Sonic involves risks for liquidity providers,
+                  swappers, and other users. This page summarizes risks to help you evaluate your
+                  use of the protocol. It is important to note that this list is not exhaustive, and
                   there may be additional risks not explicitly mentioned here. As the risk
                   environment is fluid, we expect to periodically update this summary.
                 </em>
@@ -140,7 +140,7 @@ export default function Risks() {
                 Smart contract risk
               </h4>
               <p>
-                Smart contract risk is a general risk when using DeFi protocols, including Balancer.
+                Smart contract risk is a general risk when using DeFi protocols, including Beets.
                 Smart contracts are self-executing pieces of code that run on certain blockchains,
                 like Sonic. Although they are designed to be secure, they can be vulnerable to bugs
                 and exploits.
@@ -154,35 +154,25 @@ export default function Risks() {
               </p>
               <h5>The Balancer Vault</h5>
               <p>
-                The main architectural change between Balancer V1 and Balancer V2 is the transition
-                to&nbsp;a single vault that holds and manages all the assets added by all Balancer
-                pools. This separates the AMM logic from the token management and accounting. Token
-                management/accounting is done by the vault while the AMM logic is individual to each
-                pool. This provides many advantages, including flexibility and gas efficiency.
+                Beets uses Balancer-based vault architecture on Sonic. Vaults hold and account for
+                pool assets, while individual pools define their AMM logic. The contracts and
+                features involved depend on the pool and protocol version.
               </p>
               <p>
-                One critique of this approach is that the Balancer Vault could be a single point of
-                failure—i.e. hack the vault, get all the tokens of the protocol. This Balancer Vault
-                architecture was heavily audited prior to launch and has now been battle-tested
-                since May 2021, securing over $3b. It has also been forked by other teams across
-                different networks, including Beets on Sonic, without issue.
+                A vulnerability in a shared vault can put assets in multiple pools at risk. Audits
+                and prior operation do not guarantee that a vault, pool, or related contract is free
+                of vulnerabilities.
               </p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   Development teams have engaged with top-tier smart contract auditing firms to
                   identify and fix bugs before deployment.
                 </li>
                 <li>
-                  The core of Balancer smart contracts are immutable and do not use proxies or other
-                  upgrade mechanisms. Note: Within DeFi, upgradable contracts are a major way
-                  exploits have been introduced.
-                </li>
-                <li>
-                  In addition, Balancer has a bug bounty program via Immunefi to attract white-hat
-                  hackers to responsibly disclose any bugs. Rewards are distributed based on threat
-                  level—for critical smart contract vulnerabilities, there is a minimum reward of
-                  250 ETH and a maximum reward of 1,000 ETH.
+                  Contract permissions and upgrade mechanisms vary across pools and their related
+                  contracts. LPs should review which components are immutable and which can be
+                  changed by an authorized party.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -218,7 +208,7 @@ export default function Risks() {
                 further increases risk.
               </p>
               <p>These types of economic exploits are difficult to detect and prevent.</p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   Balancer strives to deliver careful economic modeling, rigorous mechanism design,
@@ -266,7 +256,6 @@ export default function Risks() {
                     <li>Rebasing tokens</li>
                   </ul>
                 </li>
-
                 <li>
                   Tokens that become toxic, including:
                   <ul>
@@ -301,15 +290,15 @@ export default function Risks() {
                 since LPs may suffer losses when rebasing occurs.
               </p>
 
-              <h5>How does Balancer mitigate these risks?</h5>
+              <h5>How can these risks be reduced?</h5>
               <ul>
                 <li>
                   Since the Balancer protocol is permissionless, anyone can create a liquidity pool
                   composed of any ERC-20 token. This makes this type of risk difficult to mitigate.
                 </li>
                 <li>
-                  The Balancer App UI may be updated to exclude blacklisted tokens and pools but LPs
-                  should not rely on this.
+                  The Beets UI may be updated to exclude blacklisted tokens and pools but LPs should
+                  not rely on this.
                 </li>
                 <li>
                   Instead of including tokens which rebase, new DeFi liquidity pool compatible
@@ -320,15 +309,9 @@ export default function Risks() {
                   <code>stETH</code>.
                 </li>
                 <li>
-                  For Balancer Managed Pools, a novel feature called &lsquo;circuit breakers&rsquo;
-                  has been designed to halt swapping if there is a large, uncorrelated drop in a
-                  token&rsquo;s value.
-                </li>
-                <li>
-                  New pools have a &lsquo;recovery mode&rsquo; which can be enabled by the Emergency
-                  DAO Multisig. Pools in recovery mode provide a simple way for LPs to exit the pool
-                  proportionally at the cost of disabling protocol fees (swaps, joins etc still
-                  work).
+                  Where supported, recovery mode allows LPs to exit a pool proportionally. Beets
+                  multisigs handle the relevant administrative controls on Sonic. Available actions
+                  and restrictions depend on the pool and protocol version.
                 </li>
               </ul>
 
@@ -397,7 +380,7 @@ export default function Risks() {
                 millions of dollars. Flash Loan exploits are relatively new with the full range of
                 attack surfaces still being discovered.
               </p>
-              <h5>How Balancer aims to mitigate this risk:</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>The Balancer Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
                 <li>
@@ -438,26 +421,18 @@ export default function Risks() {
                   Who can change each attribute
                   <ul>
                     <li>
-                      On Balancer pools, if an attribute is editable, the address that can make the
-                      edit is also specified. The two most common parties that are set to be able to
-                      change pool attributes are either the Pool Owner or Balancer Governance.
+                      LPs should review the addresses and permissions that can change each
+                      attribute. Beets multisigs handle protocol-level administrative controls for
+                      the Sonic deployment; pool-specific permissions may also apply.
                     </li>
                   </ul>
                 </li>
               </ul>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  For known pool types, the Balancer App UI transparently displays pool attributes
-                  and specifies if it is editable and if so, by whom.
-                </li>
-                <li>
-                  Balancer Managed Pools are designed to have mutable attributes that can be changed
-                  by the Pool Owner. For certain &lsquo;dangerous operations&rsquo;, there are
-                  &lsquo;timelock delays&rsquo; which give LPs a period to review the proposed
-                  changes and withdraw funds if they do not agree with the change. In addition, Pool
-                  Controllers can set a guardian who has the ability to veto a proposed change from
-                  the Pool Owner if they believe it to be a malicious change or a mistake.
+                  The Beets UI displays pool information, but LPs should also verify editable
+                  attributes and the addresses authorized to change them in the relevant contracts.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -490,9 +465,9 @@ export default function Risks() {
                 change in price you are willing to accept.
               </p>
               <p>
-                Slippage tolerance is a setting in both the Add/Remove liquidity flows on the
-                Balancer App UI. Setting a low slippage tolerance protects you from front-running
-                bots and miner extractable value (MEV).
+                Slippage tolerance is a setting in both the Add/Remove liquidity flows on the Beets
+                UI. Setting a low slippage tolerance protects you from front-running bots and miner
+                extractable value (MEV).
               </p>
               <h5>Due to high gas fees</h5>
               <p>
@@ -509,17 +484,17 @@ export default function Risks() {
                 higher than the returns they get from providing liquidity, LPs may end up with a net
                 loss.
               </p>
-              <h5>How Balancer aims to mitigate this risk:</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   The Balancer Smart Order router is used to route liquidity efficiently via pools
                   to minimize price impact.
                 </li>
-                <li>The Balancer App UI gives LPs control over their slippage settings.</li>
+                <li>The Beets UI gives LPs control over their slippage settings.</li>
                 <li>
-                  LPs are warned via the Balancer App UI when the price impact is excessive. Once
-                  price impact exceeds a certain threshold, the Balancer App UI prevents users from
-                  executing a transaction where they would otherwise get rekt.
+                  The Beets UI displays price-impact warnings and requires risk acknowledgment for
+                  certain high or unknown price-impact transactions. Acknowledging a warning does
+                  not protect users against losses.
                 </li>
               </ul>
               <h5>How LPs can mitigate this risk:</h5>
@@ -559,7 +534,7 @@ export default function Risks() {
                 This risk is particularly relevant for pools with volatile assets where token prices
                 are likely to diverge over time.
               </p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   All AMMs either have impermanent loss or reduced yield to LPs. Balancer aims to
@@ -571,11 +546,6 @@ export default function Risks() {
                   impermanent loss. For example, there is lower impermanent loss in an 80/20 pool
                   (or any other unbalanced pools) versus a 50/50 pool with the same underlying
                   tokens.
-                </li>
-                <li>
-                  Note: Some ecosystem developers are building on top of Balancer to create novel
-                  pools, including Managed Pools, with rebalancing algorithms designed to minimize
-                  impermanent loss.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -640,8 +610,8 @@ export default function Risks() {
               <p>
                 DeFi users, including liquidity providers and swappers, typically interact with
                 front-end user interfaces to interact with a protocol&rsquo;s smart contracts. An
-                example is the beets.fi front-end UI instance which interacts with Balancer Protocol
-                smart contracts.
+                example is the beets.fi UI, which interacts with Beets smart contracts on Sonic
+                built on Balancer technology.
               </p>
 
               <p>A few risks of using front-ends to manage liquidity positions in DeFi:</p>
@@ -662,22 +632,22 @@ export default function Risks() {
                 </li>
               </ul>
 
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   Since the Balancer smart contracts can be interacted with by any front-end UI,
-                  there is less reliance on any one single UI. The Balancer App UI code is open
-                  source with an MIT License which allows other third-party developers to fork the
-                  code, make improvements and compete for users.
+                  there is less reliance on any one single UI. The Beets UI code is open source with
+                  an MIT License which allows other third-party developers to fork the code, make
+                  improvements and compete for users.
                 </li>
                 <li>
                   Users or third-party developers can keep track of changes and review the
                   open-source repository on GitHub for potential malicious code.
                 </li>
                 <li>
-                  The developers of the Balancer App UI have provided instructions on how to clone
-                  and run local environments of the app. This allows people to have the ability to
-                  keep deprecated features or modify the code to add new features that they prefer.
+                  The developers of the Beets UI have provided instructions on how to clone and run
+                  local environments of the app. This allows people to have the ability to keep
+                  deprecated features or modify the code to add new features that they prefer.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -709,9 +679,9 @@ export default function Risks() {
                 DeFi ecosystem.
               </p>
               <p>
-                It&apos;s also possible that the Beets App UI may be wholly or partially suspended
-                or terminated for any or no reason, which may limit your access to your tokens via
-                this website. In this scenario, you may be able to recover funds by running your own
+                It&apos;s also possible that the Beets UI may be wholly or partially suspended or
+                terminated for any or no reason, which may limit your access to your tokens via this
+                website. In this scenario, you may be able to recover funds by running your own
                 local instance or by using a third-party website, like{' '}
                 <a href="https://sonicscan.org/">SonicScan</a>.
               </p>
@@ -1044,7 +1014,7 @@ export default function Risks() {
                       concentrated liquidity pools. But unlike Uniswap, a 2-CLP effectively offers a
                       &lsquo;single tick&rsquo;, where liquidity is distributed evenly across a
                       single active trading range. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps">
+                      <a href="https://docs.gyro.finance/pools/2-clps.html">
                         2-CLPs and their risks
                       </a>
                       .
@@ -1054,27 +1024,29 @@ export default function Risks() {
                       support three assets and are functionally best understood as an extension of
                       2-CLPs. As a high-level summary, they amplify the benefits of 2-CLPs. Learn
                       more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/3-clps">
+                      <a href="https://docs.gyro.finance/pools/3-clps.html">
                         3-CLPs and their risks
                       </a>
                       .
                     </li>
                     <li>
                       <em>E-CLPs:</em> Also known as &lsquo;Elliptic-CLPs&rsquo; support asymmetric
-                      concentrated liqudity for two assets. They provide a new type of concentrated
+                      concentrated liquidity for two assets. They provide a new type of concentrated
                       liquidity that allows highly flexible and asymmetric liquidity profiles in a
                       single pool position. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps">
+                      <a href="https://docs.gyro.finance/pools/e-clps.html">
                         E-CLPs and their risks
                       </a>
                       .
                     </li>
                     <li>
-                      <em>Rehype E-CLPs:</em> Arguably the most capital efficient pools, these
-                      E-CLPs combine asymmetric concentrated liquidity with auto-rehypothecation to
-                      lending markets. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/rehype-e-clps">
-                        Rehype E-CLPs and their risks
+                      <em>Dynamic E-CLPs:</em> These pools use a dynamic rate provider to adjust
+                      their price range when the pool moves out of range. They add oracle, keeper,
+                      and strategy risks to the underlying E-CLP risks. Liquidity updates can lock
+                      in losses, even if prices later return to their initial level; delayed keeper
+                      updates can leave a pool out of range for longer. Learn more about{' '}
+                      <a href="https://docs.gyro.finance/pools/dynamic-clps.html">
+                        Dynamic CLPs and their risks
                       </a>
                       .
                     </li>
@@ -1082,22 +1054,11 @@ export default function Risks() {
                   <p>Other risks:</p>
                   <ul>
                     <li>
-                      The Balancer UI allows people to manage their liquidity in certain Gyroscope
-                      pools. This is not an endorsement of their products or of the the safety of
-                      their smart contracts. The Gyroscope GYD system and E-CLPs have been audited
-                      several times. You can review the{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/audit-reports">
-                        audit reports here
-                      </a>
-                      .
-                    </li>
-                    <li>
-                      Some concentrated liquidity pools also contain Gyroscope&rsquo;s Gyro Dollars
-                      (GYD). Here are some of the{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/risks">
-                        risks of using GYD
-                      </a>
-                      .
+                      The Beets UI allows people to manage their liquidity in certain Gyroscope
+                      pools. This is not an endorsement of their products or the safety of their
+                      smart contracts. Review the audit reports for the contracts you intend to use;
+                      audits do not guarantee safety. You can review Gyroscope&apos;s{' '}
+                      <a href="https://docs.gyro.finance/audit-reports.html">audit reports here</a>.
                     </li>
                   </ul>
                 </div>
