@@ -114,11 +114,10 @@ export default function Privacy() {
               <h3>Service providers</h3>
               <p>
                 The UI uses dRPC for blockchain requests, Hypernative for wallet-address screening,
-                WalletConnect and wallet providers for wallet connections, Magpie/Fly for swap
-                quotes and transaction routing, and CoinGecko for token information. Hosting and API
-                infrastructure includes services such as Vercel and Amazon Web Services and may use
-                Cloudflare. The data processed depends on the feature you use and may include wallet
-                addresses, transaction details, and network or request information.
+                WalletConnect and wallet providers for wallet connections, and CoinGecko for token
+                information. Hosting and API infrastructure includes services such as Vercel. The
+                data processed depends on the feature you use and may include wallet addresses,
+                transaction details, and network or request information.
               </p>
 
               <h3>Information we collect from other&nbsp;sources</h3>
@@ -296,8 +295,7 @@ export default function Privacy() {
                   <td>
                     <p>
                       Hosting and API infrastructure providers may process IP addresses and request
-                      metadata to provide and secure their services. API infrastructure may include
-                      Cloudflare.
+                      metadata to provide and secure their services.
                     </p>
 
                     <p>
