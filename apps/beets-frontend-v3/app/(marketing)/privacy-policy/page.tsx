@@ -15,7 +15,7 @@ export default function Privacy() {
               <Box mt="3xl">
                 <h1>Beets privacy&nbsp;policy</h1>
                 <p>
-                  <em>Last updated: April 2025</em>
+                  <em>Last updated: October 6, 2026</em>
                 </p>
               </Box>
               <p>
@@ -50,15 +50,15 @@ export default function Privacy() {
                   information when you use the UI.
                 </li>
                 <li>
-                  Beets does not and has not stored personal information from users of the UI.
-                  However, Beets uses third-party services including, without limitation,
-                  Cloudflare, Hypernative, Amazon Web Services, Vercel, CoinGecko, and others that
-                  collect and store certain user information only for use in the provision of their
-                  services.
+                  Beets does not maintain customer accounts or a personal-data database. Its service
+                  providers may temporarily cache requests and responses and retain operational logs
+                  needed to run and secure the UI.
                 </li>
                 <li>
-                  Beets does not set any cookies. However, we use third-party service providers that
-                  set cookies.
+                  The UI uses browser storage for functionality such as preferences, wallet
+                  connections, and recent transactions. Beets does not use analytics or tracking
+                  services. Third-party service providers may use cookies or similar technologies to
+                  provide their services.
                 </li>
               </ul>
             </div>
@@ -72,8 +72,8 @@ export default function Privacy() {
                 We do not typically request, collect or use personal information from you except
                 under limited circumstances as described herein. With the exception of your wallet
                 address, there is no reason for you to provide personal information when you use the
-                UI. Your use of the UI will not be customized and this policy reflects that
-                practice.
+                UI. The UI may use preferences saved locally in your browser to customize its
+                functionality.
               </p>
               <p>
                 Beets is not directed to children under the age of 16. If a parent or guardian
@@ -88,35 +88,38 @@ export default function Privacy() {
 
               <h3>Information we collect automatically when you interact with&nbsp;us</h3>
               <p>
-                When you access or use our UI, we may automatically collect certain information,
-                including:
+                When you access or use our UI, service providers may process information needed to
+                respond to your requests and operate their services, including:
               </p>
               <ul>
                 <li>
-                  <em className="font-semibold">Device and Usage Information:</em> We (and our
-                  service providers) collect information about how you access the UI, including data
-                  about the device and network you use, such as your hardware model, operating
-                  system version, mobile network, browser type, IP address and app version. We do
-                  not typically, but we may, also collect information about your activity on the UI,
-                  such as access times, pages viewed, links clicked, and the page you visited before
-                  navigating to the UI.
+                  <em className="font-semibold">Network and Request Information:</em> Our service
+                  providers may process network and request information, such as IP addresses,
+                  browser information, request times, and requested URLs, for hosting, security,
+                  troubleshooting, and responding to requests. Beets does not use this information
+                  for analytics, tracking, advertising, or promotional profiling.
                 </li>
                 <li>
-                  <em className="font-semibold">
-                    Information collected by cookies and similar tracking technologies:
-                  </em>
-                  We do not typically use tracking technologies, such as cookies and web beacons, to
-                  collect information about you; however, third parties we rely on may do so.
-                  Cookies are small data files stored on your hard drive or in device memory that
-                  help us improve the UI and your experience, see which areas and features of the UI
-                  are popular, and count visits. Web beacons (also known as “pixel tags” or “clear
-                  GIFs”) are electronic images that we use on the UI to help deliver cookies, count
-                  visits, and understand usage and campaign effectiveness. For more information
-                  about cookies and how to disable them, see our{' '}
+                  <em className="font-semibold">Browser storage and third-party technologies:</em>
+                  The UI stores preferences, wallet connection state, recent transactions, and
+                  certain cached data locally in your browser to support its functionality. Beets
+                  does not use analytics services, advertising trackers, or web beacons. Third-party
+                  providers may use cookies or similar technologies to provide their services. For
+                  more information about cookies and browser storage, see our{' '}
                   <Link href="cookies-policy">Cookies policy</Link> and the Your Choices section
                   below.
                 </li>
               </ul>
+
+              <h3>Service providers</h3>
+              <p>
+                The UI uses dRPC for blockchain requests, Hypernative for wallet-address screening,
+                WalletConnect and wallet providers for wallet connections, Magpie/Fly for swap
+                quotes and transaction routing, and CoinGecko for token information. Hosting and API
+                infrastructure includes services such as Vercel and Amazon Web Services and may use
+                Cloudflare. The data processed depends on the feature you use and may include wallet
+                addresses, transaction details, and network or request information.
+              </p>
 
               <h3>Information we collect from other&nbsp;sources</h3>
 
@@ -128,11 +131,10 @@ export default function Privacy() {
               <h3>Information we derive</h3>
 
               <p>
-                We may derive limited information or draw inferences about you based on the
-                information we have access to or receive, most importantly, from our service
-                providers. Your wallet address and IP address are accessible to Beets and its
-                service providers. We may make inferences about you based on your wallet address or
-                IP address.
+                Wallet addresses may be checked for security and compliance risks through our
+                service providers. Wallet addresses and request information may also be processed to
+                retrieve blockchain data, connect wallets, and prepare transactions. Beets does not
+                use this information for advertising or promotional profiling.
               </p>
             </div>
           </FadeInOnView>
@@ -158,7 +160,6 @@ export default function Privacy() {
                   application programming interface or API;
                 </li>
                 <li>Respond to comments and questions;</li>
-                <li>Analyze trends, usage, and activities in connection with the UI;</li>
                 <li>
                   Detect, investigate, and prevent security incidents and other malicious,
                   deceptive, fraudulent, or illegal activity and protect the rights and property of
@@ -192,8 +193,8 @@ export default function Privacy() {
                 <li>
                   We share personal information with vendors, service providers, and consultants
                   that need access to personal information in order to perform services for us, such
-                  as transaction monitoring, data management, fraud prevention, customer service and
-                  support, marketing and/or advertising.
+                  as hosting, blockchain data retrieval, wallet connectivity, transaction routing,
+                  security screening, troubleshooting, and support.
                 </li>
                 <li>
                   If you choose to use integrations, we may share certain information with the
@@ -224,18 +225,6 @@ export default function Privacy() {
                   We will provide notice to you on our UI of any such sharing to a third party and
                   any choices you may have regarding the sharing of your personal information.
                 </li>
-                <li>
-                  Personal information may be shared between and among Beets and our current and
-                  future parents, affiliates, and subsidiaries and other companies under common
-                  control and ownership (“corporate affiliates”). This information may be used to
-                  provide you with offers, services, or products that may be of interest to you and
-                  provide you with their products and services. Any such corporate affiliate may use
-                  your personal information only according to the terms of this Policy. If you are
-                  located in a jurisdiction where such sharing requires your permission, we will
-                  only share such information with your consent. If you decide you no longer wish to
-                  receive these promotional communications, please follow the instructions provided
-                  in Your Choices section below.
-                </li>
                 <li>We share personal information with your consent or at your direction.</li>
                 <li>
                   We also share aggregated or de-identified information that cannot reasonably be
@@ -249,8 +238,9 @@ export default function Privacy() {
               <h2>Advertising and analytics</h2>
 
               <p>
-                We do not work with third parties to serve ads to you as part of customized
-                campaigns on the UI or third-party UIs.
+                Beets does not use analytics or tracking services, serve advertising campaigns, or
+                share personal information for marketing, advertising, or promotional offers from
+                corporate affiliates.
               </p>
             </div>
           </FadeInOnView>
@@ -273,9 +263,11 @@ export default function Privacy() {
               <h2>Your choices</h2>
               <h3>Cookies</h3>
               <p>
-                Beets and its third-party vendors may use any cookies to affect the availability and
-                functionality of the UI. For more information about cookies and how to disable them,
-                see our <Link href="cookies-policy">Cookies policy</Link>.
+                You can manage cookies and local browser storage through your browser settings.
+                Clearing or disabling browser storage may reset preferences, wallet connection
+                state, and recent transaction history or affect UI functionality. Third-party
+                providers may use cookies or similar technologies for their services. For more
+                information, see our <Link href="cookies-policy">Cookies policy</Link>.
               </p>
             </div>
           </FadeInOnView>
@@ -303,8 +295,9 @@ export default function Privacy() {
                   <td>Identifiers</td>
                   <td>
                     <p>
-                      We share with vendors, such as Cloudflare: certain IP addresses, device
-                      identifiers or other similar identifiers.
+                      Hosting and API infrastructure providers may process IP addresses and request
+                      metadata to provide and secure their services. API infrastructure may include
+                      Cloudflare.
                     </p>
 
                     <p>
@@ -354,9 +347,10 @@ export default function Privacy() {
               <h3>Do Not Track signals</h3>
 
               <p>
-                Our Services do not respond to “Do Not Track” signals communicated by your browser.
-                We do not knowingly retain or sell tracking information collected about your online
-                activity. For more information about Do Not Track, please visit{' '}
+                Beets does not use analytics or tracking services and does not sell tracking
+                information about your online activity. Our Services do not respond separately to
+                “Do Not Track” signals communicated by your browser. For more information about Do
+                Not Track, please visit{' '}
                 <a className="link" href="https://allaboutdnt.com/" rel="noopener" target="_blank">
                   www.allaboutdnt.com
                 </a>
@@ -388,16 +382,19 @@ export default function Privacy() {
                 <li>
                   When we have a legitimate interest in processing your personal data to operate the
                   UI or protect our interests (e.g., to adhere to applicable laws, rules and
-                  regulations, provide, maintain, and improve our products and UI, conduct data
-                  analytics, and communicate with you).
+                  regulations, provide, maintain, and improve our products and UI, troubleshoot
+                  issues, and communicate with you).
                 </li>
                 <li>To comply with our legal obligations.</li>
               </ul>
               <h3>Data retention</h3>
 
               <p>
-                We do not maintain customer accounts or store personal data. Our vendor will store
-                your wallet address in order to provide requested services.
+                Beets does not maintain customer accounts or a personal-data database. Service
+                providers may temporarily cache requests and responses, including wallet-related
+                data, and retain operational logs needed to run and secure the UI. Browser storage
+                remains on your device until cleared by you or the application. Provider retention
+                practices are governed by their policies and applicable service arrangements.
               </p>
               <h3>Data subject requests</h3>
               <p>
@@ -421,7 +418,7 @@ export default function Privacy() {
                 .
               </p>
               <div className="subsection">
-                <em className="font-semibold">Last updated: April 2025</em>
+                <em className="font-semibold">Last updated: October 6, 2026</em>
               </div>
             </div>
           </FadeInOnView>
