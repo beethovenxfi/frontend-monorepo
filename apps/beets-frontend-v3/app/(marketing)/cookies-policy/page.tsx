@@ -15,7 +15,7 @@ export default function Cookies() {
               <Box mt="3xl">
                 <h1>Beets cookies&nbsp;policy</h1>
                 <p>
-                  <em>Last updated: October 2023</em>
+                  <em>Last updated: October 6, 2026</em>
                 </p>
               </Box>
             </div>
@@ -26,7 +26,9 @@ export default function Cookies() {
               <p>
                 This Cookies Policy (“Policy”) applies to your interaction with BeethovenX DAO LLC
                 and material service providers operating under a legal agreement (“BeethovenX,”
-                “Beets,” “we,” “our,” or “us”).
+                “Beets,” “we,” “our,” or “us”) when you use the beets.fi user interface (UI) for the
+                Beets Protocol (“Site”). It covers cookies and other browser storage used to support
+                the Site and its third-party services.
               </p>
             </div>
           </FadeInOnView>
@@ -41,53 +43,49 @@ export default function Cookies() {
               </p>
 
               <p>
-                We do not generally use cookies; however, our third-party vendors do. We do not
-                intentionally collect information to customize your experience on the website or the
-                beets.fi user interface (UI) for the Beets Protocol (“Sites” or “Site”).
+                The UI uses local browser storage to support its functionality. Local storage is
+                stored on your device and, unlike cookies, is not automatically included with each
+                request to a web server. The application may use stored values when connecting a
+                wallet or preparing a transaction. Third-party providers may use cookies or similar
+                technologies to provide and secure their services.
               </p>
               <p>
-                Industry standards are currently evolving, and we may not separately respond to or
-                take any action with respect to a “do not track” configuration set in your Internet
-                browser.
+                Beets does not use analytics or tracking services, advertising trackers, or web
+                beacons. The Site does not respond separately to “Do Not Track” signals communicated
+                by your browser.
               </p>
               <p>
-                Other parties that collect information about your web browsing behavior when you use
-                our Site are generally limited to service providers that only use any information
-                collected to provide services for us and not to provide services or advertising for
-                any other party. Note, however, that we also provide certain widgets or tools on our
-                Sites that allow you to interact with third parties that provide these features,
-                such as tools that allow users to easily share information on another platform. At
-                other times, information from a third party may be embedded on our Site, such as a
-                map. These widgets, tools, and informational items often function through the use of
-                third-party cookies utilized by the third-party site. As a result, these third
-                parties may have access to information about your web browsing on the pages of our
-                Site where these widgets, tools, or information are placed. You may wish to review
-                information at third-party sites, where you have an account, to determine how these
-                third parties treat data that they obtain through the use of cookies.
+                Wallet, hosting, and API providers may process wallet-related information and
+                network or request information needed for their services. Their use of cookies and
+                similar technologies depends on the provider and the feature you use. Refer to their
+                policies for details about their practices. Beets does not use these services for
+                analytics, tracking, advertising, or affiliate promotional offers.
               </p>
             </div>
           </FadeInOnView>
           <FadeInOnView>
             <div className="subsection">
-              <h2>III. Do you have to accept cookies?</h2>
+              <h2>III. Managing cookies and browser storage</h2>
 
               <p>
-                You may be able to set your browser to reject cookies. If you set your browser
-                options to disallow cookies, you may limit the functionality we can provide when you
-                visit our Site. The latest versions of Internet browsers provide cookie management
-                tools, such as the ability to delete or reject cookies. We recommend that you refer
-                to information supplied by browser providers for more specific information,
-                including how to use these tools.
+                You can manage, clear, or block cookies and local storage through your browser
+                settings. Clearing storage may reset preferences, wallet connection state, saved
+                policy acceptance, and recent transaction history displayed by the UI. Blocking
+                storage may affect these features. Clearing browser storage does not remove
+                transactions recorded on the Sonic blockchain or data retained by service providers.
+                Refer to your browser&apos;s documentation for instructions.
               </p>
             </div>
           </FadeInOnView>
           <FadeInOnView>
             <div className="subsection">
-              <h2>IV. Additional technologies</h2>
+              <h2>IV. Functional browser storage</h2>
               <p>
-                We do not typically use additional technologies such as pixel tags, web beacons, and
-                clear GIFs. We permit third-party service providers to use these technologies. They
-                use these technologies for purposes such as determining viewing and response rates.
+                The UI stores settings such as slippage tolerance and transaction preferences,
+                wallet connection state, accepted policies, recent transactions, and certain cached
+                data locally in your browser. These values support application functionality rather
+                than tracking or advertising. Locally stored data may remain until cleared by you or
+                the application.
               </p>
             </div>
           </FadeInOnView>
@@ -95,11 +93,11 @@ export default function Cookies() {
             <div className="subsection">
               <h2>V. Using information</h2>
               <p>
-                In addition to the uses described above, we may use information for purposes as
-                allowed by law such as: servicing; communicating with you; improving our Site,
-                products, or services; legal compliance; risk control; information security;
-                anti-fraud purposes; tracking website usage, such as number of hits, pages visited,
-                and the length of user sessions in order to evaluate the usefulness of our sites.
+                Information is used to provide and maintain the Site, support wallet connections and
+                transactions, troubleshoot issues, comply with legal obligations, and protect
+                security. Service providers may temporarily cache requests and responses and retain
+                operational logs needed to run and secure the UI. Beets does not maintain customer
+                accounts or a personal-data database.
               </p>
             </div>
           </FadeInOnView>
@@ -107,11 +105,11 @@ export default function Cookies() {
             <div>
               <h2>VI. Sharing</h2>
               <p>
-                We share information with service providers and companies that help us serve you
-                better. When permitted or required by law, we may share information with additional
-                third parties for purposes including responding to legal process. As applicable,
-                please see our <Link href="privacy-policy">Privacy policy</Link> for more
-                information on how we may share information with affiliates and third parties.
+                Information may be shared with service providers as needed to operate the Site and
+                provide the features you use. When permitted or required by law, we may share
+                information with additional third parties for purposes including responding to legal
+                process. See our <Link href="privacy-policy">Privacy policy</Link> for more
+                information about processing, sharing, and retention.
               </p>
             </div>
           </FadeInOnView>
