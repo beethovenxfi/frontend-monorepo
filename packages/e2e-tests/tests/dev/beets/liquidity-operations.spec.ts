@@ -143,7 +143,10 @@ for (const [pool, boosted] of [
             .filter({ has: page.getByRole('heading', { name: 'wS', exact: true }) })
             .click()
           const tokenSelect = page.getByRole('dialog', { name: 'Select a token' })
-          await tokenSelect.getByText('SiloWS', { exact: true }).click()
+          await tokenSelect
+            .getByRole('group')
+            .filter({ has: page.getByRole('img', { name: 'SiloWS', exact: true }) })
+            .click()
           await expect(tokenSelect).not.toBeVisible()
         }
         await clickButton(page, 'Next')
