@@ -82,9 +82,6 @@ export function getTestRpcSetup(networkName: ChainIdWithFork) {
 
 /*
  *  We currently use Drpc for Sonic integration tests.
- *  In case you want to use a different RPC, you can set something like this (i.e. ALCHEMY)
- *     const privateAlchemyKey = process.env['NEXT_PRIVATE_ALCHEMY_KEY']
- *     return `https://sonic.g.alchemy.com/v2/${privateAlchemyKey}`
  */
 export function getForkUrl(chainId: ChainIdWithFork, verbose = false): string {
   const network = ANVIL_NETWORKS[chainId]
