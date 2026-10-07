@@ -113,12 +113,11 @@ export default function Privacy() {
 
               <h3>Service providers</h3>
               <p>
-                The UI uses dRPC for blockchain requests, Hypernative for wallet-address screening,
-                WalletConnect and wallet providers for wallet connections, and CoinGecko for token
-                information. Vercel hosts the UI and its API routes; the Beets API uses Render and
-                Cloudflare for supporting infrastructure. The data processed depends on the feature
-                you use and may include wallet addresses, transaction details, and network or
-                request information.
+                The UI uses dRPC for blockchain requests, WalletConnect and wallet providers for
+                wallet connections, and CoinGecko for token information. Vercel hosts the UI and its
+                API routes; the Beets API uses Render and Cloudflare for supporting infrastructure.
+                The data processed depends on the feature you use and may include wallet addresses,
+                transaction details, and network or request information.
               </p>
 
               <h3>Information we collect from other&nbsp;sources</h3>
@@ -131,10 +130,9 @@ export default function Privacy() {
               <h3>Information we derive</h3>
 
               <p>
-                Wallet addresses may be checked for security and compliance risks through our
-                service providers. Wallet addresses and request information may also be processed to
-                retrieve blockchain data, connect wallets, and prepare transactions. Beets does not
-                use this information for advertising or promotional profiling.
+                Wallet addresses and request information may be processed to retrieve blockchain
+                data, connect wallets, and prepare transactions. Beets does not use this information
+                for advertising or promotional profiling.
               </p>
             </div>
           </FadeInOnView>
@@ -194,7 +192,7 @@ export default function Privacy() {
                   We share personal information with vendors, service providers, and consultants
                   that need access to personal information in order to perform services for us, such
                   as hosting, blockchain data retrieval, wallet connectivity, transaction routing,
-                  security screening, troubleshooting, and support.
+                  troubleshooting, and support.
                 </li>
                 <li>
                   If you choose to use integrations, we may share certain information with the
@@ -297,13 +295,6 @@ export default function Privacy() {
                     <p>
                       Hosting and API infrastructure providers may process IP addresses and request
                       metadata to provide and secure their services.
-                    </p>
-
-                    <p>
-                      With our compliance partner, Hypernative, we only share wallet addresses used
-                      to connect a wallet to our UI (all other user information like IP addresses,
-                      device identifiers and location are not shared). The code for the UI is open
-                      source, and can be reviewed by anyone at any time.
                     </p>
                   </td>
                 </tr>
