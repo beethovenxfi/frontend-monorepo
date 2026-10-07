@@ -14,12 +14,6 @@ export default function ThirdPartyServices() {
       iconUrl: '/images/services/drpc.svg',
     },
     {
-      name: 'Hypernative',
-      description:
-        'Used to screen wallet addresses for risk and compliance purposes. Wallet addresses are shared with Hypernative Inc. to perform these checks.',
-      iconUrl: '/images/services/hypernative.svg',
-    },
-    {
       name: 'Vercel',
       description:
         'Used to deploy and host the UI and its API routes. Hosting infrastructure may process network and request information and retain operational logs or cached responses needed to run and secure the service.',
@@ -48,7 +42,7 @@ export default function ThirdPartyServices() {
               <Box mt="3xl" pb="sm">
                 <h1>Use of third-party services</h1>
                 <p>
-                  <em>Last updated: October 6, 2026</em>
+                  <em>Last updated: October 7, 2026</em>
                 </p>
                 <p>
                   Beets is an open-source, permissionless, decentralized protocol. The smart
