@@ -136,7 +136,24 @@ for (const [pool, boosted] of [
       test('proportional', async ({ page }) => {
         await clickButton(page, 'Remove')
         await setSliderPercent(page, 50)
+        if (boosted) {
+          // Withdraw vault shares directly: this fork has no liquidity to unwrap SiloWS into wS.
+          await page
+            .getByRole('button')
+            .filter({ has: page.getByRole('heading', { name: 'wS', exact: true }) })
+            .click()
+          const tokenSelect = page.getByRole('dialog', { name: 'Select a token' })
+          await tokenSelect
+            .getByRole('group')
+            .filter({ has: page.getByRole('img', { name: 'SiloWS', exact: true }) })
+            .click()
+          await expect(tokenSelect).not.toBeVisible()
+        }
         await clickButton(page, 'Next')
+
+        if (boosted) {
+          await expect(page.getByRole('heading', { name: 'SiloWS', exact: true })).toBeVisible()
+        }
 
         const removeLiquidity = button(page, 'Remove liquidity')
         if (boosted) {

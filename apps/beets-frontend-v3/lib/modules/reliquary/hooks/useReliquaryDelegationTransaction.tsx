@@ -106,7 +106,7 @@ export function useReliquaryDelegationTransaction() {
     transactionState === TransactionState.Preparing
 
   const execute = async () => {
-    if (isLoading) return
+    if (isLoading || !managedTransaction.executeAsync) return
 
     try {
       await managedTransaction.executeAsync()
