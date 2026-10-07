@@ -15,7 +15,7 @@ export default function Privacy() {
               <Box mt="3xl">
                 <h1>Beets privacy&nbsp;policy</h1>
                 <p>
-                  <em>Last updated: October 6, 2026</em>
+                  <em>Last updated: October 7, 2026</em>
                 </p>
               </Box>
               <p>
@@ -115,9 +115,10 @@ export default function Privacy() {
               <p>
                 The UI uses dRPC for blockchain requests, Hypernative for wallet-address screening,
                 WalletConnect and wallet providers for wallet connections, and CoinGecko for token
-                information. Hosting and API infrastructure includes services such as Vercel. The
-                data processed depends on the feature you use and may include wallet addresses,
-                transaction details, and network or request information.
+                information. Vercel hosts the UI and its API routes; the Beets API uses Render and
+                Cloudflare for supporting infrastructure. The data processed depends on the feature
+                you use and may include wallet addresses, transaction details, and network or
+                request information.
               </p>
 
               <h3>Information we collect from other&nbsp;sources</h3>
@@ -416,7 +417,7 @@ export default function Privacy() {
                 .
               </p>
               <div className="subsection">
-                <em className="font-semibold">Last updated: October 6, 2026</em>
+                <em className="font-semibold">Last updated: October 7, 2026</em>
               </div>
             </div>
           </FadeInOnView>
