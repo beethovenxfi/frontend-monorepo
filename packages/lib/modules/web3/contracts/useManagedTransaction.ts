@@ -154,7 +154,7 @@ export function useManagedTransaction({
     }
 
     try {
-      return await writeQuery.writeContractAsync({
+      return await writeQuery.mutateAsync({
         ...simulateQuery.data.request,
         chainId: chainId,
       })
@@ -168,8 +168,12 @@ export function useManagedTransaction({
     }
   }
 
+  // Gas estimation can finish before contract simulation supplies the request to execute.
+  const isReadyToExecute =
+    enabled && !shouldChangeNetwork && simulateQuery.isSuccess && !!simulateQuery.data
+
   return {
     ...bundle,
-    executeAsync: managedWriteAsync,
+    executeAsync: isReadyToExecute ? managedWriteAsync : undefined,
   } satisfies ManagedResult
 }
