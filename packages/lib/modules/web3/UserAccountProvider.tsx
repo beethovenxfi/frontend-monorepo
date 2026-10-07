@@ -1,27 +1,14 @@
 'use client'
 
-import { useConnection, useConnectionEffect, useDisconnect } from 'wagmi'
+import { useConnection, useConnectionEffect } from 'wagmi'
 import { emptyAddress } from './contracts/wagmi-helpers'
-import { PropsWithChildren, createContext, useEffect, useState } from 'react'
+import { PropsWithChildren, createContext, useEffect } from 'react'
 import { useMandatoryContext } from '@repo/lib/shared/utils/contexts'
-import { Address, isAddress } from 'viem'
-import { config, shouldUseAnvilFork } from '@repo/lib/config/app.config'
+import { shouldUseAnvilFork } from '@repo/lib/config/app.config'
 import { useIsMounted } from '@repo/lib/shared/hooks/useIsMounted'
 import { useSafeAppConnectionGuard } from './useSafeAppConnectionGuard'
 import { useWCConnectionLocalStorage } from './wallet-connect/useWCConnectionLocalStorage'
 import { clearImpersonatedAddressLS } from '@repo/lib/test/utils/wagmi/fork.helpers'
-
-async function isAuthorizedAddress(address: Address): Promise<boolean> {
-  try {
-    const res = await fetch(`/api/wallet-check/${address}`, { cache: 'no-store' })
-    const data = await res.json()
-
-    return data?.isAuthorized
-  } catch (error) {
-    console.error('Failed to check wallet authorization', { address, error })
-    return true
-  }
-}
 
 export type UseUserAccountResponse = ReturnType<typeof useUserAccountLogic>
 export const UserAccountContext = createContext<UseUserAccountResponse | null>(null)
@@ -29,9 +16,6 @@ export const UserAccountContext = createContext<UseUserAccountResponse | null>(n
 export function useUserAccountLogic() {
   const isMounted = useIsMounted()
   const query = useConnection()
-  const disconnect = useDisconnect()
-  const [checkingAuth, setCheckingAuth] = useState(true)
-  const [isBlocked, setIsBlocked] = useState(false)
 
   const { address, ...queryWithoutAddress } = query
 
@@ -47,39 +31,17 @@ export function useUserAccountLogic() {
     }
   }
 
-  useEffect(() => {
-    const blockUnauthorizedAddress = async (address: Address | undefined) => {
-      if (!address || config.appEnv === 'test') {
-        setCheckingAuth(false)
-        return
-      }
-
-      let isAuthorized = true
-
-      if (isAddress(address)) {
-        isAuthorized = await isAuthorizedAddress(address)
-        if (!isAuthorized) disconnect.mutate()
-      }
-
-      setIsBlocked(!isAuthorized)
-      setCheckingAuth(false)
-    }
-
-    blockUnauthorizedAddress(address)
-  }, [address])
-
   // The usage of mounted helps to overcome nextjs hydration mismatch
   // errors where the state of the user account on the server pass is different
   // than the state on the client side rehydration.
   const result = {
     ...queryWithoutAddress,
-    isLoading: !isMounted || query.isConnecting || checkingAuth,
-    isConnecting: !isMounted || query.isConnecting || checkingAuth,
+    isLoading: !isMounted || query.isConnecting,
+    isConnecting: !isMounted || query.isConnecting,
     // We use an emptyAddress when the user is not connected to avoid undefined value and satisfy the TS compiler
-    userAddress: isMounted ? query.address || emptyAddress : emptyAddress,
-    isConnected: isMounted && !!query.address && !checkingAuth,
+    userAddress: isMounted ? address || emptyAddress : emptyAddress,
+    isConnected: isMounted && !!address,
     connector: isMounted ? query.connector : undefined,
-    isBlocked,
     isWCConnector: isMounted ? query.connector?.id === 'walletConnect' : false,
   }
 
@@ -88,12 +50,12 @@ export function useUserAccountLogic() {
   const { isConnectedToWC, setIsConnectedToWC } = useWCConnectionLocalStorage()
 
   useEffect(() => {
-    if (result.userAddress) {
+    if (address) {
       onNewUserAddress(result)
     } else {
       onEmptyUserAddress()
     }
-  }, [result.userAddress])
+  }, [address, result.isWCConnector, isConnectedToWC])
 
   useConnectionEffect({
     onDisconnect: () => {

@@ -26,7 +26,7 @@ import { shouldUseAnvilFork } from '@repo/lib/config/app.config'
 export function AcceptPoliciesModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { acceptedPolicies, setAcceptedPolicies } = useUserSettings()
-  const { isBlocked, isLoading, isConnected, userAddress } = useUserAccount()
+  const { isLoading, isConnected, userAddress } = useUserAccount()
   const [isChecked, setIsChecked] = useState(false)
   const disconnect = useDisconnect()
 
@@ -39,10 +39,10 @@ export function AcceptPoliciesModal() {
     shouldUseAnvilFork
 
   useEffect(() => {
-    if (!isLoading && isConnected && !isAddressInAcceptedPolicies && !isBlocked) {
+    if (!isLoading && isConnected && !isAddressInAcceptedPolicies) {
       onOpen()
     }
-  }, [acceptedPolicies, isBlocked, isLoading, isConnected, userAddress])
+  }, [acceptedPolicies, isLoading, isConnected, userAddress])
 
   function handleOnClose(isProceeding = false) {
     const shouldDisconnect = !isChecked || !acceptedPolicies.includes(userAddress.toLowerCase())
