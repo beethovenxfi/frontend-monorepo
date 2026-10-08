@@ -6,7 +6,8 @@ import onlyWarn from 'eslint-plugin-only-warn'
 import globals from 'globals'
 import { resolve } from 'node:path'
 import eslintReactPlugin from '@eslint-react/eslint-plugin'
-import stylisticJsx from '@stylistic/eslint-plugin-jsx'
+import perfectionist from 'eslint-plugin-perfectionist'
+import stylistic from '@stylistic/eslint-plugin'
 
 const project = resolve(process.cwd(), 'tsconfig.json')
 
@@ -61,7 +62,8 @@ const baseConfig = [
       'only-warn': onlyWarn,
       turbo: turboPlugin,
       '@eslint-react': eslintReactPlugin,
-      '@stylistic': stylisticJsx,
+      perfectionist,
+      '@stylistic': stylistic,
     },
     settings: {
       ...eslintReactPlugin.configs['recommended-typescript'].settings,
@@ -78,7 +80,10 @@ const baseConfig = [
       'turbo/no-undeclared-env-vars': 'warn',
       // Disable the 'no-explicit-any' rule to prevent warnings about using 'any' type
       '@typescript-eslint/no-explicit-any': 'off',
-      '@stylistic/jsx-sort-props': ['error', { ignoreCase: true }],
+      'perfectionist/sort-jsx-props': [
+        'error',
+        { type: 'alphabetical', order: 'asc', ignoreCase: true },
+      ],
       // Disable @eslint-react/exhaustive-deps rule (replacement for react-hooks/exhaustive-deps)
       '@eslint-react/exhaustive-deps': 'off',
       curly: ['error', 'multi-line'],
