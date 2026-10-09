@@ -93,7 +93,7 @@ export default function Privacy() {
               </p>
               <ul>
                 <li>
-                  <em className="font-semibold">Network and Request Information:</em> Our service
+                  <em className="font-semibold">Network and request information:</em> Our service
                   providers may process network and request information, such as IP addresses,
                   browser information, request times, and requested URLs, for hosting, security,
                   troubleshooting, and responding to requests. Beets does not use this information
