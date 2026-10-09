@@ -476,8 +476,8 @@ export default function Risks() {
               <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  The Balancer Smart Order router is used to route liquidity efficiently via pools
-                  to minimize price impact.
+                  The Smart Order router is used to route liquidity efficiently via pools to
+                  minimize price impact.
                 </li>
                 <li>The Beets UI gives LPs control over their slippage settings.</li>
                 <li>
