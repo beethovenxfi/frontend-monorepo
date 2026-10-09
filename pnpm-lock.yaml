@@ -181,8 +181,8 @@ importers:
         specifier: 24.19.1
         version: 24.19.1
       '@vitejs/plugin-react':
-        specifier: 6.1.1
-        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))
+        specifier: 6.1.2
+        version: 6.1.2(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))
       '@vitest/coverage-v8':
         specifier: 5.0.3
         version: 5.0.3(vitest@5.0.3)
@@ -202,14 +202,14 @@ importers:
         specifier: 0.35.5
         version: 0.35.5(@types/node@24.19.1)
       stylelint:
-        specifier: 17.15.0
-        version: 17.15.0(supports-color@10.2.2)(typescript@6.0.3)
+        specifier: 17.16.0
+        version: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
       stylelint-config-standard:
         specifier: 40.0.0
-        version: 40.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3))
+        version: 40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-prettier:
         specifier: 5.0.3
-        version: 5.0.3(prettier@3.9.9)(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3))
+        version: 5.0.3(prettier@3.9.9)(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       turbo:
         specifier: 2.11.7
         version: 2.11.7
@@ -227,7 +227,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: 'catalog:'
-        version: 4.3.2(graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.22.0))(graphql@17.0.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rxjs@7.8.2)
+        version: 4.3.2(graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.21.0))(graphql@17.0.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rxjs@7.8.2)
       '@balancer/sdk':
         specifier: 6.2.0
         version: 6.2.0(typescript@6.0.3)(zod@3.25.76)
@@ -300,7 +300,7 @@ importers:
     devDependencies:
       '@chakra-ui/cli':
         specifier: 2.5.8
-        version: 2.5.8(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.22.0)
+        version: 2.5.8(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0)
       '@chakra-ui/styled-system':
         specifier: 2.12.0
         version: 2.12.0(react@19.3.0)
@@ -666,8 +666,8 @@ importers:
         specifier: 1.4.6
         version: 1.4.6
       '@vitejs/plugin-react':
-        specifier: 6.1.1
-        version: 6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))
+        specifier: 6.1.2
+        version: 6.1.2(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))
       '@wagmi/cli':
         specifier: 2.10.0
         version: 2.10.0(typescript@6.0.3)
@@ -4058,13 +4058,13 @@ packages:
     resolution: {integrity: sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==}
     engines: {node: '>= 20'}
 
-  '@vitejs/plugin-react@6.1.1':
-    resolution: {integrity: sha512-yxLaQV9gkhS8ezJqCM6+ndU7mDY6gqAg75NQ+0IjwEI8IYOmQCgkRwHKVSfWXW076DsqMo0Dk+0FK1U+M5RgFw==}
+  '@vitejs/plugin-react@6.1.2':
+    resolution: {integrity: sha512-fhJNGUdscQa4HkI0xFxwonWyhnVReCPDbXI7FH7jmzpnVCrFQI7PRrhWecO263610vOrs9tr2Y4xcf8uAdFxbw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@rolldown/plugin-babel': ^0.1.7 || ^0.2.0
       babel-plugin-react-compiler: ^1.0.0
-      oxc-transform-react: ^0.145.0
+      oxc-transform-react: ^0.152.0
       vite: ^8.0.0
     peerDependenciesMeta:
       '@rolldown/plugin-babel':
@@ -7680,8 +7680,8 @@ packages:
       prettier: '>=3.0.0'
       stylelint: '>=16.0.0'
 
-  stylelint@17.15.0:
-    resolution: {integrity: sha512-mWIkesYQvQjf4Kvdeu9ns0IL8/K/wtjaGxPqsPd6DlLZvaQxGysJsocxUDrBcyHQ5VleAk4uSMat4yMrVED7PA==}
+  stylelint@17.16.0:
+    resolution: {integrity: sha512-ejlWnbJ13x1GU32+zZXa6sYQJsKKkwSdv2B4rAdO3OWdEmvhSJKcXi5pOphQYSzyaj1kXpuGJr7pcMBNfDIuPw==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -8549,6 +8549,22 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
+  '@apollo/client@4.3.2(graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.21.0))(graphql@17.0.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rxjs@7.8.2)':
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@17.0.2)
+      '@wry/caches': 1.0.1
+      '@wry/equality': 0.5.7
+      '@wry/trie': 0.5.0
+      graphql: 17.0.2
+      graphql-tag: 2.12.7(graphql@17.0.2)
+      optimism: 0.18.1
+      rxjs: 7.8.2
+      tslib: 2.8.1
+    optionalDependencies:
+      graphql-ws: 6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.21.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+
   '@apollo/client@4.3.2(graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.22.0))(graphql@17.0.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rxjs@7.8.2)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@17.0.2)
@@ -8742,6 +8758,54 @@ snapshots:
   '@chakra-ui/anatomy@2.3.4': {}
 
   '@chakra-ui/anatomy@2.3.6': {}
+
+  '@chakra-ui/cli@2.5.8(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0)':
+    dependencies:
+      bundle-n-require: 1.1.2
+      chokidar: 3.6.0
+      cli-welcome: 2.2.3(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0)
+      commander: 11.1.0
+      ora: 7.0.1
+      prettier: 3.9.9
+      update-notifier: 6.0.2
+    transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@netlify/db'
+      - '@op-engineering/op-sqlite'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
+      - '@types/react'
+      - '@types/sql.js'
+      - '@upstash/redis'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - babel-plugin-macros
+      - better-sqlite3
+      - bufferutil
+      - bun-types
+      - encoding
+      - expo-sqlite
+      - gel
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - prisma
+      - react
+      - react-devtools-core
+      - sql.js
+      - sqlite3
+      - supports-color
+      - utf-8-validate
+      - ws
 
   '@chakra-ui/cli@2.5.8(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.22.0)':
     dependencies:
@@ -12456,7 +12520,7 @@ snapshots:
 
   '@vercel/oidc@3.2.0': {}
 
-  '@vitejs/plugin-react@6.1.1(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))':
+  '@vitejs/plugin-react@6.1.2(babel-plugin-react-compiler@1.0.0)(vite@8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.3.3(@types/node@24.19.1)(jiti@2.7.0)(yaml@2.9.1)
@@ -13608,6 +13672,49 @@ snapshots:
 
   ci-info@3.9.0: {}
 
+  clear-any-console@1.16.4(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0):
+    dependencies:
+      command-code: 1.77.0(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(supports-color@10.2.2)
+      langbase: 1.2.4(react@19.3.0)(ws@8.21.0)
+    transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@netlify/db'
+      - '@op-engineering/op-sqlite'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
+      - '@types/react'
+      - '@types/sql.js'
+      - '@upstash/redis'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - babel-plugin-macros
+      - better-sqlite3
+      - bufferutil
+      - bun-types
+      - encoding
+      - expo-sqlite
+      - gel
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - prisma
+      - react
+      - react-devtools-core
+      - sql.js
+      - sqlite3
+      - supports-color
+      - utf-8-validate
+      - ws
+
   clear-any-console@1.16.4(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.22.0):
     dependencies:
       command-code: 1.77.0(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(supports-color@10.2.2)
@@ -13691,6 +13798,49 @@ snapshots:
     dependencies:
       slice-ansi: 9.0.1
       string-width: 8.3.0
+
+  cli-welcome@2.2.3(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0):
+    dependencies:
+      chalk: 2.4.2
+      clear-any-console: 1.16.4(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.21.0)
+    transitivePeerDependencies:
+      - '@aws-sdk/client-rds-data'
+      - '@cloudflare/workers-types'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@libsql/client-wasm'
+      - '@neondatabase/serverless'
+      - '@netlify/db'
+      - '@op-engineering/op-sqlite'
+      - '@planetscale/database'
+      - '@prisma/client'
+      - '@tidbcloud/serverless'
+      - '@types/better-sqlite3'
+      - '@types/pg'
+      - '@types/react'
+      - '@types/sql.js'
+      - '@upstash/redis'
+      - '@vercel/postgres'
+      - '@xata.io/client'
+      - babel-plugin-macros
+      - better-sqlite3
+      - bufferutil
+      - bun-types
+      - encoding
+      - expo-sqlite
+      - gel
+      - knex
+      - kysely
+      - mysql2
+      - pg
+      - prisma
+      - react
+      - react-devtools-core
+      - sql.js
+      - sqlite3
+      - supports-color
+      - utf-8-validate
+      - ws
 
   cli-welcome@2.2.3(@types/react@19.3.0)(babel-plugin-macros@3.1.0)(react@19.3.0)(supports-color@10.2.2)(ws@8.22.0):
     dependencies:
@@ -14814,6 +14964,14 @@ snapshots:
       graphql: 17.0.2
       tslib: 2.8.1
 
+  graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.21.0):
+    dependencies:
+      graphql: 17.0.2
+    optionalDependencies:
+      crossws: 0.3.5
+      ws: 8.21.0
+    optional: true
+
   graphql-ws@6.3.0(crossws@0.3.5)(graphql@17.0.2)(ws@8.22.0):
     dependencies:
       graphql: 17.0.2
@@ -15212,6 +15370,18 @@ snapshots:
   keyvaluestorage-interface@1.0.0: {}
 
   kind-of@6.0.3: {}
+
+  langbase@1.2.4(react@19.3.0)(ws@8.21.0):
+    dependencies:
+      dotenv: 16.6.1
+      openai: 4.104.0(ws@8.21.0)(zod@3.25.76)
+      zod: 3.25.76
+      zod-validation-error: 3.5.4(zod@3.25.76)
+    optionalDependencies:
+      react: 19.3.0
+    transitivePeerDependencies:
+      - encoding
+      - ws
 
   langbase@1.2.4(react@19.3.0)(ws@8.22.0):
     dependencies:
@@ -15675,6 +15845,21 @@ snapshots:
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
       wsl-utils: 0.1.0
+
+  openai@4.104.0(ws@8.21.0)(zod@3.25.76):
+    dependencies:
+      '@types/node': 18.19.130
+      '@types/node-fetch': 2.6.13
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
+    optionalDependencies:
+      ws: 8.21.0
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - encoding
 
   openai@4.104.0(ws@8.22.0)(zod@3.25.76):
     dependencies:
@@ -16549,22 +16734,22 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@10.2.2)
       babel-plugin-macros: 3.1.0
 
-  stylelint-config-recommended@18.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3)):
+  stylelint-config-recommended@18.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      stylelint: 17.15.0(supports-color@10.2.2)(typescript@6.0.3)
+      stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
-  stylelint-config-standard@40.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3)):
+  stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      stylelint: 17.15.0(supports-color@10.2.2)(typescript@6.0.3)
-      stylelint-config-recommended: 18.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3))
+      stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
+      stylelint-config-recommended: 18.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
 
-  stylelint-prettier@5.0.3(prettier@3.9.9)(stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3)):
+  stylelint-prettier@5.0.3(prettier@3.9.9)(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
       prettier: 3.9.9
       prettier-linter-helpers: 1.0.1
-      stylelint: 17.15.0(supports-color@10.2.2)(typescript@6.0.3)
+      stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
-  stylelint@17.15.0(supports-color@10.2.2)(typescript@6.0.3):
+  stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3):
     dependencies:
       '@csstools/css-calc': 3.4.3(@csstools/css-parser-algorithms@4.0.2(@csstools/css-tokenizer@4.0.2))(@csstools/css-tokenizer@4.0.2)
       '@csstools/css-parser-algorithms': 4.0.2(@csstools/css-tokenizer@4.0.2)
