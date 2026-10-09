@@ -338,9 +338,9 @@ export default function Privacy() {
 
               <p>
                 Beets does not use analytics or tracking services and does not sell tracking
-                information about your online activity. Our Services do not respond separately to
-                “Do Not Track” signals communicated by your browser. For more information about Do
-                Not Track, please visit{' '}
+                information about your online activity. Our UI does not respond separately to “Do
+                Not Track” signals communicated by your browser. For more information about Do Not
+                Track, please visit{' '}
                 <a className="link" href="https://allaboutdnt.com/" rel="noopener" target="_blank">
                   www.allaboutdnt.com
                 </a>
