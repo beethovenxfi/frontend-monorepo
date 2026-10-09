@@ -334,7 +334,7 @@ export default function Risks() {
                 applications to work together seamlessly in endless combinations, allowing
                 developers to create more complex financial transactions and applications. This is
                 sometimes referred to as DeFi lego building blocks, since they can be combined and
-                connected to created interesting new structures and applications.
+                connected to create interesting new structures and applications.
               </p>
               <p>
                 While composability offers many benefits, layering on protocols and applications on
@@ -397,7 +397,7 @@ export default function Risks() {
                   Which attributes can change
                   <ul>
                     <li>
-                      Certain attributes being mutable provide more risk than others. For example,
+                      Certain attributes being mutable are riskier than others. For example,
                       changing the swap fee percentage is generally viewed as less risky than the
                       ability to change the constituent tokens of a pool, since a malicious editor
                       could introduce a toxic pool token.
@@ -749,7 +749,7 @@ export default function Risks() {
                   <p>
                     Stablecoins are tokens whose value is intended to be pegged or tied to that of
                     another asset, which could be a currency, commodity or financial instrument.
-                    There are many types of stablecoins, some are risky than others depending on
+                    There are many types of stablecoins, some are riskier than others depending on
                     product design including evidence of reserves to support the peg in times of
                     stress. Some example types of stablecoins include:
                   </p>
@@ -779,13 +779,13 @@ export default function Risks() {
                     </li>
                   </ul>
                   <p>
-                    Depegging occurs when a stablecoin losses its peg to the target asset. In stable
-                    pools, if a stablecoin depegs, LPs may incurs losses. This is because liquidity
+                    Depegging occurs when a stablecoin loses its peg to the target asset. In stable
+                    pools, if a stablecoin depegs, LPs may incur losses. This is because liquidity
                     pools typically sell the winners (tokens moving up in price) and accumulate the
                     losers (tokens moving down in price). In the case of a USD-pegged stable pool,
-                    if an asset permanently loses it&rsquo;s peg to $1 and goes down in value, the
-                    pool will sell any pegged assets and accumulate the asset which has lost
-                    it&rsquo;s peg, leading to an overall loss of funds for LPs.
+                    if an asset permanently loses its peg to $1 and goes down in value, the pool
+                    will sell any pegged assets and accumulate the asset which has lost its peg,
+                    leading to an overall loss of funds for LPs.
                   </p>
                   <div>
                     <h5 className="anchor" id="rate-provider-risk">
@@ -1064,7 +1064,7 @@ export default function Risks() {
                   <li>
                     <b>Path Dependency Risk</b>: Unlike traditional CFMM (Constant Function Market
                     Makers) where “impermanent” loss can revert by the return of the asset to its
-                    original ratio, path-dependant pools are affected by the sequence of price
+                    original ratio, path-dependent pools are affected by the sequence of price
                     change, meaning the losses incurred to the asset in one side of the pool during
                     certain price fluctuations can become “permanent”.
                   </li>
