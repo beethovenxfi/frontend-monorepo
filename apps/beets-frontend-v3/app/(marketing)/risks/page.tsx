@@ -1112,7 +1112,7 @@ export default function Risks() {
 
                 <ul>
                   <li>
-                    <b>Market volatility</b>: run directional strategies. These are not market
+                    <b>Market volatility</b>: BTFs run directional strategies. These are not market
                     neutral. The dynamic nature of the TFMM may not always respond adequately to
                     extreme market volatility or adverse conditions, potentially leading to losses
                     if market prices deviate significantly from expected trends.
@@ -1152,11 +1152,11 @@ export default function Risks() {
                 <p>How QuantAMM mitigates these risks:</p>
                 <ul>
                   <li>
-                    <b>Market Volatility</b> - given the nature of BTFs in so that they are not
-                    reliant trade volumes, back test simulations are provided to give visibility on
-                    simulated behaviour under different market conditions. Given the BTF strategies
-                    rely on “historical memory” of price changes, historical performance and
-                    simulations are not indicative of future performance.
+                    <b>Market Volatility</b> - Given that BTFs are not reliant on trade volumes,
+                    back test simulations are provided to give visibility on simulated behaviour
+                    under different market conditions. Given the BTF strategies rely on “historical
+                    memory” of price changes, historical performance and simulations are not
+                    indicative of future performance.
                   </li>
                   <li>
                     <b>Pool Tuning</b> - Strategy parameters are fixed on creation mitigating the
