@@ -151,7 +151,8 @@ export default function Privacy() {
                 <li>Provide services, content, material and other information on the UI;</li>
                 <li>Identify and/or diagnose problems on or related to the UI;</li>
                 <li>
-                  Send technical notices, security alerts, and support and administrative messages;
+                  Send technical notices, security alerts, and support and administrative messages
+                  in reply to messages you send us;
                 </li>
                 <li>
                   Provide requested information, technical support and/or integrations such as an
