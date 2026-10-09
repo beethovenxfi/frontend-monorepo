@@ -141,11 +141,11 @@ export default function Terms() {
               >
                 here
               </ChakraLink>
-              . The NFT is referred to as the “Token” in the Agreement.
+              . A maBEETS position (an NFT) is referred to as the “Token” in the Agreement.
             </p>
             <p>
-              By using this NFT to participate in the governance and operations of BeethovenX, the
-              holder of this NFT agrees to be subject to the terms of the Agreement, including as a
+              By using that NFT to participate in the governance and operations of BeethovenX, the
+              holder of that NFT agrees to be subject to the terms of the Agreement, including as a
               Member of its entity structure. Participation in the governance and operations of
               BeethovenX includes, but is not limited to, utilizing the NFT to: (1) vote on
               Proposals to become Governance Resolutions, (2) attend events and otherwise
@@ -153,10 +153,10 @@ export default function Terms() {
             </p>
             <p>
               Except as otherwise provided in the Agreement, a Token Holder’s Membership Interest or
-              rights thereunder in relation to this NFT are freely transferable to another person
+              rights thereunder in relation to that NFT are freely transferable to another person
               through its conveyance. Except as otherwise provided in the Agreement, a Member shall
               be deemed to have resigned from the BeethovenX DAO LLC upon the disposal or transfer
-              of this NFT.
+              of that NFT.
             </p>
           </div>
         </FadeInOnView>
