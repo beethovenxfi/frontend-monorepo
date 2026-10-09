@@ -998,21 +998,8 @@ export default function Risks() {
                   </p>
                   <ul>
                     <li>
-                      <em>2-CLPs:</em> Pools with two assets, known as Quadratic-CLPs or 2-CLPs,
-                      named after the quadratic invariant curve—are similar to Uniswap v3&rsquo;s
-                      concentrated liquidity pools. But unlike Uniswap, a 2-CLP effectively offers a
-                      &lsquo;single tick&rsquo;, where liquidity is distributed evenly across a
-                      single active trading range. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/pools/2-clps.html">
-                        2-CLPs and their risks
-                      </a>
-                      .
-                    </li>
-                    <li>
                       <em>3-CLPs:</em> Pools with three assets, known as Cubic-CLPs or 3-CLPs,
-                      support three assets and are functionally best understood as an extension of
-                      2-CLPs. As a high-level summary, they amplify the benefits of 2-CLPs. Learn
-                      more about{' '}
+                      provide concentrated liquidity for three assets. Learn more about{' '}
                       <a href="https://docs.gyro.finance/pools/3-clps.html">
                         3-CLPs and their risks
                       </a>
