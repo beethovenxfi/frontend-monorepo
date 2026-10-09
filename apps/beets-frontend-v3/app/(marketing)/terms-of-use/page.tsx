@@ -316,7 +316,7 @@ export default function Terms() {
                   You are reminded of the inherent risks with digital assets and decentralized
                   finance including the fact that tokens are not legal tender and are not backed by
                   any government.
-                </span>
+                </span>{' '}
                 Unlike fiat currencies, which are regulated and backed by local governments and
                 central banks, tokens are based only on technology and user consensus, which means
                 that in cases of manipulations or market panic, central governments will not take
@@ -499,7 +499,7 @@ export default function Terms() {
               referral or recommendation by us, should not be regarded as an offer, solicitation,
               invitation or recommendation to buy or sell tokens or any other financial services and
               is not intended to be relied upon by you in making any specific decision to buy or
-              sell a token.
+              sell a token.{' '}
               <em className="italic font-semibold">
                 We recommend that you seek independent advice from financial, legal and tax advisors
                 before making any such decision particularly in light of the risks associated with
