@@ -888,8 +888,8 @@ export default function Risks() {
                       liquidity, and increased yield for Liquidity Providers.
                     </li>
                     <li>
-                      For traders, Boosted Pools are a cheaper entry/exit into decentralized lending
-                      protocols like Aave.
+                      For traders, Boosted Pools are a cheaper entry/exit into underlying yield
+                      protocols.
                     </li>
                     <li>
                       Boosted Pools increase the opportunity for LPs to gain exposure to a wide
@@ -898,12 +898,12 @@ export default function Risks() {
                   </ul>
                   <h5>Third-party platform risk exposure (DeFi composability risk)</h5>
                   <p>
-                    Since boosted pools deposit excess liquidity into third-party protocols, like
-                    Aave, to generate yield, LPs must fully understand the risks of the underlying
-                    protocol since a portion of their funds will be exposed to the risks of that
-                    protocol. Some of the risks of the underlying protocol may include smart
-                    contract bugs, economic attack vulnerabilities and counterparty risk from the
-                    protocol&rsquo;s borrowers. Underlying protocols may also use{' '}
+                    Since boosted pools deposit excess liquidity into third-party yield protocols to
+                    generate yield, LPs must fully understand the risks of the underlying protocol
+                    since a portion of their funds will be exposed to the risks of that protocol.
+                    Some of the risks of the underlying protocol may include smart contract bugs,
+                    economic attack vulnerabilities and counterparty risk from the protocol&rsquo;s
+                    borrowers. Underlying protocols may also use{' '}
                     <Link href="risks#oracles">
                       <span>Oracles</span>
                     </Link>{' '}
