@@ -32,10 +32,10 @@ export default function Privacy() {
                   We may change this Privacy Policy from time to time. If we make changes, we will
                   notify you by revising the date at the top of this policy and, when material, we
                   will provide you with additional notice by adding a statement to our website and
-                  consent as required under applicable law. Your continued use of this UI after we
-                  make changes is deemed to be acceptance of those changes when permissible. We
-                  encourage you to review this Privacy Policy regularly to stay informed about our
-                  information practices and the choices available to you.
+                  obtaining your consent where required by applicable law. Your continued use of
+                  this UI after we make changes is deemed to be acceptance of those changes when
+                  permissible. We encourage you to review this Privacy Policy regularly to stay
+                  informed about our information practices and the choices available to you.
                 </em>
               </p>
             </div>
