@@ -203,7 +203,7 @@ export default function Risks() {
                 value, allowing them to buy or sell that asset at a profit.
               </p>
               <p>
-                In addition, the composable nature of DeFi means that a pool on Balancer may contain
+                In addition, the composable nature of DeFi means that a pool on Beets may contain
                 tokens that may be manipulated by an attacker on a third-party protocol, which
                 further increases risk.
               </p>
