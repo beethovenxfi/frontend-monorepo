@@ -375,7 +375,7 @@ export default function Risks() {
               </p>
               <h5>How can this risk be reduced?</h5>
               <ul>
-                <li>The Balancer Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
+                <li>The Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
               </ul>
             </div>
           </FadeInOnView>
