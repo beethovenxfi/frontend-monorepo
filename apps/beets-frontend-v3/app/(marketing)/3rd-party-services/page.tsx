@@ -34,12 +34,12 @@ export default function ThirdPartyServices() {
   ]
 
   return (
-    <Container py="2xl">
+    <Container pb="2xl" pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <div className="pb-4">
           <FadeInOnView>
             <div className="subsection">
-              <Box mt="3xl" pb="sm">
+              <Box pb="sm">
                 <h1>Use of third-party services</h1>
                 <p>
                   <em>Last updated: October 7, 2026</em>

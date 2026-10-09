@@ -7,12 +7,12 @@ import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 
 export default function Cookies() {
   return (
-    <Container py="2xl">
+    <Container pb="2xl" pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <div className="pb-4">
           <FadeInOnView>
             <div className="subsection">
-              <Box mt="3xl">
+              <Box>
                 <h1>Beets cookies&nbsp;policy</h1>
                 <p>
                   <em>Last updated: October 6, 2026</em>

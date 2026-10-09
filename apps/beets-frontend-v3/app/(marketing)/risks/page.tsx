@@ -23,11 +23,11 @@ export default function Risks() {
   }, [])
 
   return (
-    <Container p="0">
+    <Container p="0" pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <div>
           <FadeInOnView>
-            <Box mt="3xl" pb="md">
+            <Box pb="md">
               <h1>Risks of using&nbsp;Beets</h1>
               <p>
                 <em>Last updated: October 6, 2026</em>
