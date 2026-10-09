@@ -38,8 +38,7 @@ export default function Cookies() {
               <p>
                 Cookies are pieces of data stored on your device. Browser cookies are assigned by a
                 web server to the browser on your device. When you return to a site you have visited
-                before, your browser gives this data back to the server. Mobile applications may
-                also use cookies.
+                before, your browser gives this data back to the server.
               </p>
 
               <p>
