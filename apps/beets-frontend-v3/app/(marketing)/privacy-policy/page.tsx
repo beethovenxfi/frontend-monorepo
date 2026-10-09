@@ -100,7 +100,7 @@ export default function Privacy() {
                   for analytics, tracking, advertising, or promotional profiling.
                 </li>
                 <li>
-                  <em className="font-semibold">Browser storage and third-party technologies:</em>
+                  <em className="font-semibold">Browser storage and third-party technologies:</em>{' '}
                   The UI stores preferences, wallet connection state, recent transactions, and
                   certain cached data locally in your browser to support its functionality. Beets
                   does not use analytics services, advertising trackers, or web beacons. Third-party
