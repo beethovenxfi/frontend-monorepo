@@ -526,8 +526,8 @@ export default function Risks() {
               <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  All AMMs either have impermanent loss or reduced yield to LPs. Balancer aims to
-                  make its pools as capital efficient as possible so that the yield LPs make is more
+                  All AMMs either have impermanent loss or reduced yield to LPs. Beets aims to make
+                  its pools as capital efficient as possible so that the yield LPs make is more
                   likely to exceed any impermanent loss.
                 </li>
                 <li>
@@ -541,7 +541,7 @@ export default function Risks() {
               <ul>
                 <li>
                   LPs should consider the risk of impermanent loss carefully before providing
-                  liquidity to a Balancer pool.
+                  liquidity to a pool.
                 </li>
                 <li>
                   The longer an LP holds their position, the more likely it is that their yield from
@@ -566,17 +566,17 @@ export default function Risks() {
                 Hooks
               </h4>
               <p>
-                Hooks introduce complex logic into Balancer pools, and changes in their parameters
-                can significantly impact the risk profile of a pool. This complexity increases the
+                Hooks introduce complex logic into pools, and changes in their parameters can
+                significantly impact the risk profile of a pool. This complexity increases the
                 potential for unforeseen errors or vulnerabilities in hook code that may, for
                 example, amplify impermanent loss, introduce new sources of volatility, or impose
                 restrictions on pool interactions like joins and exits.
               </p>
               <ul>
                 <li>
-                  Hook specific risk: Balancer hooks introduce unique functionalities to Balancer
-                  pools, and while they offer exciting possibilities, they also present specific
-                  risks that users should be aware of.
+                  Hook specific risk: Hooks introduce unique functionalities to pools, and while
+                  they offer exciting possibilities, they also present specific risks that users
+                  should be aware of.
                 </li>
                 <li>
                   Hook Interactions: Hooks can interact with each other and with the pool contracts
@@ -624,9 +624,9 @@ export default function Risks() {
               <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  Since the Balancer smart contracts can be interacted with by any front-end UI,
-                  there is less reliance on any one single UI. The Beets UI code is open source with
-                  an MIT License which allows other third-party developers to fork the code, make
+                  Since the smart contracts can be interacted with by any front-end UI, there is
+                  less reliance on any one single UI. The Beets UI code is open source with an MIT
+                  License which allows other third-party developers to fork the code, make
                   improvements and compete for users.
                 </li>
                 <li>
@@ -642,8 +642,8 @@ export default function Risks() {
               <h5>How can LPs mitigate this risk?</h5>
               <ul>
                 <li>
-                  LPs can learn how to interact with Balancer smart contracts on third-party
-                  websites, like <a href="https://sonicscan.org/">SonicScan</a>.
+                  LPs can learn how to interact with the smart contracts directly on{' '}
+                  <a href="https://sonicscan.org/">SonicScan</a>.
                 </li>
                 <li>
                   To mitigate the risks of downtime or lack of access, users can fork the open
@@ -684,9 +684,9 @@ export default function Risks() {
                     Pool type risks
                   </h3>
                   <p>
-                    Balancer is designed to be infinitely extendible to allow for any conceivable
-                    pool type with custom curves, logic and parameters, and more. The general risks
-                    of the most popular pool types are listed below.
+                    Balancer Protocol is designed to be infinitely extendible to allow for any
+                    conceivable pool type with custom curves, logic and parameters, and more. The
+                    general risks of the most popular pool types are listed below.
                   </p>
                 </div>
               </FadeInOnView>
@@ -702,9 +702,9 @@ export default function Risks() {
                     </a>
                     , which makes them great for general cases, including tokens that don&apos;t
                     necessarily have any price correlation (ex. DAI/WETH). Unlike weighted pools in
-                    other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable
-                    users to build pools with more than two tokens and custom weightings, such as
-                    pools with 80/20 or 60/20/20 weightings. Some risks of weighted pools include:
+                    other AMMs that only provide 50/50 weightings, Weighted Pools enable users to
+                    build pools with more than two tokens and custom weightings, such as pools with
+                    80/20 or 60/20/20 weightings. Some risks of weighted pools include:
                   </p>
                   <ul>
                     <li>
@@ -717,8 +717,8 @@ export default function Risks() {
                       Toxic token risk
                       <ul>
                         <li>
-                          Balancer weighted pools are not limited to just having two tokens. The
-                          more tokens in a pool, the more risk that one of these could become toxic.
+                          Weighted pools are not limited to just having two tokens. The more tokens
+                          in a pool, the more risk that one of these could become toxic.
                         </li>
                       </ul>
                     </li>
@@ -810,8 +810,8 @@ export default function Risks() {
                     <p>
                       Oracles are data providers which supply external information to smart
                       contracts. Oracles, like Chainlink, may be used to source exchange rates
-                      between pool tokens for a rate provider in Balancer Stable Pools. The risks of
-                      using Oracles to supply exchange rates include:
+                      between pool tokens for a rate provider in Stable Pools. The risks of using
+                      Oracles to supply exchange rates include:
                     </p>
                     <ul>
                       <li>
@@ -1196,12 +1196,12 @@ export default function Risks() {
                   </li>
                   <li>
                     <b>Sub-optimal arbitrage</b> - This is a relatively small risk given at any one
-                    block arbitrageurs are faced with a standard balancer pool so they can price and
-                    take the arbitrage opportunity without any additional new invariant prediction
-                    work. Balancer has also integrated BTFs in the smart order router also
-                    increasing the likelihood of being exposed to traders. Work has already begun on
-                    DEX aggregator integration and when there is a minimal amount of TVL in the pool
-                    aggregators will expose the pool for further volumes.
+                    block arbitrageurs are faced with a standard pool so they can price and take the
+                    arbitrage opportunity without any additional new invariant prediction work.
+                    Beets has also integrated BTFs in the smart order router also increasing the
+                    likelihood of being exposed to traders. Work has already begun on DEX aggregator
+                    integration and when there is a minimal amount of TVL in the pool aggregators
+                    will expose the pool for further volumes.
                   </li>
                 </ul>
                 <p>
