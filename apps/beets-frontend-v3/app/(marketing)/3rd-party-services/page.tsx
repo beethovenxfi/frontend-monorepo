@@ -20,6 +20,18 @@ export default function ThirdPartyServices() {
       iconUrl: '/images/services/vercel.svg',
     },
     {
+      name: 'Render',
+      description:
+        'Used for supporting infrastructure for the Beets API. Infrastructure may process network and request information and retain operational logs needed to run and secure the service.',
+      iconUrl: '/images/services/render.svg',
+    },
+    {
+      name: 'Cloudflare',
+      description:
+        'Used for supporting infrastructure for the Beets API. Infrastructure may process network and request information needed to provide and secure the service.',
+      iconUrl: '/images/services/cloudflare.svg',
+    },
+    {
       name: 'CoinGecko',
       description:
         'Used to fetch token information and prices. Requests include the token or network information needed to retrieve that data.',
