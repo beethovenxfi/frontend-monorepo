@@ -286,7 +286,7 @@ export default function Risks() {
               <h5>How can these risks be reduced?</h5>
               <ul>
                 <li>
-                  Since the Balancer protocol is permissionless, anyone can create a liquidity pool
+                  Since the Balancer Protocol is permissionless, anyone can create a liquidity pool
                   composed of any ERC-20 token. This makes this type of risk difficult to mitigate.
                 </li>
                 <li>
@@ -531,7 +531,7 @@ export default function Risks() {
                   likely to exceed any impermanent loss.
                 </li>
                 <li>
-                  The Balancer protocol supports unbalanced pools which LPs can use to reduce
+                  The Balancer Protocol supports unbalanced pools which LPs can use to reduce
                   impermanent loss. For example, there is lower impermanent loss in an 80/20 pool
                   (or any other unbalanced pools) versus a 50/50 pool with the same underlying
                   tokens.
