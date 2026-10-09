@@ -366,7 +366,7 @@ export default function Risks() {
                 collateral swaps and to lower transaction fees, across potentially multiple
                 protocols. It&rsquo;s a powerful new financial primitive, native to DeFi.
               </p>
-              <p>Flash Loans may be used on Balancer and interact with the Balancer Vault.</p>
+              <p>Flash Loans may be used on Beets and interact with the Vault.</p>
               <p>
                 While Flash Loans offer many benefits, they also come with certain risks. Flash
                 Loans have also been used for multiple DeFi exploits resulting in losses worth
