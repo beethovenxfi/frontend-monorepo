@@ -52,8 +52,8 @@ export function useFormattedPoolAttributes() {
 
   const poolOwnerData = useMemo(() => {
     if (!pool) return
-    const { poolCreator, swapFeeManager, chain } = pool
-    const manager = (isV2 ? poolCreator : swapFeeManager) || ''
+    const { swapFeeManager, chain } = pool
+    const manager = swapFeeManager || ''
     if (!manager) return
 
     if (manager === zeroAddress) {
@@ -61,9 +61,11 @@ export function useFormattedPoolAttributes() {
         title: isV2 ? 'No owner' : 'Delegate manager',
         link: '',
         editableText: isV2 ? 'non-editable' : 'editable by governance',
-        attributeImmutabilityText: isStable(pool.type)
-          ? ' except for swap fees and AMP factor editable by governance'
-          : ' except for swap fees editable by governance',
+        attributeImmutabilityText: isV2
+          ? ''
+          : isStable(pool.type)
+            ? ' except for swap fees and AMP factor editable by governance'
+            : ' except for swap fees editable by governance',
       }
     }
 
@@ -118,12 +120,12 @@ export function useFormattedPoolAttributes() {
       },
       {
         title: 'Swap fees',
-        value: `${fNum('feePercent', dynamicData.swapFee, { hideSmallPercentage: false })} (${poolOwnerData?.editableText})`,
+        value: `${fNum('feePercent', dynamicData.swapFee, { hideSmallPercentage: false })}${poolOwnerData ? ` (${poolOwnerData.editableText})` : ''}`,
       },
       isStable(pool.type) && 'amp' in pool
         ? {
             title: 'AMP factor',
-            value: `${fNum('integer', pool.amp)} (${poolOwnerData?.editableText})`,
+            value: `${fNum('integer', pool.amp)}${poolOwnerData ? ` (${poolOwnerData.editableText})` : ''}`,
           }
         : null,
       poolOwnerData
@@ -137,7 +139,7 @@ export function useFormattedPoolAttributes() {
         title: 'Attribute immutability',
         value: isQuantAmmPool(type)
           ? 'Immutable except for swap fees editable by governance, and dynamic weight shifts per smart contract.'
-          : `Immutable${poolOwnerData?.attributeImmutabilityText}`,
+          : `Immutable${poolOwnerData?.attributeImmutabilityText ?? ''}`,
       },
       {
         title: 'Creation date',
