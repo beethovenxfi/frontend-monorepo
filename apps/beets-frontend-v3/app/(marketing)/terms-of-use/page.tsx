@@ -384,13 +384,12 @@ export default function Terms() {
                 related to your use of the Site, the Application or the Smart Contracts.
               </li>
               <li>
-                upgrades and modifications to the protocol are managed in a community-driven way by
-                holders of the Beets Protocol governance token. No developer or entity involved in
-                creating the Beets Protocol will be liable for any claims or damages whatsoever
-                associated with your use, inability to use, or your interaction with other users of,
-                the Beets Protocol, including any direct, indirect, incidental, special, exemplary,
-                punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or
-                anything else of value.
+                Beets governance decisions are made by maBEETS holders. No developer or entity
+                involved in creating the Beets Protocol will be liable for any claims or damages
+                whatsoever associated with your use, inability to use, or your interaction with
+                other users of, the Beets Protocol, including any direct, indirect, incidental,
+                special, exemplary, punitive or consequential damages, or loss of profits,
+                cryptocurrencies, tokens, or anything else of value.
               </li>
             </ol>
           </div>
