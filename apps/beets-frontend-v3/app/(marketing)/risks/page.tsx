@@ -385,7 +385,7 @@ export default function Risks() {
                 Mutable pool attributes
               </h4>
               <p>
-                Balancer is a flexible AMM that allows people to create different types of liquidity
+                Beets is a flexible AMM that allows people to create different types of liquidity
                 pools, including those with immutable and/or mutable pool attributes.
               </p>
               <p>
