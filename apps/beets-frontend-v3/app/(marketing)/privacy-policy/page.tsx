@@ -244,7 +244,7 @@ export default function Privacy() {
           </FadeInOnView>
           <FadeInOnView>
             <div className="subsection">
-              <h2>Transfer of information to the United States and other&nbsp;countries</h2>
+              <h2>Transfer of information to other&nbsp;countries</h2>
 
               <p>
                 BeethovenX DAO LLC is headquartered in the Republic of the Marshall Islands.
