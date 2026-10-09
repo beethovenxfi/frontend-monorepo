@@ -453,8 +453,8 @@ export default function Risks() {
               </p>
               <p>
                 Slippage tolerance is a setting in both the Add/Remove liquidity flows on the Beets
-                UI. Setting a low slippage tolerance protects you from front-running bots and miner
-                extractable value (MEV).
+                UI. Setting a low slippage tolerance protects you from front-running bots and
+                maximal extractable value (MEV).
               </p>
               <h5>Due to high gas fees</h5>
               <p>
