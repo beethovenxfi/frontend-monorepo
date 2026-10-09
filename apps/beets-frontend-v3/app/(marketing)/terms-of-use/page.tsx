@@ -27,12 +27,11 @@ export default function Terms() {
                   Do not access this site, as defined below, where such access is prohibited by
                   applicable law. Please carefully read these terms of use before using the site.
                   These terms apply to any person or entity accessing the site and by using the site
-                  you agree to be bound by them. The terms of use contain a mandatory individual
-                  arbitration and class action/jury trial waiver provision that requires the use of
-                  arbitration on an individual basis to resolve disputes, rather than jury trials or
-                  class actions. If you do not want to be bound by these terms of use, you should
-                  not access the site. By using the site in any capacity, you agree that you have
-                  read, understood, and agree to be subject to these terms of use.
+                  you agree to be bound by them. These Terms contain a class action and jury trial
+                  waiver. Please review Section 11 carefully. If you do not want to be bound by
+                  these terms of use, you should not access the site. By using the site in any
+                  capacity, you agree that you have read, understood, and agree to be subject to
+                  these terms of use.
                 </em>
               </p>
             </Box>
