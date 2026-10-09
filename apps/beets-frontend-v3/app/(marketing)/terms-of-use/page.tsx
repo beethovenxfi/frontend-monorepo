@@ -23,12 +23,12 @@ export default function Terms() {
             <Box mt="3xl">
               <p>
                 <em className="font-semibold">
-                  Do not access this site, as defined below, where such access is prohibited by
-                  applicable law. Please carefully read these terms of use before using the site.
-                  These terms apply to any person or entity accessing the site and by using the site
+                  Do not access this Site, as defined below, where such access is prohibited by
+                  applicable law. Please carefully read these terms of use before using the Site.
+                  These terms apply to any person or entity accessing the Site and by using the Site
                   you agree to be bound by them. These Terms contain a class action and jury trial
                   waiver. Please review Section 11 carefully. If you do not want to be bound by
-                  these terms of use, you should not access the site. By using the site in any
+                  these terms of use, you should not access the Site. By using the Site in any
                   capacity, you agree that you have read, understood, and agree to be subject to
                   these terms of use.
                 </em>
@@ -163,31 +163,31 @@ export default function Terms() {
           <div className="subsection">
             <h2>4. Access/disclaimer of warranties</h2>
             <p>
-              ACCESS TO THIS SITE AND THE PRODUCTS HEREIN ARE PROVIDED ON AN &apos;AS IS&apos; AND
-              &apos;AS AVAILABLE&apos; BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
-              IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-              FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. NO WARRANTY IS PROVIDED THAT
-              THE SITE OR ANY PRODUCT WILL BE FREE FROM DEFECTS OR VIRUSES OR THAT OPERATION OF THE
-              PRODUCT WILL BE UNINTERRUPTED. YOUR USE OF THE SITE AND ANY PRODUCT AND ANY MATERIAL
-              OR SERVICES OBTAINED OR ACCESSED VIA THE SITE IS AT YOUR OWN DISCRETION AND RISK, AND
-              YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE RESULTING FROM THEIR USE. SOME JURISDICTIONS
-              DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES, SO SOME OF THE ABOVE LIMITATIONS MAY
-              NOT APPLY TO YOU. TRANSACTIONS THAT ARE RECORDED VIA THE SITE MUST BE TREATED AS
-              PERMANENT AND CANNOT BE UNDONE BY US OR BY ANYONE.
+              ACCESS TO THIS SITE AND THE PRODUCTS HEREIN ARE PROVIDED ON AN “AS IS” AND “AS
+              AVAILABLE” BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+              BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+              PARTICULAR PURPOSE AND NON-INFRINGEMENT. NO WARRANTY IS PROVIDED THAT THE SITE OR ANY
+              PRODUCT WILL BE FREE FROM DEFECTS OR VIRUSES OR THAT OPERATION OF THE PRODUCT WILL BE
+              UNINTERRUPTED. YOUR USE OF THE SITE AND ANY PRODUCT AND ANY MATERIAL OR SERVICES
+              OBTAINED OR ACCESSED VIA THE SITE IS AT YOUR OWN DISCRETION AND RISK, AND YOU ARE
+              SOLELY RESPONSIBLE FOR ANY DAMAGE RESULTING FROM THEIR USE. SOME JURISDICTIONS DO NOT
+              ALLOW THE EXCLUSION OF CERTAIN WARRANTIES, SO SOME OF THE ABOVE LIMITATIONS MAY NOT
+              APPLY TO YOU. TRANSACTIONS THAT ARE RECORDED VIA THE SITE MUST BE TREATED AS PERMANENT
+              AND CANNOT BE UNDONE BY US OR BY ANYONE.
             </p>
             <p>
               We do not guarantee or promise that the Site, or any content on it, will always be
               available, functional, usable or uninterrupted. From time to time, access may be
               interrupted, suspended or restricted, including because of a fault, error or
               unforeseen circumstances or because we are carrying out planned maintenance or
-              changes. You acknowledge and agree that you will access and use the site at your own
+              changes. You acknowledge and agree that you will access and use the Site at your own
               risk. By using the Site, you will be solely responsible for conducting your own due
               diligence into the risks of a transaction.
             </p>
             <p>
-              We reserve the right to limit the availability of the site to any person, geographic
+              We reserve the right to limit the availability of the Site to any person, geographic
               area or jurisdiction in our sole discretion and/or to terminate your access to and use
-              of the site, at any time and in our sole discretion. We may suspend or disable your
+              of the Site, at any time and in our sole discretion. We may suspend or disable your
               access to the Site for any reason and in our sole discretion, including for any
               intentional or unintentional breaches of these Terms. We may remove or amend the
               content of the Site at any time. Some of the content may be out of date at any given
@@ -198,7 +198,7 @@ export default function Terms() {
               We will not be liable to you for any issue, loss or damage you may or have suffered as
               a result of the Site being unavailable at any time for any reason. You will comply
               with all applicable domestic and international laws, statutes, ordinances, rules and
-              regulations applicable to your use of the site (“Applicable Laws”). Likewise, we are
+              regulations applicable to your use of the Site (“Applicable Laws”). Likewise, we are
               not liable for any third-party services and are not responsible for the content or
               services of these parties.
             </p>
@@ -338,7 +338,7 @@ export default function Terms() {
                 transfer, exchange, and value of your tokens.
               </li>
               <li>
-                The site and/or application may be wholly or partially suspended or terminated for
+                The Site and/or application may be wholly or partially suspended or terminated for
                 any or no reason, which may limit your access to your Cryptocurrency Assets.
               </li>
               <li>
@@ -426,12 +426,12 @@ export default function Terms() {
               BeethovenX DAO is the owner of all intellectual property rights in the Site and the
               material published on them. To the extent practical, these works are protected by
               copyright laws and all such rights are reserved. www.beets.fi is the uniform resource
-              locator (&apos;URL&apos;) of BeethovenX DAO. You will not make use of this URL (or any
-              other URL owned by us) on another website or digital platform without our prior
-              written consent. Any unauthorized use or reproduction may be prosecuted. You will
-              retain ownership of all copyright in data you upload or submit by, through or to the
-              Site. You grant us a worldwide, royalty-free, irrevocable license to use, copy,
-              distribute or publish and send this data in any manner.
+              locator (“URL”) of BeethovenX DAO. You will not make use of this URL (or any other URL
+              owned by us) on another website or digital platform without our prior written consent.
+              Any unauthorized use or reproduction may be prosecuted. You will retain ownership of
+              all copyright in data you upload or submit by, through or to the Site. You grant us a
+              worldwide, royalty-free, irrevocable license to use, copy, distribute or publish and
+              send this data in any manner.
             </p>
           </div>
         </FadeInOnView>
@@ -506,7 +506,7 @@ export default function Terms() {
               </em>
             </p>
             <p>
-              Nothing included in the site constitutes an offer or solicitation to sell, or
+              Nothing included in the Site constitutes an offer or solicitation to sell, or
               distribution of, investments and related services to anyone in any jurisdiction.
             </p>
             <p>
@@ -523,7 +523,7 @@ export default function Terms() {
               You agree to indemnify and hold BeethovenX DAO and our officers, directors, employees,
               contractors, agents, affiliates, or subsidiaries harmless from any claim or demand,
               including attorneys’ fees and costs, made by any third party due to or arising out of
-              1) your use of the site or 2) this agreement.
+              1) your use of the Site or 2) this agreement.
             </p>
           </div>
         </FadeInOnView>
@@ -556,15 +556,15 @@ export default function Terms() {
             </p>
             <p>
               These Terms and the documents referred to in them set out the entire agreement between
-              you and us with respect to your use of the site, BeethovenX DAO and the services
-              provided via the site and supersede any and all prior or contemporaneous
+              you and us with respect to your use of the Site, BeethovenX DAO and the services
+              provided via the Site and supersede any and all prior or contemporaneous
               representations, communications or agreements (written or oral) made between you or
               us.
             </p>
             <p>
               <em className="font-semibold">
                 With respect to all persons and entities, regardless of whether they have obtained
-                or used the site for personal, commercial or other purposes, all disputes,
+                or used the Site for personal, commercial or other purposes, all disputes,
                 controversies or claims must be brought in the parties’ individual capacity, and not
                 as a plaintiff or class member in any purported class action, collective action or
                 other representative proceeding. This waiver applies to class arbitration, and,
