@@ -609,11 +609,11 @@ importers:
         specifier: 2.12.0
         version: 2.12.0(react@19.3.0)
       '@graphql-codegen/cli':
-        specifier: 7.4.3
-        version: 7.4.3(@parcel/watcher@2.6.0)(@types/node@24.19.1)(crossws@0.3.5)(graphql@17.0.2)(supports-color@10.2.2)(typescript@6.0.3)
+        specifier: 7.4.4
+        version: 7.4.4(@parcel/watcher@2.6.0)(@types/node@24.19.1)(crossws@0.3.5)(graphql@17.0.2)(supports-color@10.2.2)(typescript@6.0.3)
       '@graphql-codegen/client-preset':
-        specifier: 6.2.0
-        version: 6.2.0(graphql@17.0.2)
+        specifier: 6.2.1
+        version: 6.2.1(graphql@17.0.2)
       '@graphql-codegen/schema-ast':
         specifier: 6.1.0
         version: 6.1.0(graphql@17.0.2)
@@ -1574,8 +1574,8 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  '@graphql-codegen/cli@7.4.3':
-    resolution: {integrity: sha512-NxjXhuy/xE7HAGRYcKrrVCgoPBHLSZJCEuFqy7BTYln+qWNhfJdtD2du0pVwIRoftGfeX87MQzOwU/TG09hlVQ==}
+  '@graphql-codegen/cli@7.4.4':
+    resolution: {integrity: sha512-hCcRawhARIZoQSRsROUGbrI9vZTkpLfKIVSTXPM5lhXN91jJ9jUxx/H4eYgPNJKUXg9OF/t5x0nkMbRwrNtBgw==}
     engines: {node: '>=16'}
     hasBin: true
     peerDependencies:
@@ -1585,8 +1585,8 @@ packages:
       '@parcel/watcher':
         optional: true
 
-  '@graphql-codegen/client-preset@6.2.0':
-    resolution: {integrity: sha512-NtYwPBfnUleu/1pVB3jMgnpuT1imG9oA0H9TxwwPZSiwKc0uxUe5Ue5TwZpGccKHEJsnlmxYYM0zmgY22Xipsg==}
+  '@graphql-codegen/client-preset@6.2.1':
+    resolution: {integrity: sha512-0mVrBeIYw7LSkuTnIn7b4slgE7HWPspAzn8pCqSlnpNEVdpAKcWbm6Pk/3dYVkI3pOFwD+Wm1mYAuCmQY1wZAQ==}
     engines: {node: '>=16'}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
@@ -9514,12 +9514,12 @@ snapshots:
       graphql: 17.0.2
       tslib: 2.8.1
 
-  '@graphql-codegen/cli@7.4.3(@parcel/watcher@2.6.0)(@types/node@24.19.1)(crossws@0.3.5)(graphql@17.0.2)(supports-color@10.2.2)(typescript@6.0.3)':
+  '@graphql-codegen/cli@7.4.4(@parcel/watcher@2.6.0)(@types/node@24.19.1)(crossws@0.3.5)(graphql@17.0.2)(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
       '@babel/generator': 7.29.8
       '@babel/template': 7.29.7
       '@babel/types': 7.29.8
-      '@graphql-codegen/client-preset': 6.2.0(graphql@17.0.2)
+      '@graphql-codegen/client-preset': 6.2.1(graphql@17.0.2)
       '@graphql-codegen/core': 6.2.1(graphql@17.0.2)
       '@graphql-codegen/plugin-helpers': 7.4.1(graphql@17.0.2)
       '@graphql-tools/apollo-engine-loader': 8.0.38(graphql@17.0.2)
@@ -9565,7 +9565,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@graphql-codegen/client-preset@6.2.0(graphql@17.0.2)':
+  '@graphql-codegen/client-preset@6.2.1(graphql@17.0.2)':
     dependencies:
       '@babel/helper-plugin-utils': 7.29.7
       '@babel/template': 7.29.7
