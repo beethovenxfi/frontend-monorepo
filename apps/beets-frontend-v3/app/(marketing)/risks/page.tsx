@@ -64,21 +64,21 @@ export default function Risks() {
                         <Link href="risks#economic-risk">Mechanism / economic risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#toxic-token-risk">Toxic token risk</Link>
+                        <Link href="risks#toxic-token-risk">Toxic pool token risk</Link>
                       </li>
                       <li>
                         <Link href="risks#composability-risk">DeFi composability risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#flash-loans-risk">Flash loan risk</Link>
+                        <Link href="risks#flash-loans-risk">Flash Loans risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#mutable-attributes-risk">
-                          Mutable pool attributes risk
+                        <Link href="risks#mutable-attributes-risk">Mutable pool attributes</Link>
+                      </li>
+                      <li>
+                        <Link href="risks#join-exit-risk">
+                          Loss of funds on join/exit of a pool
                         </Link>
-                      </li>
-                      <li>
-                        <Link href="risks#join-exit-risk">Join/exit risk</Link>
                       </li>
                       <li>
                         <Link href="risks#impermanent-loss-risk">Impermanent loss risk</Link>
@@ -117,9 +117,7 @@ export default function Risks() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="risks#autorange">
-                          AutoRange—Readjusting Concentrated Liquidity AMM
-                        </Link>
+                        <Link href="risks#autorange">AutoRange pools</Link>
                       </li>
                       <li>
                         <Link href="risks#btf">Blockchain Traded Funds</Link>
