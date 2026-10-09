@@ -275,8 +275,8 @@ export default function Risks() {
                 by 10%, the token supply would increase by 10%.
               </p>
               <p>
-                Some examples of rebasing tokens include <code>stETH</code> and
-                <code>AMPL</code>.
+                Rebasing tokens can adjust holders&rsquo; token balances to reflect changes in
+                supply.
               </p>
               <p>
                 Unfortunately, rebasing tokens generally don&rsquo;t work well in liquidity pools
@@ -699,7 +699,7 @@ export default function Risks() {
                       Weighted math
                     </a>
                     , which makes them great for general cases, including tokens that don&apos;t
-                    necessarily have any price correlation (ex. DAI/WETH). Unlike weighted pools in
+                    necessarily have any price correlation (ex. USDC/wS). Unlike weighted pools in
                     other AMMs that only provide 50/50 weightings, Weighted Pools enable users to
                     build pools with more than two tokens and custom weightings, such as pools with
                     80/20 or 60/20/20 weightings. Some risks of weighted pools include:
@@ -737,13 +737,12 @@ export default function Risks() {
                   </p>
                   <ul>
                     <li>
-                      Pegged Tokens: Tokens that trade near 1:1, such as two stablecoins of the same
-                      currency (e.g., DAI, USDC, USDT), or synthetic assets (e.g., renBTC, sBTC,
-                      WBTC)
+                      Pegged Tokens: Tokens that trade near 1:1, such as stablecoins denominated in
+                      the same currency
                     </li>
                     <li>
                       Correlated Tokens: Tokens that trade near each other with some slowly changing
-                      exchange rate, like derivatives (e.g., wstETH, wETH)
+                      exchange rate, like derivatives (e.g., stS, wS)
                     </li>
                   </ul>
                   <h5>Loss of stablecoin peg</h5>
@@ -764,7 +763,9 @@ export default function Risks() {
                     <li>
                       Peg is secured by other crypto assets
                       <ul>
-                        <li>e.g. DAI secured by an over-collateralized basket of crypto assets</li>
+                        <li>
+                          e.g. a stablecoin backed by an over-collateralized basket of crypto assets
+                        </li>
                       </ul>
                     </li>
                     <li>
