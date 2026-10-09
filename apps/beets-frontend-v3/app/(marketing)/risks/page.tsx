@@ -294,12 +294,10 @@ export default function Risks() {
                   not rely on this.
                 </li>
                 <li>
-                  Instead of including tokens which rebase, new DeFi liquidity pool compatible
-                  wrapped tokens which do not rebase may be utilized. An example of this is{' '}
-                  <code>wstETH</code>
-                  —a wrapped token which includes the accumulated yield from Lido ETH staking and
-                  does not rebase like
-                  <code>stETH</code>.
+                  Instead of including tokens that rebase, pools may use non-rebasing tokens that
+                  accrue staking yield. For example, <code>stS</code> accrues Sonic staking rewards
+                  through an increasing exchange rate against <code>S</code>, rather than changes to
+                  holders&rsquo; token balances.
                 </li>
                 <li>
                   Where supported, recovery mode allows LPs to exit a pool proportionally. Beets
