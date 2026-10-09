@@ -7,7 +7,7 @@ import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 
 export default function Terms() {
   return (
-    <Container>
+    <Container pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <FadeInOnView>
           <div className="subsection">
@@ -21,7 +21,6 @@ export default function Terms() {
         <FadeInOnView>
           <div className="subsection">
             <Box mt="3xl">
-              <h2>BeethovenX DAO terms of use</h2>
               <p>
                 <em className="font-semibold">
                   Do not access this site, as defined below, where such access is prohibited by
