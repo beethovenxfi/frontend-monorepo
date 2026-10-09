@@ -506,7 +506,7 @@ export default function Risks() {
               </h4>
               <p>
                 Impermanent loss is a risk that liquidity providers (LPs) face when providing
-                liquidity to an automated market maker (AMM) like Balancer. It is the difference
+                liquidity to an automated market maker (AMM) like Beets. It is the difference
                 between the value of holding assets in a pool versus holding them outside of the
                 pool.
               </p>
