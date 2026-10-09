@@ -208,13 +208,6 @@ export default function Risks() {
                 further increases risk.
               </p>
               <p>These types of economic exploits are difficult to detect and prevent.</p>
-              <h5>How can this risk be reduced?</h5>
-              <ul>
-                <li>
-                  Balancer strives to deliver careful economic modeling, rigorous mechanism design,
-                  testing and audits by top-tier auditing firms.
-                </li>
-              </ul>
               <h5>How can LPs mitigate this risk?</h5>
               <ul>
                 <li>
@@ -383,10 +376,6 @@ export default function Risks() {
               <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>The Balancer Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
-                <li>
-                  Balancer strives to deliver careful economic modeling, rigorous mechanism design,
-                  testing and audits by top-tier auditing firms.
-                </li>
               </ul>
             </div>
           </FadeInOnView>
