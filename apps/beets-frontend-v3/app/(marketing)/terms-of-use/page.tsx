@@ -355,14 +355,13 @@ export default function Terms() {
               </li>
             </ul>
 
-            <h3>Violating our rules may result in our intervention.</h3>
             <p>
-              You agree and acknowledge that if you use the Site to engage in conduct prohibited by
-              applicable law, we reserve the right to completely or partially restrict or revoke
-              your access to the Site at our sole discretion. We reserve the right to investigate
-              violations and prosecute any suspected breaches of this Agreement, including the
-              Terms. Any information may be disclosed to satisfy any new regulation, law, government
-              request, or legal process.
+              Violating our rules may result in our intervention. You agree and acknowledge that if
+              you use the Site to engage in conduct prohibited by applicable law, we reserve the
+              right to completely or partially restrict or revoke your access to the Site at our
+              sole discretion. We reserve the right to investigate violations and prosecute any
+              suspected breaches of this Agreement, including the Terms. Any information may be
+              disclosed to satisfy any new regulation, law, government request, or legal process.
             </p>
 
             <p>Accordingly, you expressly agree that:</p>
