@@ -7,13 +7,13 @@ import FadeInOnView from '@repo/lib/shared/components/containers/FadeInOnView'
 
 export default function Terms() {
   return (
-    <Container>
+    <Container pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <FadeInOnView>
           <div className="subsection">
             <h1>Beets terms of use</h1>
             <p>
-              <em>Last updated: February 2023</em>
+              <em>Last updated: October 6, 2026</em>
             </p>
           </div>
         </FadeInOnView>
@@ -21,18 +21,16 @@ export default function Terms() {
         <FadeInOnView>
           <div className="subsection">
             <Box mt="3xl">
-              <h2>BeethovenX DAO terms of use</h2>
               <p>
                 <em className="font-semibold">
-                  Do not access this site, as defined below, where such access is prohibited by
-                  applicable law. Please carefully read these terms of use before using the site.
-                  These terms apply to any person or entity accessing the site and by using the site
-                  you agree to be bound by them. The terms of use contain a mandatory individual
-                  arbitration and class action/jury trial waiver provision that requires the use of
-                  arbitration on an individual basis to resolve disputes, rather than jury trials or
-                  class actions. If you do not want to be bound by these terms of use, you should
-                  not access the site. By using the site in any capacity, you agree that you have
-                  read, understood, and agree to be subject to these terms of use.
+                  Do not access this Site, as defined below, where such access is prohibited by
+                  applicable law. Please carefully read these terms of use before using the Site.
+                  These terms apply to any person or entity accessing the Site and by using the Site
+                  you agree to be bound by them. These Terms contain a class action and jury trial
+                  waiver. Please review Section 11 carefully. If you do not want to be bound by
+                  these terms of use, you should not access the Site. By using the Site in any
+                  capacity, you agree that you have read, understood, and agree to be subject to
+                  these terms of use.
                 </em>
               </p>
             </Box>
@@ -54,10 +52,10 @@ export default function Terms() {
             </p>
             <p>
               To avoid any confusion, you agree a) you retain full control, at all times, over your
-              cryptocurrency assets, b) there are no intermediaries involved when you interact with
-              the Beets Protocol and c) the online interface (UI) is a mere graphical interface for
-              you to interact with the Beets Protocol, which can be accessed through other means,
-              including other interfaces.
+              cryptocurrency assets, b) Beets does not take custody of your assets and c) the online
+              interface (UI) is a graphical interface for you to interact with the Beets Protocol,
+              which can be accessed through other means, including other interfaces. The interface
+              may use third-party services to help you interact with smart contracts.
             </p>
             <p>
               You must be able to form a legally binding contract online either as an individual or
@@ -104,9 +102,9 @@ export default function Terms() {
               sufficient balance to complete any transaction on the Beets Protocol before initiating
               such transaction. You should not take or refrain from taking any action based on any
               information contained on the Site or any other available information at any time.
-              Before you make any legal, technical, or financial decisions involving the Services,
-              you should seek independent professional advice from a licensed and qualified
-              individual in the area for which such advice would be appropriate.
+              Before you make any legal, technical, or financial decisions involving the Site, you
+              should seek independent professional advice from a licensed and qualified individual
+              in the area for which such advice would be appropriate.
             </p>
             <p>
               <span className="italic font-semibold">
@@ -142,11 +140,11 @@ export default function Terms() {
               >
                 here
               </ChakraLink>
-              . The NFT is referred to as the “Token” in the Agreement.
+              . A maBEETS position (an NFT) is referred to as the “Token” in the Agreement.
             </p>
             <p>
-              By using this NFT to participate in the governance and operations of BeethovenX, the
-              holder of this NFT agrees to be subject to the terms of the Agreement, including as a
+              By using that NFT to participate in the governance and operations of BeethovenX, the
+              holder of that NFT agrees to be subject to the terms of the Agreement, including as a
               Member of its entity structure. Participation in the governance and operations of
               BeethovenX includes, but is not limited to, utilizing the NFT to: (1) vote on
               Proposals to become Governance Resolutions, (2) attend events and otherwise
@@ -154,10 +152,10 @@ export default function Terms() {
             </p>
             <p>
               Except as otherwise provided in the Agreement, a Token Holder’s Membership Interest or
-              rights thereunder in relation to this NFT are freely transferable to another person
+              rights thereunder in relation to that NFT are freely transferable to another person
               through its conveyance. Except as otherwise provided in the Agreement, a Member shall
               be deemed to have resigned from the BeethovenX DAO LLC upon the disposal or transfer
-              of this NFT.
+              of that NFT.
             </p>
           </div>
         </FadeInOnView>
@@ -165,31 +163,31 @@ export default function Terms() {
           <div className="subsection">
             <h2>4. Access/disclaimer of warranties</h2>
             <p>
-              ACCESS TO THIS SITE AND THE PRODUCTS HEREIN ARE PROVIDED ON AN &apos;AS IS&apos; AND
-              &apos;AS AVAILABLE&apos; BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
-              IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-              FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. NO WARRANTY IS PROVIDED THAT
-              THE SITE OR ANY PRODUCT WILL BE FREE FROM DEFECTS OR VIRUSES OR THAT OPERATION OF THE
-              PRODUCT WILL BE UNINTERRUPTED. YOUR USE OF THE SITE AND ANY PRODUCT AND ANY MATERIAL
-              OR SERVICES OBTAINED OR ACCESSED VIA THE SITE IS AT YOUR OWN DISCRETION AND RISK, AND
-              YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE RESULTING FROM THEIR USE. SOME JURISDICTIONS
-              DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES, SO SOME OF THE ABOVE LIMITATIONS MAY
-              NOT APPLY TO YOU. TRANSACTIONS THAT ARE RECORDED VIA THE SITE MUST BE TREATED AS
-              PERMANENT AND CANNOT BE UNDONE BY US OR BY ANYONE.
+              ACCESS TO THIS SITE AND THE PRODUCTS HEREIN ARE PROVIDED ON AN “AS IS” AND “AS
+              AVAILABLE” BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+              BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+              PARTICULAR PURPOSE AND NON-INFRINGEMENT. NO WARRANTY IS PROVIDED THAT THE SITE OR ANY
+              PRODUCT WILL BE FREE FROM DEFECTS OR VIRUSES OR THAT OPERATION OF THE PRODUCT WILL BE
+              UNINTERRUPTED. YOUR USE OF THE SITE AND ANY PRODUCT AND ANY MATERIAL OR SERVICES
+              OBTAINED OR ACCESSED VIA THE SITE IS AT YOUR OWN DISCRETION AND RISK, AND YOU ARE
+              SOLELY RESPONSIBLE FOR ANY DAMAGE RESULTING FROM THEIR USE. SOME JURISDICTIONS DO NOT
+              ALLOW THE EXCLUSION OF CERTAIN WARRANTIES, SO SOME OF THE ABOVE LIMITATIONS MAY NOT
+              APPLY TO YOU. TRANSACTIONS THAT ARE RECORDED VIA THE SITE MUST BE TREATED AS PERMANENT
+              AND CANNOT BE UNDONE BY US OR BY ANYONE.
             </p>
             <p>
               We do not guarantee or promise that the Site, or any content on it, will always be
               available, functional, usable or uninterrupted. From time to time, access may be
               interrupted, suspended or restricted, including because of a fault, error or
               unforeseen circumstances or because we are carrying out planned maintenance or
-              changes. You acknowledge and agree that you will access and use the site at your own
+              changes. You acknowledge and agree that you will access and use the Site at your own
               risk. By using the Site, you will be solely responsible for conducting your own due
               diligence into the risks of a transaction.
             </p>
             <p>
-              We reserve the right to limit the availability of the site to any person, geographic
+              We reserve the right to limit the availability of the Site to any person, geographic
               area or jurisdiction in our sole discretion and/or to terminate your access to and use
-              of the site, at any time and in our sole discretion. We may suspend or disable your
+              of the Site, at any time and in our sole discretion. We may suspend or disable your
               access to the Site for any reason and in our sole discretion, including for any
               intentional or unintentional breaches of these Terms. We may remove or amend the
               content of the Site at any time. Some of the content may be out of date at any given
@@ -200,7 +198,7 @@ export default function Terms() {
               We will not be liable to you for any issue, loss or damage you may or have suffered as
               a result of the Site being unavailable at any time for any reason. You will comply
               with all applicable domestic and international laws, statutes, ordinances, rules and
-              regulations applicable to your use of the site (“Applicable Laws”). Likewise, we are
+              regulations applicable to your use of the Site (“Applicable Laws”). Likewise, we are
               not liable for any third-party services and are not responsible for the content or
               services of these parties.
             </p>
@@ -208,10 +206,7 @@ export default function Terms() {
               As a condition to accessing or using the Site, you agree and represent that you will:
             </p>
             <ul>
-              <li>
-                Only use the Services and the Site for lawful purposes and in adherence with these
-                Terms;
-              </li>
+              <li>Only use the Site for lawful purposes and in adherence with these Terms;</li>
               <li>
                 Ensure that all information that you provide on the Site is current, complete, and
                 accurate; and
@@ -221,7 +216,7 @@ export default function Terms() {
                 wallet address.
               </li>
             </ul>
-            <p>As a condition to accessing or using the Site or the Services, you will not:</p>
+            <p>As a condition to accessing or using the Site, you will not:</p>
             <ul>
               <li>
                 Violate any Applicable Law, including, without limitation, any relevant and
@@ -321,7 +316,7 @@ export default function Terms() {
                   You are reminded of the inherent risks with digital assets and decentralized
                   finance including the fact that tokens are not legal tender and are not backed by
                   any government.
-                </span>
+                </span>{' '}
                 Unlike fiat currencies, which are regulated and backed by local governments and
                 central banks, tokens are based only on technology and user consensus, which means
                 that in cases of manipulations or market panic, central governments will not take
@@ -343,7 +338,7 @@ export default function Terms() {
                 transfer, exchange, and value of your tokens.
               </li>
               <li>
-                The site and/or application may be wholly or partially suspended or terminated for
+                The Site and/or application may be wholly or partially suspended or terminated for
                 any or no reason, which may limit your access to your Cryptocurrency Assets.
               </li>
               <li>
@@ -360,14 +355,13 @@ export default function Terms() {
               </li>
             </ul>
 
-            <h3>Violating our rules may result in our intervention.</h3>
             <p>
-              You agree and acknowledge that if you use the Site and its Services to engage in
-              conduct prohibited by applicable law, we reserve the right to completely or partially
-              restrict or revoke your access to the Services at our sole discretion. We reserve the
-              right to investigate violations and prosecute any suspected breaches of this
-              Agreement, including the Terms. Any information may be disclosed to satisfy any new
-              regulation, law, government request, or legal process.
+              Violating our rules may result in our intervention. You agree and acknowledge that if
+              you use the Site to engage in conduct prohibited by applicable law, we reserve the
+              right to completely or partially restrict or revoke your access to the Site at our
+              sole discretion. We reserve the right to investigate violations and prosecute any
+              suspected breaches of this Agreement, including the Terms. Any information may be
+              disclosed to satisfy any new regulation, law, government request, or legal process.
             </p>
 
             <p>Accordingly, you expressly agree that:</p>
@@ -385,13 +379,12 @@ export default function Terms() {
                 related to your use of the Site, the Application or the Smart Contracts.
               </li>
               <li>
-                upgrades and modifications to the protocol are managed in a community-driven way by
-                holders of the Beets Protocol governance token. No developer or entity involved in
-                creating the Beets Protocol will be liable for any claims or damages whatsoever
-                associated with your use, inability to use, or your interaction with other users of,
-                the Beets Protocol, including any direct, indirect, incidental, special, exemplary,
-                punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or
-                anything else of value.
+                Beets governance decisions are made by maBEETS holders. No developer or entity
+                involved in creating the Beets Protocol will be liable for any claims or damages
+                whatsoever associated with your use, inability to use, or your interaction with
+                other users of, the Beets Protocol, including any direct, indirect, incidental,
+                special, exemplary, punitive or consequential damages, or loss of profits,
+                cryptocurrencies, tokens, or anything else of value.
               </li>
             </ol>
           </div>
@@ -433,12 +426,12 @@ export default function Terms() {
               BeethovenX DAO is the owner of all intellectual property rights in the Site and the
               material published on them. To the extent practical, these works are protected by
               copyright laws and all such rights are reserved. www.beets.fi is the uniform resource
-              locator (&apos;URL&apos;) of BeethovenX DAO. You will not make use of this URL (or any
-              other URL owned by us) on another website or digital platform without our prior
-              written consent. Any unauthorized use or reproduction may be prosecuted. You will
-              retain ownership of all copyright in data you upload or submit by, through or to the
-              Site. You grant us a worldwide, royalty-free, irrevocable license to use, copy,
-              distribute or publish and send this data in any manner.
+              locator (“URL”) of BeethovenX DAO. You will not make use of this URL (or any other URL
+              owned by us) on another website or digital platform without our prior written consent.
+              Any unauthorized use or reproduction may be prosecuted. You will retain ownership of
+              all copyright in data you upload or submit by, through or to the Site. You grant us a
+              worldwide, royalty-free, irrevocable license to use, copy, distribute or publish and
+              send this data in any manner.
             </p>
           </div>
         </FadeInOnView>
@@ -505,7 +498,7 @@ export default function Terms() {
               referral or recommendation by us, should not be regarded as an offer, solicitation,
               invitation or recommendation to buy or sell tokens or any other financial services and
               is not intended to be relied upon by you in making any specific decision to buy or
-              sell a token.
+              sell a token.{' '}
               <em className="italic font-semibold">
                 We recommend that you seek independent advice from financial, legal and tax advisors
                 before making any such decision particularly in light of the risks associated with
@@ -513,7 +506,7 @@ export default function Terms() {
               </em>
             </p>
             <p>
-              Nothing included in the site constitutes an offer or solicitation to sell, or
+              Nothing included in the Site constitutes an offer or solicitation to sell, or
               distribution of, investments and related services to anyone in any jurisdiction.
             </p>
             <p>
@@ -530,7 +523,7 @@ export default function Terms() {
               You agree to indemnify and hold BeethovenX DAO and our officers, directors, employees,
               contractors, agents, affiliates, or subsidiaries harmless from any claim or demand,
               including attorneys’ fees and costs, made by any third party due to or arising out of
-              1) your use of the site or 2) this agreement.
+              1) your use of the Site or 2) this agreement.
             </p>
           </div>
         </FadeInOnView>
@@ -563,15 +556,15 @@ export default function Terms() {
             </p>
             <p>
               These Terms and the documents referred to in them set out the entire agreement between
-              you and us with respect to your use of the site, BeethovenX DAO and the services
-              provided via the site and supersede any and all prior or contemporaneous
+              you and us with respect to your use of the Site, BeethovenX DAO and the services
+              provided via the Site and supersede any and all prior or contemporaneous
               representations, communications or agreements (written or oral) made between you or
               us.
             </p>
             <p>
               <em className="font-semibold">
                 With respect to all persons and entities, regardless of whether they have obtained
-                or used the site for personal, commercial or other purposes, all disputes,
+                or used the Site for personal, commercial or other purposes, all disputes,
                 controversies or claims must be brought in the parties’ individual capacity, and not
                 as a plaintiff or class member in any purported class action, collective action or
                 other representative proceeding. This waiver applies to class arbitration, and,
