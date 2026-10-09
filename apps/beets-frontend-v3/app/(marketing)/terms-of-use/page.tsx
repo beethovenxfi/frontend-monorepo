@@ -102,9 +102,9 @@ export default function Terms() {
               sufficient balance to complete any transaction on the Beets Protocol before initiating
               such transaction. You should not take or refrain from taking any action based on any
               information contained on the Site or any other available information at any time.
-              Before you make any legal, technical, or financial decisions involving the Services,
-              you should seek independent professional advice from a licensed and qualified
-              individual in the area for which such advice would be appropriate.
+              Before you make any legal, technical, or financial decisions involving the Site, you
+              should seek independent professional advice from a licensed and qualified individual
+              in the area for which such advice would be appropriate.
             </p>
             <p>
               <span className="italic font-semibold">
@@ -206,10 +206,7 @@ export default function Terms() {
               As a condition to accessing or using the Site, you agree and represent that you will:
             </p>
             <ul>
-              <li>
-                Only use the Services and the Site for lawful purposes and in adherence with these
-                Terms;
-              </li>
+              <li>Only use the Site for lawful purposes and in adherence with these Terms;</li>
               <li>
                 Ensure that all information that you provide on the Site is current, complete, and
                 accurate; and
@@ -219,7 +216,7 @@ export default function Terms() {
                 wallet address.
               </li>
             </ul>
-            <p>As a condition to accessing or using the Site or the Services, you will not:</p>
+            <p>As a condition to accessing or using the Site, you will not:</p>
             <ul>
               <li>
                 Violate any Applicable Law, including, without limitation, any relevant and
@@ -360,12 +357,12 @@ export default function Terms() {
 
             <h3>Violating our rules may result in our intervention.</h3>
             <p>
-              You agree and acknowledge that if you use the Site and its Services to engage in
-              conduct prohibited by applicable law, we reserve the right to completely or partially
-              restrict or revoke your access to the Services at our sole discretion. We reserve the
-              right to investigate violations and prosecute any suspected breaches of this
-              Agreement, including the Terms. Any information may be disclosed to satisfy any new
-              regulation, law, government request, or legal process.
+              You agree and acknowledge that if you use the Site to engage in conduct prohibited by
+              applicable law, we reserve the right to completely or partially restrict or revoke
+              your access to the Site at our sole discretion. We reserve the right to investigate
+              violations and prosecute any suspected breaches of this Agreement, including the
+              Terms. Any information may be disclosed to satisfy any new regulation, law, government
+              request, or legal process.
             </p>
 
             <p>Accordingly, you expressly agree that:</p>
