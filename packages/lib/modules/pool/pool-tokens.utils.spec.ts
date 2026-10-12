@@ -9,6 +9,7 @@ import {
   getPoolActionableTokens,
 } from './pool-tokens.utils'
 import { getApiPoolMock } from './__mocks__/api-mocks/api-mocks'
+import { toGqlWeighedPoolMock } from '@repo/lib/test/msw/builders/gqlPoolElement.builders'
 
 // Testing utils that can be kept in the test:
 function getCompositionTokenSymbols(poolExample: PoolExample): string[] {
@@ -63,6 +64,21 @@ function getWrappedBoostedTokenSymbols(poolExample: PoolExample): string[] {
 }
 
 describe('getDisplayTokens for flat pools', () => {
+  it('sorts shuffled tokens by index and excludes the pool BPT regardless of address casing', () => {
+    const pool = toGqlWeighedPoolMock(getApiPoolMock(scUsdStS))
+    pool.poolTokens.reverse()
+
+    pool.poolTokens.push({
+      ...pool.poolTokens[0]!,
+      address: pool.address.toUpperCase(),
+      symbol: 'POOL-BPT',
+      index: 2,
+    })
+
+    expect(tokenSymbols(getCompositionTokens(pool))).toEqual(['scUSD', 'stS'])
+    expect(tokenSymbols(getUserReferenceTokens(pool))).toEqual(['scUSD', 'stS'])
+  })
+
   it('Sonic v2 weighted scUSD/stS', () => {
     expect(getCompositionTokenSymbols(scUsdStS)).toEqual(['scUSD', 'stS'])
     expect(getUserReferenceTokenSymbols(scUsdStS)).toEqual(['scUSD', 'stS'])
@@ -86,6 +102,17 @@ describe('getDisplayTokens for flat pools', () => {
 })
 
 describe('getDisplayTokens for BOOSTED pools', () => {
+  it('keeps wrapped reference tokens when underlying use is disabled', () => {
+    const pool = getApiPoolMock(anSSiloWSBoosted)
+
+    pool.poolTokens = pool.poolTokens.map(token => ({
+      ...token,
+      useUnderlyingForAddRemove: false,
+    }))
+
+    expect(tokenSymbols(getUserReferenceTokens(pool))).toEqual(['SiloWS', 'anS'])
+  })
+
   // TODO: Add a Beets/Sonic fully boosted pool with custom ERC4626 vaults,
   // covering composition tokens, underlying reference tokens and wrapped
   // boosted tokens.
