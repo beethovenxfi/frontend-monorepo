@@ -14,7 +14,6 @@ import { Info } from 'lucide-react'
 import { getTotalAprLabel } from '@repo/lib/modules/pool/pool.utils'
 import StarsIcon from '../../icons/StarsIcon'
 import { PoolListItem } from '@repo/lib/modules/pool/pool.types'
-import { FeaturedPool } from '@repo/lib/modules/pool/PoolProvider'
 import { Pool } from '@repo/lib/modules/pool/pool.types'
 import { isLBP } from '@repo/lib/modules/pool/pool.helpers'
 import type { GqlPoolAprItemType } from '@repo/lib/shared/services/api/generated/graphql'
@@ -29,7 +28,7 @@ interface Props extends Omit<BaseAprTooltipProps, 'children' | 'totalBaseText' |
   aprLabel?: boolean
   apr?: string
   height?: string
-  pool: Pool | PoolListItem | FeaturedPool
+  pool: Pool | PoolListItem
   id?: string
 }
 
@@ -40,7 +39,7 @@ export function SparklesIcon({
   hoverColor,
 }: {
   isOpen: boolean
-  pool: Pool | PoolListItem | FeaturedPool
+  pool: Pool | PoolListItem
   id?: string
   hoverColor?: string
 }) {

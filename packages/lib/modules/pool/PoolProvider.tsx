@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  GetFeaturedPoolsQuery,
   GetPoolDocument,
   GetPoolQuery,
   GqlChain,
@@ -17,8 +16,6 @@ import { useOnchainUserPoolBalances } from './queries/useOnchainUserPoolBalances
 import { useTokens } from '../tokens/TokensProvider'
 import { getCompositionTokens } from './pool-tokens.utils'
 import { removeHookDataFromPoolIfNecessary } from './pool.utils'
-
-export type FeaturedPool = GetFeaturedPoolsQuery['featuredPools'][0]['pool']
 export type UsePoolResponse = ReturnType<typeof usePoolLogic> & {
   chain: GqlChain
 }
