@@ -6,10 +6,9 @@ import { isSameAddress } from '@repo/lib/shared/utils/addresses'
 import { Address } from 'viem'
 import { sortBy, uniqBy } from 'lodash'
 import { ApiToken, BalanceForFn } from '../tokens/token.types'
-import { FeaturedPool } from './PoolProvider'
 import { bn } from '@repo/lib/shared/utils/numbers'
 
-export function getCompositionTokens(pool: PoolCore | FeaturedPool): PoolToken[] {
+export function getCompositionTokens(pool: PoolCore): PoolToken[] {
   return sortByIndex(excludeBptTokens(getPoolTokens(pool), pool.address))
 }
 
@@ -17,7 +16,7 @@ export function getCompositionTokens(pool: PoolCore | FeaturedPool): PoolToken[]
   The set of tokens that are reference tokens for the user so that they know at a glance what can be added to the pool.
    Used in the pool header and in the pools list.
 */
-export function getUserReferenceTokens(pool: PoolCore | FeaturedPool): PoolToken[] {
+export function getUserReferenceTokens(pool: PoolCore): PoolToken[] {
   if (isBoosted(pool as Pick<PoolCore, 'protocolVersion' | 'tags'>)) {
     return sortByIndex(
       pool.poolTokens.map(token =>
@@ -35,7 +34,7 @@ export function isPool(pool: any): pool is Pool {
   return (pool as Pool).poolTokens !== undefined
 }
 
-function getPoolTokens(pool: PoolCore | FeaturedPool): PoolToken[] {
+function getPoolTokens(pool: PoolCore): PoolToken[] {
   if (isPool(pool)) {
     return pool.poolTokens as PoolToken[]
   }

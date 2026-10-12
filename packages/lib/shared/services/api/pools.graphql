@@ -109,36 +109,3 @@ query GetPools(
     textSearch: $textSearch
   )
 }
-
-# TODO: extract fragment to share common PoolCore fields between GetPools and GetFeaturedPools
-query GetFeaturedPools($chains: [GqlChain!]!) {
-  featuredPools: poolGetFeaturedPools(chains: $chains) {
-    poolId
-    primary
-    description
-    pool {
-      address
-      id
-      name
-      factory
-      symbol
-      type
-      chain
-      protocolVersion
-      dynamicData {
-        totalLiquidity
-        aprItems {
-          id
-          apr
-          type
-          rewardTokenSymbol
-          rewardTokenAddress
-        }
-      }
-      poolTokens {
-        ...PoolTokens
-      }
-      hasErc4626
-    }
-  }
-}
