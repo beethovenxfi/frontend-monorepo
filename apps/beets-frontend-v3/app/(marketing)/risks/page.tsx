@@ -23,20 +23,20 @@ export default function Risks() {
   }, [])
 
   return (
-    <Container p="0">
+    <Container p="0" pt="calc(var(--navbar-height, 72px) + 32px)">
       <Prose>
         <div>
           <FadeInOnView>
-            <Box mt="3xl" pb="md">
+            <Box pb="md">
               <h1>Risks of using&nbsp;Beets</h1>
               <p>
-                <em>Last updated: July 2025</em>
+                <em>Last updated: October 6, 2026</em>
               </p>
               <p>
                 <em>
-                  There are many inherent risks developers accept when working in DeFi and using the
-                  Beets Protocol. This page aims to summarize the top risks to help you with your
-                  risk decisions. It is important to note that this list is not exhaustive, and
+                  Using the Beets Protocol on Sonic involves risks for liquidity providers,
+                  swappers, and other users. This page summarizes risks to help you evaluate your
+                  use of the protocol. It is important to note that this list is not exhaustive, and
                   there may be additional risks not explicitly mentioned here. As the risk
                   environment is fluid, we expect to periodically update this summary.
                 </em>
@@ -64,21 +64,21 @@ export default function Risks() {
                         <Link href="risks#economic-risk">Mechanism / economic risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#toxic-token-risk">Toxic token risk</Link>
+                        <Link href="risks#toxic-token-risk">Toxic pool token risk</Link>
                       </li>
                       <li>
                         <Link href="risks#composability-risk">DeFi composability risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#flash-loans-risk">Flash loan risk</Link>
+                        <Link href="risks#flash-loans-risk">Flash Loans risk</Link>
                       </li>
                       <li>
-                        <Link href="risks#mutable-attributes-risk">
-                          Mutable pool attributes risk
+                        <Link href="risks#mutable-attributes-risk">Mutable pool attributes</Link>
+                      </li>
+                      <li>
+                        <Link href="risks#join-exit-risk">
+                          Loss of funds on join/exit of a pool
                         </Link>
-                      </li>
-                      <li>
-                        <Link href="risks#join-exit-risk">Join/exit risk</Link>
                       </li>
                       <li>
                         <Link href="risks#impermanent-loss-risk">Impermanent loss risk</Link>
@@ -117,9 +117,7 @@ export default function Risks() {
                         </Link>
                       </li>
                       <li>
-                        <Link href="risks#autorange">
-                          AutoRange—Readjusting Concentrated Liquidity AMM
-                        </Link>
+                        <Link href="risks#autorange">AutoRange pools</Link>
                       </li>
                       <li>
                         <Link href="risks#btf">Blockchain Traded Funds</Link>
@@ -140,7 +138,7 @@ export default function Risks() {
                 Smart contract risk
               </h4>
               <p>
-                Smart contract risk is a general risk when using DeFi protocols, including Balancer.
+                Smart contract risk is a general risk when using DeFi protocols, including Beets.
                 Smart contracts are self-executing pieces of code that run on certain blockchains,
                 like Sonic. Although they are designed to be secure, they can be vulnerable to bugs
                 and exploits.
@@ -154,35 +152,25 @@ export default function Risks() {
               </p>
               <h5>The Balancer Vault</h5>
               <p>
-                The main architectural change between Balancer V1 and Balancer V2 is the transition
-                to&nbsp;a single vault that holds and manages all the assets added by all Balancer
-                pools. This separates the AMM logic from the token management and accounting. Token
-                management/accounting is done by the vault while the AMM logic is individual to each
-                pool. This provides many advantages, including flexibility and gas efficiency.
+                Beets uses Balancer-based vault architecture on Sonic. Vaults hold and account for
+                pool assets, while individual pools define their AMM logic. The contracts and
+                features involved depend on the pool and protocol version.
               </p>
               <p>
-                One critique of this approach is that the Balancer Vault could be a single point of
-                failure—i.e. hack the vault, get all the tokens of the protocol. This Balancer Vault
-                architecture was heavily audited prior to launch and has now been battle-tested
-                since May 2021, securing over $3b. It has also been forked by other teams across
-                different networks, including Beets on Sonic, without issue.
+                A vulnerability in a shared vault can put assets in multiple pools at risk. Audits
+                and prior operation do not guarantee that a vault, pool, or related contract is free
+                of vulnerabilities.
               </p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
                   Development teams have engaged with top-tier smart contract auditing firms to
                   identify and fix bugs before deployment.
                 </li>
                 <li>
-                  The core of Balancer smart contracts are immutable and do not use proxies or other
-                  upgrade mechanisms. Note: Within DeFi, upgradable contracts are a major way
-                  exploits have been introduced.
-                </li>
-                <li>
-                  In addition, Balancer has a bug bounty program via Immunefi to attract white-hat
-                  hackers to responsibly disclose any bugs. Rewards are distributed based on threat
-                  level—for critical smart contract vulnerabilities, there is a minimum reward of
-                  250 ETH and a maximum reward of 1,000 ETH.
+                  Contract permissions and upgrade mechanisms vary across pools and their related
+                  contracts. LPs should review which components are immutable and which can be
+                  changed by an authorized party.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -213,18 +201,11 @@ export default function Risks() {
                 value, allowing them to buy or sell that asset at a profit.
               </p>
               <p>
-                In addition, the composable nature of DeFi means that a pool on Balancer may contain
+                In addition, the composable nature of DeFi means that a pool on Beets may contain
                 tokens that may be manipulated by an attacker on a third-party protocol, which
                 further increases risk.
               </p>
               <p>These types of economic exploits are difficult to detect and prevent.</p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
-              <ul>
-                <li>
-                  Balancer strives to deliver careful economic modeling, rigorous mechanism design,
-                  testing and audits by top-tier auditing firms.
-                </li>
-              </ul>
               <h5>How can LPs mitigate this risk?</h5>
               <ul>
                 <li>
@@ -266,7 +247,6 @@ export default function Risks() {
                     <li>Rebasing tokens</li>
                   </ul>
                 </li>
-
                 <li>
                   Tokens that become toxic, including:
                   <ul>
@@ -293,42 +273,34 @@ export default function Risks() {
                 by 10%, the token supply would increase by 10%.
               </p>
               <p>
-                Some examples of rebasing tokens include <code>stETH</code> and
-                <code>AMPL</code>.
+                Rebasing tokens can adjust holders&rsquo; token balances to reflect changes in
+                supply.
               </p>
               <p>
                 Unfortunately, rebasing tokens generally don&rsquo;t work well in liquidity pools
                 since LPs may suffer losses when rebasing occurs.
               </p>
 
-              <h5>How does Balancer mitigate these risks?</h5>
+              <h5>How can these risks be reduced?</h5>
               <ul>
                 <li>
-                  Since the Balancer protocol is permissionless, anyone can create a liquidity pool
+                  Since the Balancer Protocol is permissionless, anyone can create a liquidity pool
                   composed of any ERC-20 token. This makes this type of risk difficult to mitigate.
                 </li>
                 <li>
-                  The Balancer App UI may be updated to exclude blacklisted tokens and pools but LPs
-                  should not rely on this.
+                  The Beets UI may be updated to exclude blacklisted tokens and pools but LPs should
+                  not rely on this.
                 </li>
                 <li>
-                  Instead of including tokens which rebase, new DeFi liquidity pool compatible
-                  wrapped tokens which do not rebase may be utilized. An example of this is{' '}
-                  <code>wstETH</code>
-                  —a wrapped token which includes the accumulated yield from Lido ETH staking and
-                  does not rebase like
-                  <code>stETH</code>.
+                  Instead of including tokens that rebase, pools may use non-rebasing tokens that
+                  accrue staking yield. For example, <code>stS</code> accrues Sonic staking rewards
+                  through an increasing exchange rate against <code>S</code>, rather than changes to
+                  holders&rsquo; token balances.
                 </li>
                 <li>
-                  For Balancer Managed Pools, a novel feature called &lsquo;circuit breakers&rsquo;
-                  has been designed to halt swapping if there is a large, uncorrelated drop in a
-                  token&rsquo;s value.
-                </li>
-                <li>
-                  New pools have a &lsquo;recovery mode&rsquo; which can be enabled by the Emergency
-                  DAO Multisig. Pools in recovery mode provide a simple way for LPs to exit the pool
-                  proportionally at the cost of disabling protocol fees (swaps, joins etc still
-                  work).
+                  Where supported, recovery mode allows LPs to exit a pool proportionally. Beets
+                  multisigs handle the relevant administrative controls on Sonic. Available actions
+                  and restrictions depend on the pool and protocol version.
                 </li>
               </ul>
 
@@ -360,7 +332,7 @@ export default function Risks() {
                 applications to work together seamlessly in endless combinations, allowing
                 developers to create more complex financial transactions and applications. This is
                 sometimes referred to as DeFi lego building blocks, since they can be combined and
-                connected to created interesting new structures and applications.
+                connected to create interesting new structures and applications.
               </p>
               <p>
                 While composability offers many benefits, layering on protocols and applications on
@@ -390,20 +362,16 @@ export default function Risks() {
                 collateral swaps and to lower transaction fees, across potentially multiple
                 protocols. It&rsquo;s a powerful new financial primitive, native to DeFi.
               </p>
-              <p>Flash Loans may be used on Balancer and interact with the Balancer Vault.</p>
+              <p>Flash Loans may be used on Beets and interact with the Vault.</p>
               <p>
                 While Flash Loans offer many benefits, they also come with certain risks. Flash
                 Loans have also been used for multiple DeFi exploits resulting in losses worth
                 millions of dollars. Flash Loan exploits are relatively new with the full range of
                 attack surfaces still being discovered.
               </p>
-              <h5>How Balancer aims to mitigate this risk:</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
-                <li>The Balancer Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
-                <li>
-                  Balancer strives to deliver careful economic modeling, rigorous mechanism design,
-                  testing and audits by top-tier auditing firms.
-                </li>
+                <li>The Vault is non-reentrant, which blocks most Flash Loan attacks.</li>
               </ul>
             </div>
           </FadeInOnView>
@@ -413,7 +381,7 @@ export default function Risks() {
                 Mutable pool attributes
               </h4>
               <p>
-                Balancer is a flexible AMM that allows people to create different types of liquidity
+                Beets is a flexible AMM that allows people to create different types of liquidity
                 pools, including those with immutable and/or mutable pool attributes.
               </p>
               <p>
@@ -427,7 +395,7 @@ export default function Risks() {
                   Which attributes can change
                   <ul>
                     <li>
-                      Certain attributes being mutable provide more risk than others. For example,
+                      Certain attributes being mutable are riskier than others. For example,
                       changing the swap fee percentage is generally viewed as less risky than the
                       ability to change the constituent tokens of a pool, since a malicious editor
                       could introduce a toxic pool token.
@@ -438,26 +406,18 @@ export default function Risks() {
                   Who can change each attribute
                   <ul>
                     <li>
-                      On Balancer pools, if an attribute is editable, the address that can make the
-                      edit is also specified. The two most common parties that are set to be able to
-                      change pool attributes are either the Pool Owner or Balancer Governance.
+                      LPs should review the addresses and permissions that can change each
+                      attribute. Beets multisigs handle protocol-level administrative controls for
+                      the Sonic deployment; pool-specific permissions may also apply.
                     </li>
                   </ul>
                 </li>
               </ul>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  For known pool types, the Balancer App UI transparently displays pool attributes
-                  and specifies if it is editable and if so, by whom.
-                </li>
-                <li>
-                  Balancer Managed Pools are designed to have mutable attributes that can be changed
-                  by the Pool Owner. For certain &lsquo;dangerous operations&rsquo;, there are
-                  &lsquo;timelock delays&rsquo; which give LPs a period to review the proposed
-                  changes and withdraw funds if they do not agree with the change. In addition, Pool
-                  Controllers can set a guardian who has the ability to veto a proposed change from
-                  the Pool Owner if they believe it to be a malicious change or a mistake.
+                  The Beets UI displays pool information, but LPs should also verify editable
+                  attributes and the addresses authorized to change them in the relevant contracts.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
@@ -490,9 +450,9 @@ export default function Risks() {
                 change in price you are willing to accept.
               </p>
               <p>
-                Slippage tolerance is a setting in both the Add/Remove liquidity flows on the
-                Balancer App UI. Setting a low slippage tolerance protects you from front-running
-                bots and miner extractable value (MEV).
+                Slippage tolerance is a setting in both the Add/Remove liquidity flows on the Beets
+                UI. Setting a low slippage tolerance protects you from front-running bots and
+                maximal extractable value (MEV).
               </p>
               <h5>Due to high gas fees</h5>
               <p>
@@ -509,17 +469,17 @@ export default function Risks() {
                 higher than the returns they get from providing liquidity, LPs may end up with a net
                 loss.
               </p>
-              <h5>How Balancer aims to mitigate this risk:</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  The Balancer Smart Order router is used to route liquidity efficiently via pools
-                  to minimize price impact.
+                  The Smart Order router is used to route liquidity efficiently via pools to
+                  minimize price impact.
                 </li>
-                <li>The Balancer App UI gives LPs control over their slippage settings.</li>
+                <li>The Beets UI gives LPs control over their slippage settings.</li>
                 <li>
-                  LPs are warned via the Balancer App UI when the price impact is excessive. Once
-                  price impact exceeds a certain threshold, the Balancer App UI prevents users from
-                  executing a transaction where they would otherwise get rekt.
+                  The Beets UI displays price-impact warnings and requires risk acknowledgment for
+                  certain high or unknown price-impact transactions. Acknowledging a warning does
+                  not protect users against losses.
                 </li>
               </ul>
               <h5>How LPs can mitigate this risk:</h5>
@@ -542,7 +502,7 @@ export default function Risks() {
               </h4>
               <p>
                 Impermanent loss is a risk that liquidity providers (LPs) face when providing
-                liquidity to an automated market maker (AMM) like Balancer. It is the difference
+                liquidity to an automated market maker (AMM) like Beets. It is the difference
                 between the value of holding assets in a pool versus holding them outside of the
                 pool.
               </p>
@@ -559,30 +519,25 @@ export default function Risks() {
                 This risk is particularly relevant for pools with volatile assets where token prices
                 are likely to diverge over time.
               </p>
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  All AMMs either have impermanent loss or reduced yield to LPs. Balancer aims to
-                  make its pools as capital efficient as possible so that the yield LPs make is more
+                  All AMMs either have impermanent loss or reduced yield to LPs. Beets aims to make
+                  its pools as capital efficient as possible so that the yield LPs make is more
                   likely to exceed any impermanent loss.
                 </li>
                 <li>
-                  The Balancer protocol supports unbalanced pools which LPs can use to reduce
+                  The Balancer Protocol supports unbalanced pools which LPs can use to reduce
                   impermanent loss. For example, there is lower impermanent loss in an 80/20 pool
                   (or any other unbalanced pools) versus a 50/50 pool with the same underlying
                   tokens.
-                </li>
-                <li>
-                  Note: Some ecosystem developers are building on top of Balancer to create novel
-                  pools, including Managed Pools, with rebalancing algorithms designed to minimize
-                  impermanent loss.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
               <ul>
                 <li>
                   LPs should consider the risk of impermanent loss carefully before providing
-                  liquidity to a Balancer pool.
+                  liquidity to a pool.
                 </li>
                 <li>
                   The longer an LP holds their position, the more likely it is that their yield from
@@ -607,17 +562,17 @@ export default function Risks() {
                 Hooks
               </h4>
               <p>
-                Hooks introduce complex logic into Balancer pools, and changes in their parameters
-                can significantly impact the risk profile of a pool. This complexity increases the
+                Hooks introduce complex logic into pools, and changes in their parameters can
+                significantly impact the risk profile of a pool. This complexity increases the
                 potential for unforeseen errors or vulnerabilities in hook code that may, for
                 example, amplify impermanent loss, introduce new sources of volatility, or impose
                 restrictions on pool interactions like joins and exits.
               </p>
               <ul>
                 <li>
-                  Hook specific risk: Balancer hooks introduce unique functionalities to Balancer
-                  pools, and while they offer exciting possibilities, they also present specific
-                  risks that users should be aware of.
+                  Hook specific risk: Hooks introduce unique functionalities to pools, and while
+                  they offer exciting possibilities, they also present specific risks that users
+                  should be aware of.
                 </li>
                 <li>
                   Hook Interactions: Hooks can interact with each other and with the pool contracts
@@ -640,8 +595,8 @@ export default function Risks() {
               <p>
                 DeFi users, including liquidity providers and swappers, typically interact with
                 front-end user interfaces to interact with a protocol&rsquo;s smart contracts. An
-                example is the beets.fi front-end UI instance which interacts with Balancer Protocol
-                smart contracts.
+                example is the beets.fi UI, which interacts with Beets smart contracts on Sonic
+                built on Balancer technology.
               </p>
 
               <p>A few risks of using front-ends to manage liquidity positions in DeFi:</p>
@@ -662,29 +617,29 @@ export default function Risks() {
                 </li>
               </ul>
 
-              <h5>How does Balancer work to mitigate this risk?</h5>
+              <h5>How can this risk be reduced?</h5>
               <ul>
                 <li>
-                  Since the Balancer smart contracts can be interacted with by any front-end UI,
-                  there is less reliance on any one single UI. The Balancer App UI code is open
-                  source with an MIT License which allows other third-party developers to fork the
-                  code, make improvements and compete for users.
+                  Since the smart contracts can be interacted with by any front-end UI, there is
+                  less reliance on any one single UI. The Beets UI code is open source with an MIT
+                  License which allows other third-party developers to fork the code, make
+                  improvements and compete for users.
                 </li>
                 <li>
                   Users or third-party developers can keep track of changes and review the
                   open-source repository on GitHub for potential malicious code.
                 </li>
                 <li>
-                  The developers of the Balancer App UI have provided instructions on how to clone
-                  and run local environments of the app. This allows people to have the ability to
-                  keep deprecated features or modify the code to add new features that they prefer.
+                  The developers of the Beets UI have provided instructions on how to clone and run
+                  local environments of the app. This allows people to have the ability to keep
+                  deprecated features or modify the code to add new features that they prefer.
                 </li>
               </ul>
               <h5>How can LPs mitigate this risk?</h5>
               <ul>
                 <li>
-                  LPs can learn how to interact with Balancer smart contracts on third-party
-                  websites, like <a href="https://sonicscan.org/">SonicScan</a>.
+                  LPs can learn how to interact with the smart contracts directly on{' '}
+                  <a href="https://sonicscan.org/">SonicScan</a>.
                 </li>
                 <li>
                   To mitigate the risks of downtime or lack of access, users can fork the open
@@ -709,9 +664,9 @@ export default function Risks() {
                 DeFi ecosystem.
               </p>
               <p>
-                It&apos;s also possible that the Beets App UI may be wholly or partially suspended
-                or terminated for any or no reason, which may limit your access to your tokens via
-                this website. In this scenario, you may be able to recover funds by running your own
+                It&apos;s also possible that the Beets UI may be wholly or partially suspended or
+                terminated for any or no reason, which may limit your access to your tokens via this
+                website. In this scenario, you may be able to recover funds by running your own
                 local instance or by using a third-party website, like{' '}
                 <a href="https://sonicscan.org/">SonicScan</a>.
               </p>
@@ -725,9 +680,9 @@ export default function Risks() {
                     Pool type risks
                   </h3>
                   <p>
-                    Balancer is designed to be infinitely extendible to allow for any conceivable
-                    pool type with custom curves, logic and parameters, and more. The general risks
-                    of the most popular pool types are listed below.
+                    Balancer Protocol is designed to be infinitely extendible to allow for any
+                    conceivable pool type with custom curves, logic and parameters, and more. The
+                    general risks of the most popular pool types are listed below.
                   </p>
                 </div>
               </FadeInOnView>
@@ -742,10 +697,10 @@ export default function Risks() {
                       Weighted math
                     </a>
                     , which makes them great for general cases, including tokens that don&apos;t
-                    necessarily have any price correlation (ex. DAI/WETH). Unlike weighted pools in
-                    other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable
-                    users to build pools with more than two tokens and custom weightings, such as
-                    pools with 80/20 or 60/20/20 weightings. Some risks of weighted pools include:
+                    necessarily have any price correlation (ex. USDC/wS). Unlike weighted pools in
+                    other AMMs that only provide 50/50 weightings, Weighted Pools enable users to
+                    build pools with more than two tokens and custom weightings, such as pools with
+                    80/20 or 60/20/20 weightings. Some risks of weighted pools include:
                   </p>
                   <ul>
                     <li>
@@ -758,8 +713,8 @@ export default function Risks() {
                       Toxic token risk
                       <ul>
                         <li>
-                          Balancer weighted pools are not limited to just having two tokens. The
-                          more tokens in a pool, the more risk that one of these could become toxic.
+                          Weighted pools are not limited to just having two tokens. The more tokens
+                          in a pool, the more risk that one of these could become toxic.
                         </li>
                       </ul>
                     </li>
@@ -780,20 +735,19 @@ export default function Risks() {
                   </p>
                   <ul>
                     <li>
-                      Pegged Tokens: Tokens that trade near 1:1, such as two stablecoins of the same
-                      currency (e.g., DAI, USDC, USDT), or synthetic assets (e.g., renBTC, sBTC,
-                      WBTC)
+                      Pegged Tokens: Tokens that trade near 1:1, such as stablecoins denominated in
+                      the same currency
                     </li>
                     <li>
                       Correlated Tokens: Tokens that trade near each other with some slowly changing
-                      exchange rate, like derivatives (e.g., wstETH, wETH)
+                      exchange rate, like derivatives (e.g., stS, wS)
                     </li>
                   </ul>
                   <h5>Loss of stablecoin peg</h5>
                   <p>
                     Stablecoins are tokens whose value is intended to be pegged or tied to that of
                     another asset, which could be a currency, commodity or financial instrument.
-                    There are many types of stablecoins, some are risky than others depending on
+                    There are many types of stablecoins, some are riskier than others depending on
                     product design including evidence of reserves to support the peg in times of
                     stress. Some example types of stablecoins include:
                   </p>
@@ -807,7 +761,9 @@ export default function Risks() {
                     <li>
                       Peg is secured by other crypto assets
                       <ul>
-                        <li>e.g. DAI secured by an over-collateralized basket of crypto assets</li>
+                        <li>
+                          e.g. a stablecoin backed by an over-collateralized basket of crypto assets
+                        </li>
                       </ul>
                     </li>
                     <li>
@@ -821,13 +777,13 @@ export default function Risks() {
                     </li>
                   </ul>
                   <p>
-                    Depegging occurs when a stablecoin losses its peg to the target asset. In stable
-                    pools, if a stablecoin depegs, LPs may incurs losses. This is because liquidity
+                    Depegging occurs when a stablecoin loses its peg to the target asset. In stable
+                    pools, if a stablecoin depegs, LPs may incur losses. This is because liquidity
                     pools typically sell the winners (tokens moving up in price) and accumulate the
                     losers (tokens moving down in price). In the case of a USD-pegged stable pool,
-                    if an asset permanently loses it&rsquo;s peg to $1 and goes down in value, the
-                    pool will sell any pegged assets and accumulate the asset which has lost
-                    it&rsquo;s peg, leading to an overall loss of funds for LPs.
+                    if an asset permanently loses its peg to $1 and goes down in value, the pool
+                    will sell any pegged assets and accumulate the asset which has lost its peg,
+                    leading to an overall loss of funds for LPs.
                   </p>
                   <div>
                     <h5 className="anchor" id="rate-provider-risk">
@@ -851,8 +807,8 @@ export default function Risks() {
                     <p>
                       Oracles are data providers which supply external information to smart
                       contracts. Oracles, like Chainlink, may be used to source exchange rates
-                      between pool tokens for a rate provider in Balancer Stable Pools. The risks of
-                      using Oracles to supply exchange rates include:
+                      between pool tokens for a rate provider in Stable Pools. The risks of using
+                      Oracles to supply exchange rates include:
                     </p>
                     <ul>
                       <li>
@@ -918,8 +874,8 @@ export default function Risks() {
                       liquidity, and increased yield for Liquidity Providers.
                     </li>
                     <li>
-                      For traders, Boosted Pools are a cheaper entry/exit into decentralized lending
-                      protocols like Aave.
+                      For traders, Boosted Pools are a cheaper entry/exit into underlying yield
+                      protocols.
                     </li>
                     <li>
                       Boosted Pools increase the opportunity for LPs to gain exposure to a wide
@@ -928,12 +884,12 @@ export default function Risks() {
                   </ul>
                   <h5>Third-party platform risk exposure (DeFi composability risk)</h5>
                   <p>
-                    Since boosted pools deposit excess liquidity into third-party protocols, like
-                    Aave, to generate yield, LPs must fully understand the risks of the underlying
-                    protocol since a portion of their funds will be exposed to the risks of that
-                    protocol. Some of the risks of the underlying protocol may include smart
-                    contract bugs, economic attack vulnerabilities and counterparty risk from the
-                    protocol&rsquo;s borrowers. Underlying protocols may also use{' '}
+                    Since boosted pools deposit excess liquidity into third-party yield protocols to
+                    generate yield, LPs must fully understand the risks of the underlying protocol
+                    since a portion of their funds will be exposed to the risks of that protocol.
+                    Some of the risks of the underlying protocol may include smart contract bugs,
+                    economic attack vulnerabilities and counterparty risk from the protocol&rsquo;s
+                    borrowers. Underlying protocols may also use{' '}
                     <Link href="risks#oracles">
                       <span>Oracles</span>
                     </Link>{' '}
@@ -1039,42 +995,31 @@ export default function Risks() {
                   </p>
                   <ul>
                     <li>
-                      <em>2-CLPs:</em> Pools with two assets, known as Quadratic-CLPs or 2-CLPs,
-                      named after the quadratic invariant curve—are similar to Uniswap v3&rsquo;s
-                      concentrated liquidity pools. But unlike Uniswap, a 2-CLP effectively offers a
-                      &lsquo;single tick&rsquo;, where liquidity is distributed evenly across a
-                      single active trading range. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps">
-                        2-CLPs and their risks
-                      </a>
-                      .
-                    </li>
-                    <li>
                       <em>3-CLPs:</em> Pools with three assets, known as Cubic-CLPs or 3-CLPs,
-                      support three assets and are functionally best understood as an extension of
-                      2-CLPs. As a high-level summary, they amplify the benefits of 2-CLPs. Learn
-                      more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/3-clps">
+                      provide concentrated liquidity for three assets. Learn more about{' '}
+                      <a href="https://docs.gyro.finance/pools/3-clps.html">
                         3-CLPs and their risks
                       </a>
                       .
                     </li>
                     <li>
                       <em>E-CLPs:</em> Also known as &lsquo;Elliptic-CLPs&rsquo; support asymmetric
-                      concentrated liqudity for two assets. They provide a new type of concentrated
+                      concentrated liquidity for two assets. They provide a new type of concentrated
                       liquidity that allows highly flexible and asymmetric liquidity profiles in a
                       single pool position. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps">
+                      <a href="https://docs.gyro.finance/pools/e-clps.html">
                         E-CLPs and their risks
                       </a>
                       .
                     </li>
                     <li>
-                      <em>Rehype E-CLPs:</em> Arguably the most capital efficient pools, these
-                      E-CLPs combine asymmetric concentrated liquidity with auto-rehypothecation to
-                      lending markets. Learn more about{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/rehype-e-clps">
-                        Rehype E-CLPs and their risks
+                      <em>Dynamic E-CLPs:</em> These pools use a dynamic rate provider to adjust
+                      their price range when the pool moves out of range. They add oracle, keeper,
+                      and strategy risks to the underlying E-CLP risks. Liquidity updates can lock
+                      in losses, even if prices later return to their initial level; delayed keeper
+                      updates can leave a pool out of range for longer. Learn more about{' '}
+                      <a href="https://docs.gyro.finance/pools/dynamic-clps.html">
+                        Dynamic CLPs and their risks
                       </a>
                       .
                     </li>
@@ -1082,22 +1027,11 @@ export default function Risks() {
                   <p>Other risks:</p>
                   <ul>
                     <li>
-                      The Balancer UI allows people to manage their liquidity in certain Gyroscope
-                      pools. This is not an endorsement of their products or of the the safety of
-                      their smart contracts. The Gyroscope GYD system and E-CLPs have been audited
-                      several times. You can review the{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/audit-reports">
-                        audit reports here
-                      </a>
-                      .
-                    </li>
-                    <li>
-                      Some concentrated liquidity pools also contain Gyroscope&rsquo;s Gyro Dollars
-                      (GYD). Here are some of the{' '}
-                      <a href="https://docs.gyro.finance/gyroscope-protocol/risks">
-                        risks of using GYD
-                      </a>
-                      .
+                      The Beets UI allows people to manage their liquidity in certain Gyroscope
+                      pools. This is not an endorsement of their products or the safety of their
+                      smart contracts. Review the audit reports for the contracts you intend to use;
+                      audits do not guarantee safety. You can review Gyroscope&apos;s{' '}
+                      <a href="https://docs.gyro.finance/audit-reports.html">audit reports here</a>.
                     </li>
                   </ul>
                 </div>
@@ -1128,7 +1062,7 @@ export default function Risks() {
                   <li>
                     <b>Path Dependency Risk</b>: Unlike traditional CFMM (Constant Function Market
                     Makers) where “impermanent” loss can revert by the return of the asset to its
-                    original ratio, path-dependant pools are affected by the sequence of price
+                    original ratio, path-dependent pools are affected by the sequence of price
                     change, meaning the losses incurred to the asset in one side of the pool during
                     certain price fluctuations can become “permanent”.
                   </li>
@@ -1178,7 +1112,7 @@ export default function Risks() {
 
                 <ul>
                   <li>
-                    <b>Market volatility</b>: run directional strategies. These are not market
+                    <b>Market volatility</b>: BTFs run directional strategies. These are not market
                     neutral. The dynamic nature of the TFMM may not always respond adequately to
                     extreme market volatility or adverse conditions, potentially leading to losses
                     if market prices deviate significantly from expected trends.
@@ -1218,11 +1152,11 @@ export default function Risks() {
                 <p>How QuantAMM mitigates these risks:</p>
                 <ul>
                   <li>
-                    <b>Market Volatility</b> - given the nature of BTFs in so that they are not
-                    reliant trade volumes, back test simulations are provided to give visibility on
-                    simulated behaviour under different market conditions. Given the BTF strategies
-                    rely on “historical memory” of price changes, historical performance and
-                    simulations are not indicative of future performance.
+                    <b>Market Volatility</b> - Given that BTFs are not reliant on trade volumes,
+                    back test simulations are provided to give visibility on simulated behaviour
+                    under different market conditions. Given the BTF strategies rely on “historical
+                    memory” of price changes, historical performance and simulations are not
+                    indicative of future performance.
                   </li>
                   <li>
                     <b>Pool Tuning</b> - Strategy parameters are fixed on creation mitigating the
@@ -1246,12 +1180,12 @@ export default function Risks() {
                   </li>
                   <li>
                     <b>Sub-optimal arbitrage</b> - This is a relatively small risk given at any one
-                    block arbitrageurs are faced with a standard balancer pool so they can price and
-                    take the arbitrage opportunity without any additional new invariant prediction
-                    work. Balancer has also integrated BTFs in the smart order router also
-                    increasing the likelihood of being exposed to traders. Work has already begun on
-                    DEX aggregator integration and when there is a minimal amount of TVL in the pool
-                    aggregators will expose the pool for further volumes.
+                    block arbitrageurs are faced with a standard pool so they can price and take the
+                    arbitrage opportunity without any additional new invariant prediction work.
+                    Beets has also integrated BTFs in the smart order router also increasing the
+                    likelihood of being exposed to traders. Work has already begun on DEX aggregator
+                    integration and when there is a minimal amount of TVL in the pool aggregators
+                    will expose the pool for further volumes.
                   </li>
                 </ul>
                 <p>
