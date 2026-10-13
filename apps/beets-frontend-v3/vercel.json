@@ -1,5 +1,8 @@
 {
   "git": {
-    "cloneDepth": 100
+    "cloneDepth": 100,
+    "deploymentEnabled": {
+      "renovate/**": false
+    }
   }
 }
