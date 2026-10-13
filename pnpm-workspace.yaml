@@ -21,6 +21,10 @@ peerDependencyRules:
     "@types/react-dom": ^19.0.0
     react: ^19.0.0
     react-dom: ^19.0.0
+    # @vitest/mocker declares msw@^2.4.9 but msw@3 works — accepting it keeps a
+    # single vitest peer variant; otherwise pnpm installs a second vitest copy
+    # and inline snapshots break (duplicate SnapshotClient singletons).
+    msw: ">=2.4.9"
 
 overrides:
   "@types/react": "19.3"
@@ -28,6 +32,9 @@ overrides:
   # @reown/appkit-wallet pins zod@3.22.4 (no v4/ subpath), but @hookform/resolvers
   # imports zod/v4/core as a phantom dep. Force 3.25.76 so both resolve correctly.
   "zod": "3.25.76"
+  # @vitest/mocker's optional msw peer (^2.4.9) would otherwise pull a second
+  # msw + vitest instance into tests; v3 satisfies it (used in browser mode only).
+  "@vitest/mocker>msw": "3.0.0"
 
 publicHoistPattern:
   - "*graphql*" # https://github.com/vercel/next.js/issues/68805
