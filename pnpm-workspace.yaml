@@ -34,7 +34,7 @@ overrides:
   "zod": "3.25.76"
   # @vitest/mocker's optional msw peer (^2.4.9) would otherwise pull a second
   # msw + vitest instance into tests; v3 satisfies it (used in browser mode only).
-  "@vitest/mocker>msw": "3.0.0"
+  "@vitest/mocker>msw": "3.0.3"
 
 publicHoistPattern:
   - "*graphql*" # https://github.com/vercel/next.js/issues/68805
