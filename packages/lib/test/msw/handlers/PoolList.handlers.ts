@@ -1,6 +1,5 @@
 import { GetPoolsDocument } from '@repo/lib/shared/services/api/generated/graphql'
 import { getQueryName, mockGQL } from '../utils'
-import {} from 'msw'
 import { aGqlPoolMinimalMock } from '../builders/gqlPoolMinimal.builders'
 import { PoolList } from '@repo/lib/modules/pool/pool.types'
 import { GQLResponse, gqlApi } from './msw-helpers'

@@ -1,5 +1,4 @@
 import { GetPoolDocument, GetPoolQuery } from '@repo/lib/shared/services/api/generated/graphql'
-import {} from 'msw'
 import { getQueryName, mockGQL } from '../utils'
 import { aPoolMock } from '../builders/gqlPoolElement.builders'
 import { GQLResponse, gqlApi } from './msw-helpers'

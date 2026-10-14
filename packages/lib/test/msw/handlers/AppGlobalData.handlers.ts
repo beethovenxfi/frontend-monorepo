@@ -1,6 +1,5 @@
 import { GetAppGlobalPollingDataDocument } from '@repo/lib/shared/services/api/generated/graphql'
 import { getQueryName, mockGQL } from '../utils'
-import {} from 'msw'
 import { anAppGlobalData } from '@repo/lib/modules/tokens/__mocks__/AppGlobalData.builders'
 import { GQLResponse, gqlApi } from './msw-helpers'
 
