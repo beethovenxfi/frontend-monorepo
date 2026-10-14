@@ -8,7 +8,6 @@ import {
   GetTokenPricesQuery,
   GetTokensDocument,
 } from '@repo/lib/shared/services/api/generated/graphql'
-import {} from 'msw'
 import { getQueryName, mockGQL } from '../utils'
 import { GQLResponse, gqlApi } from './msw-helpers'
 
