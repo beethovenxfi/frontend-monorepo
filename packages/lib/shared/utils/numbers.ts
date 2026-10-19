@@ -31,7 +31,6 @@ export const FIXED_6DP_FORMAT = '0.000000'
 export const INTEGER_FORMAT = '0,0'
 export const FIXED_2DP_FORMAT = '0.00'
 export const GROUPED_OPTIONAL_6DP_FORMAT = '0,0.[000000]'
-export const OPTIONAL_3DP_FORMAT = '0.[000]'
 export const FIXED_3DP_ABBR_FORMAT = '0.000a'
 export const CURRENCY_1DP_ABBR_FORMAT = '$0,0.0a'
 export const GROUPED_1DP_ABBR_FORMAT = '0,0.0a'
@@ -414,25 +413,18 @@ export function safeSum(amounts: Numberish[]): string {
 }
 
 // Prevents invalid characters from being entered into a number input.
-// '0,0.[000000]' / '0.[000]': up to `maxOptional` decimals, trailing zeros
-// trimmed (1.5 -> '1.5', 1234.5678 -> '1,234.5678'). Grouping follows the
-// format's thousands marker (true for '0,0.[...]', false for '0.[...]').
+// '0,0.[000000]': up to `maxOptional` decimals, trailing zeros trimmed
+// (1.5 -> '1.5', 1234.5678 -> '1,234.5678'), thousands-grouped.
 //
-// numeral quirk inherited deliberately: values that round to zero at the
-// format's precision (e.g. 0.0000001 at 6dp) render as-is in scientific-free
-// form instead of numeral's NaN — small values display '0.0000001' rather
-// than disappearing.
-function formatGroupedOptionalDecimals(
-  val: Numberish,
-  maxOptional: number,
-  { grouped = true }: { grouped?: boolean } = {}
-): string {
+// numeral quirk inherited deliberately: values that round to zero at 6dp
+// (e.g. 0.0000001) render as-is in scientific-free form instead of numeral's
+// NaN — small values display '0.0000001' rather than disappearing.
+function formatGroupedOptionalDecimals(val: Numberish, maxOptional: number): string {
   const raw = bn(val)
   const rounded = roundHalfUp(raw, maxOptional)
 
   // numeral returns NaN for '0,0.[000000]' on values that round to zero below
-  // 1e-6 (pow(10, p) guard). For that one format we show the raw value instead
-  // of numeral's NaN; '0.[000]' keeps standard round-to-zero ('0.0001' -> '0').
+  // 1e-6 (pow(10, p) guard), so show the raw value instead.
   if (rounded.isZero() && !raw.isZero() && maxOptional > 3) {
     return raw.toFixed()
   }
@@ -441,7 +433,7 @@ function formatGroupedOptionalDecimals(
   const neg = s.startsWith('-')
   const unsigned = neg ? s.slice(1) : s
   const [intPart, fracPart] = splitDecimalString(unsigned)
-  const intOut = grouped ? groupIntegerString(intPart) : intPart
+  const intOut = groupIntegerString(intPart)
   const fracTrimmed = fracPart.replace(/0+$/, '')
   const sign = neg ? '-' : ''
   if (!fracTrimmed) return `${sign}${intOut}`
@@ -562,9 +554,6 @@ export function fNumCustom(val: Numberish, format: string): string {
       return bn(val).toFixed(2)
     case GROUPED_OPTIONAL_6DP_FORMAT:
       return formatGroupedOptionalDecimals(val, 6)
-    case OPTIONAL_3DP_FORMAT:
-      // '0.[000]' has no thousands marker in numeral — no grouping
-      return formatGroupedOptionalDecimals(val, 3, { grouped: false })
     case FIXED_3DP_ABBR_FORMAT:
       return formatAbbreviatedFixedDecimals(val, 3)
     case CURRENCY_1DP_ABBR_FORMAT:
