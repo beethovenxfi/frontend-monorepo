@@ -5,7 +5,6 @@ import {
   balancerV2VaultAbi,
   sonicStakingAbi,
   reliquaryAbi,
-  magpieLoopedSonicRouterAbi,
 } from './abi/generated'
 import { permit2Abi } from '@balancer/sdk'
 
@@ -16,7 +15,6 @@ export const AbiMap = {
   'snapshot.delegateRegistry': DelegateRegistryAbi,
   'beets.lstStaking': sonicStakingAbi,
   'beets.reliquary': reliquaryAbi,
-  'beets.loopedSonicRouter': magpieLoopedSonicRouterAbi,
   permit2: permit2Abi,
 }
 

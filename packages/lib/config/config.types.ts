@@ -20,7 +20,6 @@ export interface TokensConfig {
   }
   nativeAsset: TokenInfo
   stakedAsset?: TokenInfo
-  loopedAsset?: TokenInfo
   defaultSwapTokens?: {
     tokenIn?: Address
     tokenOut?: Address
@@ -54,8 +53,6 @@ export interface ContractsConfig {
     sfc?: Address
     lstWithdrawRequestHelper?: Address
     reliquary?: Address
-    magpieLoopedSonicRouter?: Address
-    loopedSonicVault?: Address
   }
   permit2?: Address
 }
