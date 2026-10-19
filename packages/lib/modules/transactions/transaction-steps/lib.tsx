@@ -60,8 +60,6 @@ export type StepType =
   | 'sendLbpMetadata'
   | 'initializePool'
   | 'enableRecovery'
-  | 'depositLoops'
-  | 'withdrawLoops'
   | 'bindToken'
   | 'setSwapFee'
   | 'finalizePool'

@@ -361,7 +361,7 @@ describe('fNumCustom', () => {
     expect(fNumCustom('0.0000001', '0,0.[000000]')).toBe('0.0000001')
   })
 
-  test("'0.[000]' — up to 3 optional decimals (Loops health factor / leverage)", () => {
+  test("'0.[000]' — up to 3 optional decimals", () => {
     expect(fNumCustom('0', '0.[000]')).toBe('0')
     expect(fNumCustom('1', '0.[000]')).toBe('1')
     expect(fNumCustom('1.2345', '0.[000]')).toBe('1.235')
