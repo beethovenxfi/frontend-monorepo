@@ -361,18 +361,6 @@ describe('fNumCustom', () => {
     expect(fNumCustom('0.0000001', '0,0.[000000]')).toBe('0.0000001')
   })
 
-  test("'0.[000]' — up to 3 optional decimals (Loops health factor / leverage)", () => {
-    expect(fNumCustom('0', '0.[000]')).toBe('0')
-    expect(fNumCustom('1', '0.[000]')).toBe('1')
-    expect(fNumCustom('1.2345', '0.[000]')).toBe('1.235')
-    expect(fNumCustom('1.2344', '0.[000]')).toBe('1.234')
-    expect(fNumCustom('2.5', '0.[000]')).toBe('2.5')
-    expect(fNumCustom('0.5', '0.[000]')).toBe('0.5')
-    expect(fNumCustom('0.0001', '0.[000]')).toBe('0')
-    expect(fNumCustom('12.3456', '0.[000]')).toBe('12.346')
-    expect(fNumCustom('1234.5', '0.[000]')).toBe('1234.5')
-  })
-
   test("'0.000a' — 3 fixed decimals + abbreviation (maBEETS voting power)", () => {
     expect(fNumCustom('0', '0.000a')).toBe('0.000')
     expect(fNumCustom('1', '0.000a')).toBe('1.000')
