@@ -86,17 +86,9 @@
       "matchManagers": ["github-actions"]
     },
     {
-      "description": "Wait for all three version updates: @playwright/test and both Playwright container references in checks.yml. Container tag bumps include their new digests; digest-only updates stay separate.",
-      "groupName": "Playwright",
-      "minimumGroupSize": 3,
-      "matchPackageNames": ["@playwright/test", "mcr.microsoft.com/playwright"],
-      "matchUpdateTypes": ["major", "minor", "patch"]
-    },
-    {
-      "description": "Playwright image digest changes that come without a version bump (Microsoft republishes an existing tag). Kept out of the Playwright group so a pinDigest cannot collide with a pending tag bump on the same branch.",
-      "groupName": "Playwright image digest",
+      "description": "The mcr.microsoft.com/playwright container is not managed by Renovate. Its tag is derived from @playwright/test by packages/e2e-tests/scripts/sync-playwright-image.mjs, which runs as a pre-commit hook. Renovate cannot keep the two together: MCR's tags API returns no releaseTimestamp, so the container never participates in minimumReleaseAge and is always raised ahead of the npm package, leaving the image's browsers out of step with the runner.",
       "matchPackageNames": ["mcr.microsoft.com/playwright"],
-      "matchUpdateTypes": ["pinDigest", "digest"]
+      "enabled": false
     },
     {
       "description": "Keep Next server external workaround packages pinned to the transitive versions required by the current WalletConnect/pino stack.",
