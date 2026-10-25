@@ -23,7 +23,7 @@
     "@repo/typescript-config": "workspace:*",
     "@types/node": "24.19.2",
     "beets-frontend-v3": "workspace:*",
-    "dotenv": "18.0.8",
+    "dotenv": "18.0.9",
     "start-server-and-test": "3.0.13"
   }
 }
