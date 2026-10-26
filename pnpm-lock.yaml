@@ -685,8 +685,8 @@ importers:
         specifier: 3.0.3
         version: 3.0.3(@types/node@24.19.2)(graphql@17.0.2)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       prool:
-        specifier: 0.2.16
-        version: 0.2.16(debug@4.4.3(supports-color@10.2.2))
+        specifier: 0.2.17
+        version: 0.2.17(debug@4.4.3(supports-color@10.2.2))
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -7117,8 +7117,8 @@ packages:
   process-warning@5.1.1:
     resolution: {integrity: sha512-oCkNVj4OKnKEcocVBcDfiIugN1/cE6rgfT3nCtzeqZPA8+rIxMaQ0xXzIkGP8Gj2qUaP1UR7uhJ1VD8lUCpzCg==}
 
-  prool@0.2.16:
-    resolution: {integrity: sha512-WW5HOJExIBmCJvS6XcjwXFuq+oNy2j8PaSwzF0NA99TnVn7XZ8bG1Yl2kdBPlzpOjozL0xooDjZkkgnw++LeZA==}
+  prool@0.2.17:
+    resolution: {integrity: sha512-TnT5++bWGJRlgzsDdYu1x4qhDnhVPK20+6KwCZ2z3bDXP63BbygSEJz83Uum4rN8C1m9CY1onXEZpBbB8K9NCA==}
     engines: {node: '>=22'}
     peerDependencies:
       '@pimlico/alto': '*'
@@ -16273,7 +16273,7 @@ snapshots:
 
   process-warning@5.1.1: {}
 
-  prool@0.2.16(debug@4.4.3(supports-color@10.2.2)):
+  prool@0.2.17(debug@4.4.3(supports-color@10.2.2)):
     dependencies:
       change-case: 5.4.4
       eventemitter3: 5.0.4
