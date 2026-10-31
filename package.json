@@ -32,7 +32,7 @@
     "playwright:install:chromium": "pnpm --filter=e2e-tests playwright:install:chromium"
   },
   "devDependencies": {
-    "@types/node": "26.6.5",
+    "@types/node": "26.6.6",
     "@vitejs/plugin-react": "6.1.2",
     "@vitest/coverage-v8": "5.0.5",
     "happy-dom": "21.0.4",
