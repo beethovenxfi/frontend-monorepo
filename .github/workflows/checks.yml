@@ -76,11 +76,33 @@ jobs:
       - name: Run integration tests
         run: pnpm test:integration
 
+  # The Playwright container ships the browsers, so its tag has to match the
+  # @playwright/test runner. Deriving the tag from package.json keeps a single
+  # version number: a dependency bump pulls the matching image in the same run.
+  Playwright-Image:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          sparse-checkout: packages/e2e-tests/package.json
+          sparse-checkout-cone-mode: false
+      - id: image
+        run: |
+          version=$(jq -er '.devDependencies["@playwright/test"]' packages/e2e-tests/package.json)
+          if ! echo "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::@playwright/test must be pinned to an exact version, got \"$version\""
+            exit 1
+          fi
+          echo "image=mcr.microsoft.com/playwright:v${version}-noble" >> "$GITHUB_OUTPUT"
+
   E2E-Smoke-Test-Beets:
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    needs: Playwright-Image
     container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+      image: ${{ needs.Playwright-Image.outputs.image }}
     env:
       NEXT_PUBLIC_PROJECT_ID: beets
       NEXT_PUBLIC_BALANCER_API_URL: https://api.beets-ftm-node.com/graphql
@@ -107,8 +129,9 @@ jobs:
   E2E-Dev-Test-Beets:
     timeout-minutes: 25
     runs-on: ubuntu-latest
+    needs: Playwright-Image
     container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+      image: ${{ needs.Playwright-Image.outputs.image }}
     strategy:
       fail-fast: false
       matrix:
