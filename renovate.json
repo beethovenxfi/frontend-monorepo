@@ -86,11 +86,6 @@
       "matchManagers": ["github-actions"]
     },
     {
-      "description": "The mcr.microsoft.com/playwright container is not managed by Renovate. Its tag is derived from @playwright/test by packages/e2e-tests/scripts/sync-playwright-image.mjs, which runs as a pre-commit hook. Renovate cannot keep the two together: MCR's tags API returns no releaseTimestamp, so the container never participates in minimumReleaseAge and is always raised ahead of the npm package, leaving the image's browsers out of step with the runner.",
-      "matchPackageNames": ["mcr.microsoft.com/playwright"],
-      "enabled": false
-    },
-    {
       "description": "Keep Next server external workaround packages pinned to the transitive versions required by the current WalletConnect/pino stack.",
       "groupName": "Pinned Next server externals",
       "matchPackageNames": ["thread-stream", "real-require"],
