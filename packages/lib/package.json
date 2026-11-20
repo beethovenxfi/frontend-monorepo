@@ -107,7 +107,7 @@
     "@wagmi/cli": "2.10.1",
     "autoprefixer": "10.6.2",
     "cross-fetch": "4.1.0",
-    "eslint": "10.14.0",
+    "eslint": "10.15.0",
     "msw": "3.0.6",
     "prool": "0.2.18",
     "typescript": "6.0.3"
