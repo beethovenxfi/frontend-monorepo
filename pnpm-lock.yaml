@@ -694,8 +694,8 @@ importers:
         specifier: 3.0.7
         version: 3.0.7(@types/node@26.6.6)(graphql@17.1.0)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       prool:
-        specifier: 0.2.18
-        version: 0.2.18(debug@4.4.3(supports-color@10.2.2))
+        specifier: 0.3.0
+        version: 0.3.0(debug@4.4.3(supports-color@10.2.2))
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -7046,8 +7046,8 @@ packages:
   process-warning@5.1.1:
     resolution: {integrity: sha512-oCkNVj4OKnKEcocVBcDfiIugN1/cE6rgfT3nCtzeqZPA8+rIxMaQ0xXzIkGP8Gj2qUaP1UR7uhJ1VD8lUCpzCg==}
 
-  prool@0.2.18:
-    resolution: {integrity: sha512-sjb8oDkdC7CpFQBFM+KaXmhhQIAvwx3fceXsRtvTNHigGMq9eaA2imrjb5bYNHCpDMc04xpLpAWssv5ezv6QTw==}
+  prool@0.2.4:
+    resolution: {integrity: sha512-KAGs6e++7MJNQ/vq8Xrk6akz0lRk6AmhuGzSHkluX3kwVj2XjNDDOYSINZwahRv3xfSD0rXYv3iA/2vXw7z47w==}
     engines: {node: '>=22'}
     peerDependencies:
       '@pimlico/alto': '*'
@@ -7058,8 +7058,8 @@ packages:
       testcontainers:
         optional: true
 
-  prool@0.2.4:
-    resolution: {integrity: sha512-KAGs6e++7MJNQ/vq8Xrk6akz0lRk6AmhuGzSHkluX3kwVj2XjNDDOYSINZwahRv3xfSD0rXYv3iA/2vXw7z47w==}
+  prool@0.3.0:
+    resolution: {integrity: sha512-iL89tfQhqo5mdOBEfp5bmuOk01AEudcna8elXZne3kAG+43x3fw+io6yiXUB/VhjY4QUFVsVgd44y58foqlprQ==}
     engines: {node: '>=22'}
     peerDependencies:
       '@pimlico/alto': '*'
@@ -15824,7 +15824,7 @@ snapshots:
 
   process-warning@5.1.1: {}
 
-  prool@0.2.18(debug@4.4.3(supports-color@10.2.2)):
+  prool@0.2.4(debug@4.4.3(supports-color@10.2.2)):
     dependencies:
       change-case: 5.4.4
       eventemitter3: 5.0.4
@@ -15835,7 +15835,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  prool@0.2.4(debug@4.4.3(supports-color@10.2.2)):
+  prool@0.3.0(debug@4.4.3(supports-color@10.2.2)):
     dependencies:
       change-case: 5.4.4
       eventemitter3: 5.0.4
